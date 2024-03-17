@@ -13,6 +13,10 @@ public class MainController {
 
     @GetMapping("/")
     public String authenticate(){
-        return authentication.Auth();
+        boolean result = authentication.Auth();
+        if(result){
+            return "done";
+        }
+        return "failed";
     }
 }

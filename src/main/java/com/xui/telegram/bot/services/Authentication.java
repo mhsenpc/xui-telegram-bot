@@ -1,6 +1,7 @@
 package com.xui.telegram.bot.services;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.xui.telegram.bot.config.PanelConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -13,22 +14,16 @@ import java.util.List;
 @Service
 public class Authentication {
 
-    @Value("${xui.base.url}")
-    private String baseUrl;
-
-    @Value("${xui.username}")
-    private String userName;
-
-    @Value("${xui.password}")
-    private String password;
+    @Autowired
+    PanelConfig panelConfig;
 
     private String cookieFileName = "storage/panel.cookie";
 
-    public String Auth(){
+    public boolean Auth(){
         RestTemplate restTemplate = new RestTemplate();
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        formData.add("username", userName);
-        formData.add("password", password);
+        formData.add("username", panelConfig.getUserName());
+        formData.add("password", panelConfig.getPassword());
 
         // Prepare headers
         HttpHeaders headers = new HttpHeaders();
@@ -38,7 +33,7 @@ public class Authentication {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
 
         // Send login request
-        ResponseEntity<String> responseEntity = restTemplate.exchange(baseUrl + "/login", HttpMethod.POST, requestEntity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(panelConfig.getBaseUrl() + "/login", HttpMethod.POST, requestEntity, String.class);
 
         // Get cookies from response headers
         HttpHeaders responseHeaders = responseEntity.getHeaders();
@@ -54,6 +49,7 @@ public class Authentication {
                     try (FileWriter writer = new FileWriter(cookieFileName)) {
                         writer.write(cookie);
                         System.out.println("Successfully wrote to the file: " + cookieFileName);
+                        return true;
                     } catch (IOException e) {
                         System.out.println("An error occurred while writing to the file: " + cookieFileName);
                         e.printStackTrace();
@@ -63,10 +59,6 @@ public class Authentication {
         } else {
             System.out.println("No cookies found in the response.");
         }
-
-
-        return baseUrl + userName + password;
+        return false;
     }
-
-
 }
