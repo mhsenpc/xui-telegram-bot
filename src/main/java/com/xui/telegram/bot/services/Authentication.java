@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,11 +14,13 @@ import java.util.List;
 public class Authentication {
 
     @Autowired
-    PanelConfig panelConfig;
+    private PanelConfig panelConfig;
 
-    private String cookieFileName = "storage/panel.cookie";
+    @Autowired
+    private CookieManager cookieManager;
 
-    public boolean Auth(){
+    public boolean login(){
+
         RestTemplate restTemplate = new RestTemplate();
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("username", panelConfig.getUserName());
@@ -46,12 +47,11 @@ public class Authentication {
                 System.out.println("Cookie: " + cookie);
 
                 if(cookie.startsWith("session=")) {
-                    try (FileWriter writer = new FileWriter(cookieFileName)) {
-                        writer.write(cookie);
-                        System.out.println("Successfully wrote to the file: " + cookieFileName);
+                    try{
+                        cookieManager.setCookie(cookie);
                         return true;
                     } catch (IOException e) {
-                        System.out.println("An error occurred while writing to the file: " + cookieFileName);
+                        System.out.println("An error occurred while storing the cookie ");
                         e.printStackTrace();
                     }
                 }
@@ -60,5 +60,13 @@ public class Authentication {
             System.out.println("No cookies found in the response.");
         }
         return false;
+    }
+
+    public boolean check(){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("cookie", cookieManager.getCookie() );
+        // /server/status
+        return true;
     }
 }

@@ -13,7 +13,7 @@ public class MainController {
 
     @GetMapping("/")
     public String authenticate(){
-        boolean result = authentication.Auth();
+        boolean result = authentication.login();
         if(result){
             return "done";
         }
