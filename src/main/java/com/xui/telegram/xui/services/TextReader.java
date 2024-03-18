@@ -1,4 +1,4 @@
-package com.xui.telegram.bot.services;
+package com.xui.telegram.xui.services;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,5 +1,6 @@
-package com.xui.telegram.bot.services;
+package com.xui.telegram.xui.services;
 
+import com.xui.telegram.xui.exceptions.CookieNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
@@ -19,7 +20,12 @@ public class CookieManager {
         System.out.println("Successfully wrote to the file: " + cookieFileName);
     }
 
-    public String getCookie() throws IOException {
-        return textReader.readAllText(cookieFileName);
+    public String getCookie() throws CookieNotFoundException {
+        try {
+            return textReader.readAllText(cookieFileName);
+        }
+        catch (IOException exception){
+            throw new CookieNotFoundException();
+        }
     }
 }

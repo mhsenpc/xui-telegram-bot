@@ -1,13 +1,13 @@
-package com.xui.telegram.bot.services;
+package com.xui.telegram.xui;
 
-import com.xui.telegram.bot.dto.SystemInfoResponse;
-import com.xui.telegram.bot.services.xui.Authentication;
-import com.xui.telegram.bot.services.xui.Status;
+import com.xui.telegram.xui.dto.SystemInfoResponse;
+import com.xui.telegram.xui.services.Authentication;
+import com.xui.telegram.xui.services.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class XUI {
+public class XUIManager {
 
     @Autowired
     Authentication authentication;

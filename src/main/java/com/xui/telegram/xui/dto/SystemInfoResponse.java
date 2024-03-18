@@ -1,4 +1,4 @@
-package com.xui.telegram.bot.dto;
+package com.xui.telegram.xui.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,8 +7,6 @@ public class SystemInfoResponse {
     private boolean success;
     private String msg;
     private SystemInfo obj;
-
-    // Getters and Setters
 
     public boolean isSuccess() {
         return success;

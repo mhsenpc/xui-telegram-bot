@@ -1,4 +1,4 @@
-package com.xui.telegram.bot.dto;
+package com.xui.telegram.xui.dto;
 
 public class Inbound {
 
