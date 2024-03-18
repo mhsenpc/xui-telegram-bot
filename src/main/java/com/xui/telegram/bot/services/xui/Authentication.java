@@ -1,6 +1,7 @@
-package com.xui.telegram.bot.services;
+package com.xui.telegram.bot.services.xui;
 
 import com.xui.telegram.bot.config.PanelConfig;
+import com.xui.telegram.bot.services.CookieManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;

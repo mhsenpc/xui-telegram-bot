@@ -1,6 +1,8 @@
 package com.xui.telegram.bot.services;
 
 import com.xui.telegram.bot.dto.SystemInfoResponse;
+import com.xui.telegram.bot.services.xui.Authentication;
+import com.xui.telegram.bot.services.xui.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
