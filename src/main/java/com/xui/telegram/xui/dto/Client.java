@@ -1,14 +1,19 @@
 package com.xui.telegram.xui.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xui.telegram.xui.enums.Flow;
+
 public class Client {
     private String id;
-    private String flow;
+    private Flow flow;
     private String email;
     private int limitIp;
-    private int totalGB;
+    @JsonProperty("totalGB")
+    private long traffic;
     private long expiryTime;
     private boolean enable;
-    private String tgId;
+    @JsonProperty("tgId")
+    private String telegramID = "";
     private String subId;
     private int reset;
 
@@ -21,10 +26,10 @@ public class Client {
     }
 
     public String getFlow() {
-        return flow;
+        return flow.getValue();
     }
 
-    public void setFlow(String flow) {
+    public void setFlow(Flow flow) {
         this.flow = flow;
     }
 
@@ -44,12 +49,16 @@ public class Client {
         this.limitIp = limitIp;
     }
 
-    public int getTotalGB() {
-        return totalGB;
+    public long getTraffic() {
+        return traffic;
     }
 
-    public void setTotalGB(int totalGB) {
-        this.totalGB = totalGB;
+    public void setTraffic(long trafficInBytes) {
+        this.traffic = trafficInBytes;
+    }
+
+    public void setTrafficInGB(long trafficInGB) {
+        this.traffic = (((trafficInGB * 1024) * 1024) * 1024) ;
     }
 
     public long getExpiryTime() {
@@ -68,12 +77,12 @@ public class Client {
         this.enable = enable;
     }
 
-    public String getTgId() {
-        return tgId;
+    public String getTelegramID() {
+        return telegramID;
     }
 
-    public void setTgId(String tgId) {
-        this.tgId = tgId;
+    public void setTelegramID(String telegramID) {
+        this.telegramID = telegramID;
     }
 
     public String getSubId() {

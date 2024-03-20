@@ -1,8 +1,10 @@
 package com.xui.telegram.bot.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.xui.telegram.xui.dto.Client;
-import com.xui.telegram.xui.dto.SystemInfoResponse;
+import com.xui.telegram.xui.dto.CreateUserResponse;
 import com.xui.telegram.xui.XUIManager;
+import com.xui.telegram.xui.enums.Flow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +16,20 @@ public class MainController {
     private XUIManager xui;
 
     @GetMapping("/")
-    public SystemInfoResponse authenticate(){
-        SystemInfoResponse systemInfoResponse = xui.status();
-        return systemInfoResponse;
+    public CreateUserResponse authenticate() throws JsonProcessingException {
+        Client client = new Client();
+        client.setEmail("tete");
+        client.setFlow(Flow.XTLS_RPRX_VISION);
+        client.setId("1fb56594-6e5d-4b66-8e2e-64692f4013e9");
+        client.setLimitIp(3);
+        client.setTrafficInGB(100);
+        client.setEnable(true);
+        client.setSubId("t8uhn7khsg9srdsg");
+        client.setExpiryTime(0);
+
+
+        return xui.createUser(client);
+
+
     }
 }
