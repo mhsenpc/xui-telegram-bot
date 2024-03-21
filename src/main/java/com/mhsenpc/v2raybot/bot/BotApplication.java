@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"com.xui.telegram.bot","com.xui.telegram.xui"})
+@ComponentScan({"com.mhsenpc.v2raybot"})
 public class BotApplication {
 
 	public static void main(String[] args) {
