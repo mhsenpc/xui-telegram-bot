@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h1>
+        V2raybot
+    </h1>
+
+<form th:action="@{/setWebhook}" method="post">
+    Token: <span th:text="${token}"></span>
+    <br/>
+    URL: <input type="text" name="url" placeholder="https://2f96-87-183-167-50.ngrok-free.app/" />
+    <input type="submit" >
+</form>
+</body>
+</html>
