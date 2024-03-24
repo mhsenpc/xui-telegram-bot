@@ -2,7 +2,7 @@ package com.mhsenpc.v2raybot.bot.controllers;
 
 import com.mhsenpc.v2raybot.telegram.dto.SendMessageRequest;
 import com.mhsenpc.v2raybot.telegram.dto.Update;
-import com.mhsenpc.v2raybot.telegram.interfaces.Requestable;
+import com.mhsenpc.v2raybot.telegram.interfaces.IRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TelegramController {
 
     @RequestMapping("/handle")
-    public <T extends Requestable> T handleRequests(@RequestBody Update update)  {
+    public <T extends IRequest> T handleRequests(@RequestBody Update update)  {
 
         SendMessageRequest sendMessageRequest = new SendMessageRequest();
         try {

@@ -1,11 +1,11 @@
 package com.mhsenpc.v2raybot.telegram.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mhsenpc.v2raybot.telegram.interfaces.Requestable;
+import com.mhsenpc.v2raybot.telegram.interfaces.IRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-public abstract class APIRequest implements Requestable {
+public abstract class APIRequest implements IRequest {
     @JsonIgnore
     private String baseUrl = "https://api.telegram.org/bot";
 

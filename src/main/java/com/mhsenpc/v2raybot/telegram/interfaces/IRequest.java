@@ -1,6 +1,6 @@
 package com.mhsenpc.v2raybot.telegram.interfaces;
 
-public interface Requestable {
+public interface IRequest {
 
     String getRequestUrl();
 }
