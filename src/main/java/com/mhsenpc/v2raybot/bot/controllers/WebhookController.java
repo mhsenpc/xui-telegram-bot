@@ -22,8 +22,8 @@ public class WebhookController {
     @PostMapping("/setWebhook")
     public SetWebhookResponse setWebhook(@RequestParam String url){
         SetWebhookRequest setWebhookRequest = new SetWebhookRequest();
-        setWebhookRequest.addQueryParam("url", url);
+        setWebhookRequest.addQueryParam("url", url + "/handle");
         setWebhookRequest.setToken(apiToken);
-        return requestHandler.send(setWebhookRequest);
+        return requestHandler.send(setWebhookRequest, SetWebhookResponse.class);
     }
 }

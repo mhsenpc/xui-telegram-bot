@@ -1,6 +1,8 @@
 package com.mhsenpc.v2raybot.telegram.dto;
 
-public class SetWebhookResponse {
+import com.mhsenpc.v2raybot.telegram.interfaces.IResponse;
+
+public class SetWebhookResponse implements IResponse {
     private boolean ok;
     private boolean result;
     private String description;

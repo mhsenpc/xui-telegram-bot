@@ -1,9 +1,8 @@
 package com.mhsenpc.v2raybot.telegram.services;
 
-import com.mhsenpc.v2raybot.telegram.dto.SetWebhookResponse;
-import com.mhsenpc.v2raybot.telegram.interfaces.Requestable;
 import com.mhsenpc.v2raybot.telegram.dto.APIRequest;
-import com.mhsenpc.v2raybot.telegram.dto.MessageResponse;
+import com.mhsenpc.v2raybot.telegram.interfaces.IResponse;
+import com.mhsenpc.v2raybot.telegram.interfaces.Requestable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -11,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class RequestHandler {
 
-    public SetWebhookResponse send(APIRequest request){
+    public <T extends IResponse> T send(APIRequest request, Class<T> responseType){
 
         // Create a RestTemplate instance
         RestTemplate restTemplate = new RestTemplate();
@@ -24,8 +23,7 @@ public class RequestHandler {
         HttpEntity<Requestable> requestEntity = new HttpEntity<>(request, headers);
 
         // Send the POST request
-        ResponseEntity<SetWebhookResponse> response = restTemplate.exchange(request.getRequestUrl(), HttpMethod.POST, requestEntity, SetWebhookResponse.class);
+        ResponseEntity<T> response = restTemplate.exchange(request.getRequestUrl(), HttpMethod.POST, requestEntity, responseType );
         return response.getBody();
-
     }
 }
