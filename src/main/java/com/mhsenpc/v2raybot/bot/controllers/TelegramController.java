@@ -1,5 +1,6 @@
 package com.mhsenpc.v2raybot.bot.controllers;
 
+import com.mhsenpc.v2raybot.bot.pages.BuyAccountSelectDurationPage;
 import com.mhsenpc.v2raybot.bot.pages.HomePage;
 import com.mhsenpc.v2raybot.telegram.dto.SendMessageRequest;
 import com.mhsenpc.v2raybot.telegram.dto.Update;
@@ -15,11 +16,20 @@ public class TelegramController {
     public <T extends IRequest> T handleRequests(@RequestBody Update update)  {
 
         try {
-            HomePage homePage = new HomePage();
+
             System.out.printf(update.toString() + "\n");
-            homePage.setChatId(update.getMessage().getChat().getId());
-            System.out.printf("going to send " + homePage + "\n");
-            return (T) homePage;
+
+            switch (update.getMessage().getText()){
+                case HomePage.BTN_BUY_CONFIG:
+                    BuyAccountSelectDurationPage buyAccountSelectDurationPage = new BuyAccountSelectDurationPage();
+                    buyAccountSelectDurationPage.setChatId(update.getMessage().getChat().getId());
+                    return (T) buyAccountSelectDurationPage;
+                case BuyAccountSelectDurationPage.BTN_BACK:
+                default:
+                    HomePage homePage = new HomePage();
+                    homePage.setChatId(update.getMessage().getChat().getId());
+                    return (T) homePage;
+            }
         }
         catch (Exception exception){
             SendMessageRequest sendMessageRequest = new SendMessageRequest();
