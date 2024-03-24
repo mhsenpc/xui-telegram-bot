@@ -1,19 +1,16 @@
 package com.mhsenpc.v2raybot.telegram.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mhsenpc.v2raybot.telegram.interfaces.IResponse;
 
-public class MessageResponse {
+public class Message implements IResponse {
     @JsonProperty("message_id")
     private int messageId;
     private String text;
-
     private User from;
-
     @JsonProperty("sender_chat")
     private Chat senderChat;
-
     private int date;
-
     private Chat chat;
 
     public int getMessageId() {
@@ -62,5 +59,17 @@ public class MessageResponse {
 
     public void setChat(Chat chat) {
         this.chat = chat;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "messageId=" + messageId +
+                ", text='" + text + '\'' +
+                ", from=" + from +
+                ", senderChat=" + senderChat +
+                ", date=" + date +
+                ", chat=" + chat +
+                '}';
     }
 }
