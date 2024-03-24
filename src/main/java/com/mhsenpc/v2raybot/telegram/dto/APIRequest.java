@@ -9,8 +9,7 @@ public abstract class APIRequest implements Requestable {
     @JsonIgnore
     private String baseUrl = "https://api.telegram.org/bot";
 
-    @JsonIgnore
-    private String methodName;
+    private String method;
 
     @JsonIgnore
     private String token;
@@ -21,8 +20,8 @@ public abstract class APIRequest implements Requestable {
     public APIRequest() {
     }
 
-    public APIRequest(String methodName, String token) {
-        this.methodName = methodName;
+    public APIRequest(String method, String token) {
+        this.method = method;
         this.token = token;
     }
 
@@ -34,12 +33,12 @@ public abstract class APIRequest implements Requestable {
         this.baseUrl = baseUrl;
     }
 
-    public String getMethodName() {
-        return methodName;
+    public String getMethod() {
+        return method;
     }
 
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
+    public void setMethod(String method) {
+        this.method = method;
     }
 
     public String getToken() {
@@ -50,8 +49,9 @@ public abstract class APIRequest implements Requestable {
         this.token = token;
     }
 
+    @JsonIgnore
     public String getRequestUrl(){
-        return baseUrl + token + "/" + methodName +  "?" + queryParamsToQueryString(queryParams);
+        return baseUrl + token + "/" + method +  "?" + queryParamsToQueryString(queryParams);
     }
 
     public MultiValueMap<String, String> getQueryParams() {
