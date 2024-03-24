@@ -1,4 +1,4 @@
-package com.mhsenpc.v2raybot.bot.pages.admin;
+package com.mhsenpc.v2raybot.bot.pages;
 
 import com.mhsenpc.v2raybot.telegram.dto.KeyboardButton;
 import com.mhsenpc.v2raybot.telegram.dto.ReplyKeyboardMarkup;

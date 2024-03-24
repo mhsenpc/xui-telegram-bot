@@ -1,6 +1,6 @@
 package com.mhsenpc.v2raybot.bot.controllers;
 
-import com.mhsenpc.v2raybot.bot.pages.admin.HomePage;
+import com.mhsenpc.v2raybot.bot.pages.HomePage;
 import com.mhsenpc.v2raybot.telegram.dto.SendMessageRequest;
 import com.mhsenpc.v2raybot.telegram.dto.Update;
 import com.mhsenpc.v2raybot.telegram.interfaces.IRequest;
