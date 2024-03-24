@@ -16,7 +16,7 @@ public class SendMessageRequest extends APIRequest {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("reply_markup")
-    private ReplyKeyboardMarkup replyMarkup;
+    private ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
 
     public SendMessageRequest() {
         super();

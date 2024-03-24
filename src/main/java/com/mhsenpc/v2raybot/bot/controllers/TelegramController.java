@@ -1,5 +1,6 @@
 package com.mhsenpc.v2raybot.bot.controllers;
 
+import com.mhsenpc.v2raybot.bot.pages.admin.HomePage;
 import com.mhsenpc.v2raybot.telegram.dto.SendMessageRequest;
 import com.mhsenpc.v2raybot.telegram.dto.Update;
 import com.mhsenpc.v2raybot.telegram.interfaces.IRequest;
@@ -13,20 +14,29 @@ public class TelegramController {
     @RequestMapping("/handle")
     public <T extends IRequest> T handleRequests(@RequestBody Update update)  {
 
-        SendMessageRequest sendMessageRequest = new SendMessageRequest();
         try {
+            HomePage homePage = new HomePage();
             System.out.printf(update.toString() + "\n");
-            sendMessageRequest.setChatId(update.getMessage().getChat().getId());
-            sendMessageRequest.setText(update.getMessage().getText());
-            System.out.printf("going to send " + sendMessageRequest + "\n");
+            homePage.setChatId(update.getMessage().getChat().getId());
+            System.out.printf("going to send " + homePage + "\n");
+            return (T) homePage;
         }
         catch (Exception exception){
+            SendMessageRequest sendMessageRequest = new SendMessageRequest();
             System.out.printf(exception.getMessage());
             sendMessageRequest.setChatId(update.getMessage().getChat().getId());
             sendMessageRequest.setText(
                     "یگ مشکل فنی به وجود آمده است" + "\n" +
                     exception.getMessage());
+            return (T) sendMessageRequest;
         }
-        return (T) sendMessageRequest;
+    }
+
+    @RequestMapping("/test")
+    public <T extends IRequest> T test() {
+        HomePage homePage = new HomePage();
+        homePage.setChatId("11");
+        System.out.printf("going to send " + homePage + "\n");
+        return (T) homePage;
     }
 }
