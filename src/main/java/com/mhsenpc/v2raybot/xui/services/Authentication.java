@@ -1,12 +1,12 @@
 package com.mhsenpc.v2raybot.xui.services;
 
-import com.mhsenpc.v2raybot.bot.config.PanelConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -14,17 +14,14 @@ import java.util.List;
 public class Authentication {
 
     @Autowired
-    private PanelConfig panelConfig;
-
-    @Autowired
     private CookieManager cookieManager;
 
-    public boolean login(){
+    public boolean login(String baseUrl, String username, String password){
 
         RestTemplate restTemplate = new RestTemplate();
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        formData.add("username", panelConfig.getUserName());
-        formData.add("password", panelConfig.getPassword());
+        formData.add("username", username);
+        formData.add("password", password);
 
         // Prepare headers
         HttpHeaders headers = new HttpHeaders();
@@ -34,7 +31,7 @@ public class Authentication {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
 
         // Send login request
-        ResponseEntity<String> responseEntity = restTemplate.exchange(panelConfig.getBaseUrl() + "/login", HttpMethod.POST, requestEntity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(baseUrl + "/login", HttpMethod.POST, requestEntity, String.class);
 
         // Get cookies from response headers
         HttpHeaders responseHeaders = responseEntity.getHeaders();

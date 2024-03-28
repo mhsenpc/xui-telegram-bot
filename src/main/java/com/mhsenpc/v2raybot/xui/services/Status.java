@@ -1,7 +1,7 @@
 package com.mhsenpc.v2raybot.xui.services;
 
 import com.mhsenpc.v2raybot.xui.dto.SystemInfoResponse;
-import com.mhsenpc.v2raybot.bot.config.PanelConfig;
+import com.mhsenpc.v2raybot.xui.exceptions.InvalidXUIBaseUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,8 +14,20 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class Status {
-    @Autowired
-    private PanelConfig panelConfig;
+    private String baseUrl;
+
+    public String getBaseUrl() {
+
+        if(baseUrl.isEmpty()){
+            throw new InvalidXUIBaseUrl();
+        }
+
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
 
     @Autowired
     private CookieManager cookieManager;
@@ -29,7 +41,7 @@ public class Status {
 
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
-            ResponseEntity<SystemInfoResponse> responseEntity = restTemplate.exchange(panelConfig.getBaseUrl() + "/server/status", HttpMethod.POST, requestEntity, SystemInfoResponse.class);
+            ResponseEntity<SystemInfoResponse> responseEntity = restTemplate.exchange(this.getBaseUrl() + "/server/status", HttpMethod.POST, requestEntity, SystemInfoResponse.class);
             if(responseEntity.hasBody()){
                 SystemInfoResponse systemInfoResponse = responseEntity.getBody();
                 return systemInfoResponse;

@@ -1,11 +1,15 @@
 package com.mhsenpc.v2raybot.telegram.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mhsenpc.v2raybot.telegram.interfaces.IResponse;
 
 public class SetWebhookResponse implements IResponse {
     private boolean ok;
     private boolean result;
     private String description;
+
+    @JsonProperty("error_code")
+    private int errorCode;
 
     public boolean isOk() {
         return ok;
@@ -29,5 +33,23 @@ public class SetWebhookResponse implements IResponse {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    @Override
+    public String toString() {
+        return "SetWebhookResponse{" +
+                "ok=" + ok +
+                ", result=" + result +
+                ", description='" + description + '\'' +
+                ", errorCode=" + errorCode +
+                '}';
     }
 }

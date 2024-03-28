@@ -2,9 +2,9 @@ package com.mhsenpc.v2raybot.xui.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mhsenpc.v2raybot.xui.dto.ClientSettings;
-import com.mhsenpc.v2raybot.bot.config.PanelConfig;
+import com.mhsenpc.v2raybot.xui.exceptions.InvalidXUIBaseUrl;
 import com.mhsenpc.v2raybot.xui.dto.Client;
+import com.mhsenpc.v2raybot.xui.dto.ClientSettings;
 import com.mhsenpc.v2raybot.xui.dto.CreateUserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -18,8 +18,30 @@ import java.util.List;
 @Service
 public class ClientManager {
 
-    @Autowired
-    PanelConfig panelConfig;
+    private String baseUrl;
+    private String inboundId = "3";
+
+    public String getBaseUrl() {
+
+        if(baseUrl.isEmpty()){
+            throw new InvalidXUIBaseUrl();
+        }
+
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getInboundId() {
+
+        return inboundId;
+    }
+
+    public void setInboundId(String inboundId) {
+        this.inboundId = inboundId;
+    }
 
     @Autowired
     private CookieManager cookieManager;
@@ -41,7 +63,7 @@ public class ClientManager {
 
         // create form data
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        formData.add("id", "3"); // todo: this should not be hard-coded
+        formData.add("id", this.getInboundId() );
         formData.add("settings", clientSettingsJson);
 
         // Set headers
@@ -53,7 +75,7 @@ public class ClientManager {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
 
         // Send the POST request
-        ResponseEntity<CreateUserResponse> response = restTemplate.exchange(panelConfig.getBaseUrl() + "/panel/inbound/addClient", HttpMethod.POST, requestEntity, CreateUserResponse.class);
+        ResponseEntity<CreateUserResponse> response = restTemplate.exchange(this.getBaseUrl() + "/panel/inbound/addClient", HttpMethod.POST, requestEntity, CreateUserResponse.class);
         return response.getBody();
     }
 }
