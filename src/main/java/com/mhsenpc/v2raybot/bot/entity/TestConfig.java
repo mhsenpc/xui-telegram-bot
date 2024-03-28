@@ -10,15 +10,12 @@ public class TestConfig {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "test_config_id")
     private int testConfigId;
 
-    @Column(name = "chat_id", nullable = false)
     private String chatId;
 
     private String url;
 
-    @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
     // Constructors, Getters, and Setters

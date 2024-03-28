@@ -10,18 +10,14 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transaction_id")
     private int transactionId;
 
-    @Column(name = "user_id")
     private int userId;
 
     private float amount;
 
     private String description;
 
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
     // Constructors, Getters, and Setters

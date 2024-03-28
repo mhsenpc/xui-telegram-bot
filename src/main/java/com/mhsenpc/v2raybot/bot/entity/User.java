@@ -12,25 +12,20 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
     private String lastName;
 
     private String username;
 
-    @Column(name = "chat_id", nullable = false)
     private String chatId;
 
     private float credit;
 
     private int status;
 
-    @Column(name = "created_at")
     private Date createdAt;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

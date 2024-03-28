@@ -11,30 +11,24 @@ public class VlessAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "vless_account_id")
     private int vlessAccountId;
 
     private String name;
 
-    @Column(name = "connection_limit", nullable = false)
     private int connectionLimit;
 
-    @Column(name = "traffic_limit", nullable = false)
     private float trafficLimit;
 
     private int days;
 
     private String url;
 
-    @Column(name = "user_id", nullable = false)
     private int userId;
 
     private String uuid;
 
-    @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @Column(name = "valid_until", nullable = false)
     private Date validUntil;
 
 
