@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Mar 27, 2024 at 04:34 PM
+-- Generation Time: Mar 28, 2024 at 08:58 AM
 -- Server version: 8.2.0
 -- PHP Version: 8.2.16
 
@@ -40,8 +40,8 @@ CREATE TABLE `options` (
 
 CREATE TABLE `roles` (
   `role_id` int NOT NULL,
-  `role_name` varchar(50) NOT NULL,
-  `user_id` int NOT NULL
+  `role` tinyint NOT NULL,
+  `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -53,8 +53,8 @@ CREATE TABLE `roles` (
 CREATE TABLE `test_configs` (
   `test_config_id` int NOT NULL,
   `chat_id` varchar(50) NOT NULL,
-  `code` varchar(800) NOT NULL,
-  `created_at` datetime NOT NULL
+  `url` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `created_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -67,8 +67,8 @@ CREATE TABLE `transactions` (
   `transaction_id` int NOT NULL,
   `user_id` int NOT NULL,
   `amount` float NOT NULL,
-  `description` int NOT NULL,
-  `created_at` datetime NOT NULL
+  `description` varchar(200) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -79,13 +79,13 @@ CREATE TABLE `transactions` (
 
 CREATE TABLE `users` (
   `user_id` int NOT NULL,
-  `first_name` varchar(200) NOT NULL,
-  `last_name` varchar(200) NOT NULL,
-  `username` varchar(200) NOT NULL,
+  `first_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `last_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `username` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `chat_id` varchar(50) NOT NULL,
   `credit` float NOT NULL,
   `status` int NOT NULL,
-  `created_at` datetime NOT NULL
+  `created_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -100,11 +100,11 @@ CREATE TABLE `vless_accounts` (
   `connection_limit` int NOT NULL,
   `traffic_limit` float NOT NULL,
   `days` int NOT NULL,
-  `vless_code` varchar(800) NOT NULL,
+  `url` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `user_id` int NOT NULL,
   `uuid` varchar(50) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `valid_until` datetime NOT NULL
+  `created_at` datetime DEFAULT NULL,
+  `valid_until` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -208,7 +208,7 @@ ALTER TABLE `test_configs`
 -- Constraints for table `transactions`
 --
 ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `vless_accounts`

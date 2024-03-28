@@ -16,10 +16,8 @@ public class Transaction {
     @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "amount")
     private float amount;
 
-    @Column(name = "description")
     private String description;
 
     @Column(name = "created_at")

@@ -14,7 +14,6 @@ public class VlessAccount {
     @Column(name = "vless_account_id")
     private int vlessAccountId;
 
-    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "connection_limit", nullable = false)
@@ -23,16 +22,13 @@ public class VlessAccount {
     @Column(name = "traffic_limit", nullable = false)
     private float trafficLimit;
 
-    @Column(name = "days", nullable = false)
     private int days;
 
-    @Column(name = "vless_code", nullable = false)
-    private String vlessCode;
+    private String url;
 
     @Column(name = "user_id", nullable = false)
     private int userId;
 
-    @Column(name = "uuid", nullable = false)
     private String uuid;
 
     @Column(name = "created_at", nullable = false)
@@ -82,12 +78,12 @@ public class VlessAccount {
         this.days = days;
     }
 
-    public String getVlessCode() {
-        return vlessCode;
+    public String getUrl() {
+        return url;
     }
 
-    public void setVlessCode(String vlessCode) {
-        this.vlessCode = vlessCode;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public int getUserId() {

@@ -16,8 +16,7 @@ public class TestConfig {
     @Column(name = "chat_id", nullable = false)
     private String chatId;
 
-    @Column(name = "code", nullable = false, length = 800)
-    private String code;
+    private String url;
 
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
@@ -27,9 +26,9 @@ public class TestConfig {
         // Default constructor
     }
 
-    public TestConfig(String chatId, String code, Date createdAt) {
+    public TestConfig(String chatId, String url, Date createdAt) {
         this.chatId = chatId;
-        this.code = code;
+        this.url = url;
         this.createdAt = createdAt;
     }
 
@@ -50,12 +49,12 @@ public class TestConfig {
         this.chatId = chatId;
     }
 
-    public String getCode() {
-        return code;
+    public String getUrl() {
+        return url;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Date getCreatedAt() {

@@ -1,25 +1,25 @@
 package com.mhsenpc.v2raybot.bot.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "roles")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roleId;
-    private String roleName;
-    private int userId;
+    private int role;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
 
     // Constructors, getters, and setters
     public Role() {}
 
-    public Role(String roleName, int userId) {
-        this.roleName = roleName;
-        this.userId = userId;
+    public Role(int role) {
+        this.role = role;
     }
 
     public int getRoleId() {
@@ -30,19 +30,12 @@ public class Role {
         this.roleId = roleId;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public int getRole() {
+        return role;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setRole(int role) {
+        this.role = role;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 }
