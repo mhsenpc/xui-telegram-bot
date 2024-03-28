@@ -1,6 +1,7 @@
 package com.mhsenpc.v2raybot.bot.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -23,14 +24,16 @@ public class VlessAccount {
 
     private String url;
 
-    private int userId;
-
     private String uuid;
 
     private Date createdAt;
 
     private Date validUntil;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 
     public int getVlessAccountId() {
         return vlessAccountId;
@@ -80,14 +83,6 @@ public class VlessAccount {
         this.url = url;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public String getUuid() {
         return uuid;
     }
@@ -110,5 +105,29 @@ public class VlessAccount {
 
     public void setValidUntil(Date validUntil) {
         this.validUntil = validUntil;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "VlessAccount{" +
+                "vlessAccountId=" + vlessAccountId +
+                ", name='" + name + '\'' +
+                ", connectionLimit=" + connectionLimit +
+                ", trafficLimit=" + trafficLimit +
+                ", days=" + days +
+                ", url='" + url + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", createdAt=" + createdAt +
+                ", validUntil=" + validUntil +
+                ", user=" + user +
+                '}';
     }
 }

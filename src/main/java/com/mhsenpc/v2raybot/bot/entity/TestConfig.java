@@ -1,30 +1,34 @@
 package com.mhsenpc.v2raybot.bot.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
+@Table(name = "test_configs")
 public class TestConfig {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int testConfigId;
 
-    private String chatId;
-
     private String url;
 
     private Date createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 
     // Constructors, Getters, and Setters
     public TestConfig() {
         // Default constructor
     }
 
-    public TestConfig(String chatId, String url, Date createdAt) {
-        this.chatId = chatId;
+    public TestConfig(String url, Date createdAt) {
         this.url = url;
         this.createdAt = createdAt;
     }
@@ -36,14 +40,6 @@ public class TestConfig {
 
     public void setTestConfigId(int testConfigId) {
         this.testConfigId = testConfigId;
-    }
-
-    public String getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(String chatId) {
-        this.chatId = chatId;
     }
 
     public String getUrl() {

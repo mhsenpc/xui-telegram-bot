@@ -42,11 +42,4 @@ public class TelegramController {
         }
     }
 
-    @RequestMapping("/test")
-    public <T extends IRequest> T test() {
-        HomePage homePage = new HomePage();
-        homePage.setChatId("11");
-        System.out.printf("going to send " + homePage + "\n");
-        return (T) homePage;
-    }
 }

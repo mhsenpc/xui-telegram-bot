@@ -1,5 +1,6 @@
 package com.mhsenpc.v2raybot.bot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -12,13 +13,16 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int transactionId;
 
-    private int userId;
-
     private float amount;
 
     private String description;
 
     private Date createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 
     // Constructors, Getters, and Setters
     // Constructor
@@ -26,8 +30,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(int userId, float amount, String description, Date createdAt) {
-        this.userId = userId;
+    public Transaction(float amount, String description, Date createdAt) {
         this.amount = amount;
         this.description = description;
         this.createdAt = createdAt;
@@ -41,14 +44,6 @@ public class Transaction {
 
     public void setTransactionId(int transactionId) {
         this.transactionId = transactionId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public float getAmount() {
@@ -73,5 +68,24 @@ public class Transaction {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId=" + transactionId +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", user=" + user +
+                '}';
     }
 }

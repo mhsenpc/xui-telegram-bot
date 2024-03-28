@@ -2,7 +2,6 @@ package com.mhsenpc.v2raybot.bot.entity;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +29,20 @@ public class User {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<Role> roles = new ArrayList<>();
+    private List<Role> roles;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Transaction> transactions;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<VlessAccount> vlessAccounts;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<TestConfig> testConfigs;
+
 
     // Getters and setters
 
@@ -108,5 +120,56 @@ public class User {
 
     public void addRole(Role role){
         this.roles.add(role);
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public void addTransaction(Transaction transaction){
+        this.transactions.add(transaction);
+    }
+
+    public List<VlessAccount> getVlessAccounts() {
+        return vlessAccounts;
+    }
+
+    public void setVlessAccounts(List<VlessAccount> vlessAccounts) {
+        this.vlessAccounts = vlessAccounts;
+    }
+
+    public void addVlessAccount(VlessAccount vlessAccount){
+        this.vlessAccounts.add(vlessAccount);
+    }
+
+    public List<TestConfig> getTestConfigs() {
+        return testConfigs;
+    }
+
+    public void setTestConfigs(List<TestConfig> testConfigs) {
+        this.testConfigs = testConfigs;
+    }
+
+    public void addTestConfig(TestConfig testConfig){
+        this.testConfigs.add(testConfig);
+    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", chatId='" + chatId + '\'' +
+                ", credit=" + credit +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }
