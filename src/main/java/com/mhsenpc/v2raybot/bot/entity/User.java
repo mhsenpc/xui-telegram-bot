@@ -2,6 +2,7 @@ package com.mhsenpc.v2raybot.bot.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,15 +34,19 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<VlessAccount> vlessAccounts;
+    private List<VlessAccount> vlessAccounts = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<TestConfig> testConfigs;
+    private List<TestConfig> testConfigs = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Order> orders = new ArrayList<>();
 
 
     // Getters and setters
@@ -158,6 +163,17 @@ public class User {
         this.testConfigs.add(testConfig);
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public void addOrder(Order order){
+        this.orders.add(order);
+    }
 
     @Override
     public String toString() {

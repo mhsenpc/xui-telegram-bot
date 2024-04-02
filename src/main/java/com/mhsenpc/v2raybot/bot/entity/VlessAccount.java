@@ -35,6 +35,10 @@ public class VlessAccount {
     @JsonIgnore
     private User user;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     public int getVlessAccountId() {
         return vlessAccountId;
     }
@@ -113,6 +117,14 @@ public class VlessAccount {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     @Override
