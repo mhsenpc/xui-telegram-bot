@@ -2,6 +2,7 @@ package com.mhsenpc.v2raybot.telegram.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mhsenpc.v2raybot.telegram.interfaces.IReplyMarkup;
 
 public class SendMessageRequest extends APIRequest {
 
@@ -16,7 +17,7 @@ public class SendMessageRequest extends APIRequest {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("reply_markup")
-    private ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+    private IReplyMarkup replyMarkup;
 
     public SendMessageRequest() {
         super();
@@ -47,11 +48,11 @@ public class SendMessageRequest extends APIRequest {
         this.disableNotification = disableNotification;
     }
 
-    public ReplyKeyboardMarkup getReplyMarkup() {
+    public IReplyMarkup getReplyMarkup() {
         return replyMarkup;
     }
 
-    public void setReplyMarkup(ReplyKeyboardMarkup replyMarkup) {
+    public void setReplyMarkup(IReplyMarkup replyMarkup) {
         this.replyMarkup = replyMarkup;
     }
 

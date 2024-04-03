@@ -1,12 +1,13 @@
 package com.mhsenpc.v2raybot.telegram.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mhsenpc.v2raybot.telegram.interfaces.IReplyMarkup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ReplyKeyboardMarkup {
+public class ReplyKeyboardMarkup implements IReplyMarkup {
     @JsonProperty("keyboard")
     private List<List<KeyboardButton>> keyboardList = new ArrayList<>();
 

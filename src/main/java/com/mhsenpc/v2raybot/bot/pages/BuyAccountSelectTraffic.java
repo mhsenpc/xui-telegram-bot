@@ -1,8 +1,6 @@
 package com.mhsenpc.v2raybot.bot.pages;
 
-import com.mhsenpc.v2raybot.telegram.dto.KeyboardButton;
-import com.mhsenpc.v2raybot.telegram.dto.ReplyKeyboardMarkup;
-import com.mhsenpc.v2raybot.telegram.dto.SendMessageRequest;
+import com.mhsenpc.v2raybot.telegram.dto.*;
 
 public class BuyAccountSelectTraffic extends SendMessageRequest {
 
@@ -11,12 +9,13 @@ public class BuyAccountSelectTraffic extends SendMessageRequest {
     public BuyAccountSelectTraffic() {
 
         setText("کدام پلن را  انتخاب می کنید؟");
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+
         // todo: load from plans table
-        replyKeyboardMarkup.addRow(new KeyboardButton("۲۰ گیگ ۹۰ هزار تومن"));
-        replyKeyboardMarkup.addRow(new KeyboardButton("۴۰ گیگ ۹۰ هزار تومن"));
-        replyKeyboardMarkup.addRow(new KeyboardButton("۶۰ گیگ ۱۹۰ هزار تومن"));
-        replyKeyboardMarkup.addRow(new KeyboardButton(BTN_BACK));
-        this.setReplyMarkup(replyKeyboardMarkup);
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("۲۰ گیگ ۹۰ هزار تومن", "20"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("۴۰ گیگ ۹۰ هزار تومن", "40"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("۶۰ گیگ ۱۹۰ هزار تومن", "60"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(BTN_BACK));
+        this.setReplyMarkup(inlineKeyboardMarkup);
     }
 }

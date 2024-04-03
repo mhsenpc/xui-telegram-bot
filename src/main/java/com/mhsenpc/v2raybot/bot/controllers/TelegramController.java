@@ -49,6 +49,11 @@ public class TelegramController {
                         BuyAccountSelectDurationPage buyAccountSelectDurationPage = new BuyAccountSelectDurationPage();
                         buyAccountSelectDurationPage.setChatId(chatId);
                         return (T) buyAccountSelectDurationPage;
+
+                    default:
+                        HomePage homePage = new HomePage();
+                        homePage.setChatId(chatId);
+                        return (T) homePage;
                 }
             }
 
