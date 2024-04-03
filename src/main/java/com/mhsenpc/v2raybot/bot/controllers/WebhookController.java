@@ -16,7 +16,7 @@ public class WebhookController extends BaseController {
     @PostMapping("/setWebhook")
     public String setWebhook(@RequestParam String url){
         SetWebhookRequest setWebhookRequest = new SetWebhookRequest();
-        setWebhookRequest.addQueryParam("url", url + "/handle");
+        setWebhookRequest.addQueryParam("url", url + "handle");
         setWebhookRequest.setToken(this.config.getToken());
         SetWebhookResponse response = requestHandler.send(setWebhookRequest, SetWebhookResponse.class);
 

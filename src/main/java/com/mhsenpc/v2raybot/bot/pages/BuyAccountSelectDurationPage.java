@@ -6,9 +6,9 @@ import com.mhsenpc.v2raybot.telegram.dto.SendMessageRequest;
 
 public class BuyAccountSelectDurationPage extends SendMessageRequest {
 
-    public static final String BTN_1_MONTH = "یک ماهه";
-    public static final String BTN_2_MONTH = "دو ماهه";
-    public static final String BTN_3_MONTH = "سه ماهه";
+    public static final String BTN_1_MONTH = "1";
+    public static final String BTN_2_MONTH = "2";
+    public static final String BTN_3_MONTH = "3";
     public static final String BTN_BACK = "بازگشت";
 
     public BuyAccountSelectDurationPage() {

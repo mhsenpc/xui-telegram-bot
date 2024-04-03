@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class SendMessageRequest extends APIRequest {
 
     @JsonProperty("chat_id")
-    private String chatId;
+    private int chatId;
 
     @JsonProperty("text")
     private String text;
@@ -23,11 +23,11 @@ public class SendMessageRequest extends APIRequest {
         this.setMethod("sendMessage");
     }
 
-    public String getChatId() {
+    public int getChatId() {
         return chatId;
     }
 
-    public void setChatId(String chatId) {
+    public void setChatId(int chatId) {
         this.chatId = chatId;
     }
 

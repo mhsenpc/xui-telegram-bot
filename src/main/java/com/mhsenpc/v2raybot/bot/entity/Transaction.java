@@ -3,9 +3,7 @@ package com.mhsenpc.v2raybot.bot.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "transactions")
@@ -25,10 +23,6 @@ public class Transaction {
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")
-    private List<Order> orders = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
@@ -88,16 +82,12 @@ public class Transaction {
         this.user = user;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrders(List<Order> order) {
-        this.orders = order;
-    }
-
-    public void addOrder(Order order){
-        this.orders.add(order);
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     @Override
