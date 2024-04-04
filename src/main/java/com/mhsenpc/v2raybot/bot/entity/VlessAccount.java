@@ -16,12 +16,6 @@ public class VlessAccount {
 
     private String name;
 
-    private int connectionLimit;
-
-    private float trafficLimit;
-
-    private int days;
-
     private String url;
 
     private String uuid;
@@ -53,30 +47,6 @@ public class VlessAccount {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getConnectionLimit() {
-        return connectionLimit;
-    }
-
-    public void setConnectionLimit(int connectionLimit) {
-        this.connectionLimit = connectionLimit;
-    }
-
-    public float getTrafficLimit() {
-        return trafficLimit;
-    }
-
-    public void setTrafficLimit(float trafficLimit) {
-        this.trafficLimit = trafficLimit;
-    }
-
-    public int getDays() {
-        return days;
-    }
-
-    public void setDays(int days) {
-        this.days = days;
     }
 
     public String getUrl() {
@@ -132,9 +102,6 @@ public class VlessAccount {
         return "VlessAccount{" +
                 "vlessAccountId=" + vlessAccountId +
                 ", name='" + name + '\'' +
-                ", connectionLimit=" + connectionLimit +
-                ", trafficLimit=" + trafficLimit +
-                ", days=" + days +
                 ", url='" + url + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", createdAt=" + createdAt +

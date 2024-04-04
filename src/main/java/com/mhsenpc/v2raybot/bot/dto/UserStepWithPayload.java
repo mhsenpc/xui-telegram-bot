@@ -13,6 +13,11 @@ public class UserStepWithPayload {
         this.userStep = userStep;
     }
 
+    public UserStepWithPayload(UserStep userStep, Object payload) {
+        this.userStep = userStep;
+        this.payload = payload;
+    }
+
     public UserStep getUserStep() {
         return userStep;
     }

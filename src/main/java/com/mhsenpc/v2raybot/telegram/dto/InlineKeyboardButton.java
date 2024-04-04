@@ -6,7 +6,7 @@ public class InlineKeyboardButton {
 
     private String text;
     @JsonProperty("callback_data")
-    private String callbackData;
+    private String callbackData = "";
 
     public InlineKeyboardButton() {
     }

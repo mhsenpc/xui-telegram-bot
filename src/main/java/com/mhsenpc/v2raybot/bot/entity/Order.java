@@ -22,12 +22,15 @@ public class Order {
     )
     private Transaction transaction;
 
-
     @OneToOne(
             cascade = CascadeType.ALL,
             mappedBy = "order"
     )
     private VlessAccount vlessAccount;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "plan_id")
+    private Plan plan;
 
     public int getOrderId() {
         return orderId;
@@ -75,6 +78,14 @@ public class Order {
 
     public void setVlessAccount(VlessAccount vlessAccount) {
         this.vlessAccount = vlessAccount;
+    }
+
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
     }
 
     @Override

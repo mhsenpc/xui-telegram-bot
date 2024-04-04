@@ -5,7 +5,7 @@ import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
 public class BuyAccountRequest {
     private int userId;
     private int chatId;
-    private int months;
+    private int planId;
     private PaymentMethod paymentMethod;
 
     public int getUserId() {
@@ -24,14 +24,6 @@ public class BuyAccountRequest {
         this.chatId = chatId;
     }
 
-    public int getMonths() {
-        return months;
-    }
-
-    public void setMonths(int months) {
-        this.months = months;
-    }
-
     public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
@@ -40,12 +32,20 @@ public class BuyAccountRequest {
         this.paymentMethod = paymentMethod;
     }
 
+    public int getPlanId() {
+        return planId;
+    }
+
+    public void setPlanId(int planId) {
+        this.planId = planId;
+    }
+
     @Override
     public String toString() {
         return "BuyAccountRequest{" +
                 "userId=" + userId +
                 ", chatId=" + chatId +
-                ", months=" + months +
+                ", planId=" + planId +
                 ", paymentMethod=" + paymentMethod +
                 '}';
     }

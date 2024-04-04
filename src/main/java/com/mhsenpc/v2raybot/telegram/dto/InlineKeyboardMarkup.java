@@ -31,4 +31,10 @@ public class InlineKeyboardMarkup implements IReplyMarkup {
         this.keyboardList = keyboardList;
     }
 
+    @Override
+    public String toString() {
+        return "InlineKeyboardMarkup{" +
+                "keyboardList=" + keyboardList +
+                '}';
+    }
 }
