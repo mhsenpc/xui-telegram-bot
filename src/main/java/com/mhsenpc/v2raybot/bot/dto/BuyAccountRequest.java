@@ -4,7 +4,7 @@ import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
 
 public class BuyAccountRequest {
     private int userId;
-    private int chatId;
+    private String chatId;
     private int planId;
     private PaymentMethod paymentMethod;
 
@@ -16,11 +16,11 @@ public class BuyAccountRequest {
         this.userId = userId;
     }
 
-    public int getChatId() {
+    public String getChatId() {
         return chatId;
     }
 
-    public void setChatId(int chatId) {
+    public void setChatId(String chatId) {
         this.chatId = chatId;
     }
 

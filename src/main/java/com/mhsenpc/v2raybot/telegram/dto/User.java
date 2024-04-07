@@ -3,7 +3,7 @@ package com.mhsenpc.v2raybot.telegram.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User {
-    private int id;
+    private String id;
     @JsonProperty("first_name")
     private String firstName;
     @JsonProperty("last_name")
@@ -12,11 +12,11 @@ public class User {
     @JsonProperty("language_code")
     private String languageCode;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

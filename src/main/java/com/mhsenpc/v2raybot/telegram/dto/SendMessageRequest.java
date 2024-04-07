@@ -7,7 +7,7 @@ import com.mhsenpc.v2raybot.telegram.interfaces.IReplyMarkup;
 public class SendMessageRequest extends APIRequest {
 
     @JsonProperty("chat_id")
-    private int chatId;
+    private String chatId;
 
     @JsonProperty("text")
     private String text;
@@ -24,11 +24,11 @@ public class SendMessageRequest extends APIRequest {
         this.setMethod("sendMessage");
     }
 
-    public int getChatId() {
+    public String getChatId() {
         return chatId;
     }
 
-    public void setChatId(int chatId) {
+    public void setChatId(String chatId) {
         this.chatId = chatId;
     }
 

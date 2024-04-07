@@ -4,8 +4,4 @@ import com.mhsenpc.v2raybot.telegram.dto.SendMessageRequest;
 
 public class BasePage extends SendMessageRequest {
     public static final String BTN_BACK = "بازگشت";
-
-    public BasePage(int chatId) {
-        this.setChatId(chatId);
-    }
 }
