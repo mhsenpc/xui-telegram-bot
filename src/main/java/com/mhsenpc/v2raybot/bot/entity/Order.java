@@ -28,7 +28,7 @@ public class Order {
     )
     private VlessAccount vlessAccount;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "plan_id")
     private Plan plan;
 
