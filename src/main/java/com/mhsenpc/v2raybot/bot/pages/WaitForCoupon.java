@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class WaitForCoupon extends BasePage {
+public class WaitForCoupon extends Page {
 
     @Autowired
     public WaitForCoupon() {

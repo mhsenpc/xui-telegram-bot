@@ -1,8 +1,7 @@
-package com.mhsenpc.v2raybot.telegram.dto;
+package com.mhsenpc.v2raybot.telegram.types.keyaboard;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mhsenpc.v2raybot.telegram.interfaces.IReplyMarkup;
 
 public class ReplyKeyboardRemove implements IReplyMarkup {
 

@@ -1,4 +1,4 @@
-package com.mhsenpc.v2raybot.telegram.dto;
+package com.mhsenpc.v2raybot.telegram.types.keyaboard;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

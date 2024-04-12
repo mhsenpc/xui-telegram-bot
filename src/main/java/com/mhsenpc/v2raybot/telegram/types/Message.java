@@ -1,7 +1,6 @@
-package com.mhsenpc.v2raybot.telegram.dto;
+package com.mhsenpc.v2raybot.telegram.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mhsenpc.v2raybot.telegram.interfaces.IResponse;
 
 public class Message implements IResponse {
     @JsonProperty("message_id")

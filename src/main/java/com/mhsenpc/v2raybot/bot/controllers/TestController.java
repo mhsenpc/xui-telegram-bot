@@ -1,7 +1,7 @@
 package com.mhsenpc.v2raybot.bot.controllers;
 
-import com.mhsenpc.v2raybot.telegram.dto.SendMessageRequest;
-import com.mhsenpc.v2raybot.telegram.interfaces.IRequest;
+import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
+import com.mhsenpc.v2raybot.telegram.methods.Executable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @RequestMapping("/test")
-    public IRequest showTest(){
+    public Executable showTest(){
 
 
-        return new SendMessageRequest();
+        return new SendMessageMethod();
     }
 }

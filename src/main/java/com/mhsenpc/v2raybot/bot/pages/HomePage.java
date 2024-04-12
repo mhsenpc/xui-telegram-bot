@@ -1,10 +1,10 @@
 package com.mhsenpc.v2raybot.bot.pages;
 
-import com.mhsenpc.v2raybot.telegram.dto.KeyboardButton;
-import com.mhsenpc.v2raybot.telegram.dto.ReplyKeyboardMarkup;
-import com.mhsenpc.v2raybot.telegram.dto.SendMessageRequest;
+import com.mhsenpc.v2raybot.telegram.types.keyaboard.KeyboardButton;
+import com.mhsenpc.v2raybot.telegram.types.keyaboard.ReplyKeyboardMarkup;
+import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
 
-public class HomePage extends SendMessageRequest {
+public class HomePage extends SendMessageMethod {
 
     public static final String BTN_BUY_CONFIG = "خرید کانفیگ";
     public static final String BTN_MY_CONFIGS = "کانفیگ های من";

@@ -1,7 +1,6 @@
-package com.mhsenpc.v2raybot.telegram.dto;
+package com.mhsenpc.v2raybot.telegram.types.keyaboard;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mhsenpc.v2raybot.telegram.interfaces.IReplyMarkup;
 
 import java.util.ArrayList;
 import java.util.Arrays;

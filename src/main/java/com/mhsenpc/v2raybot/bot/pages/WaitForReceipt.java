@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class WaitForReceipt extends BasePage {
+public class WaitForReceipt extends Page {
 
     @Autowired
     public WaitForReceipt() {

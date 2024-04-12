@@ -1,11 +1,10 @@
-package com.mhsenpc.v2raybot.telegram.dto;
+package com.mhsenpc.v2raybot.telegram.methods;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mhsenpc.v2raybot.telegram.interfaces.IRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-public abstract class APIRequest implements IRequest {
+public abstract class BaseTelegramMethod implements Executable {
     @JsonIgnore
     private String baseUrl = "https://api.telegram.org/bot";
 
@@ -17,10 +16,10 @@ public abstract class APIRequest implements IRequest {
     @JsonIgnore
     MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 
-    public APIRequest() {
+    public BaseTelegramMethod() {
     }
 
-    public APIRequest(String method, String token) {
+    public BaseTelegramMethod(String method, String token) {
         this.method = method;
         this.token = token;
     }

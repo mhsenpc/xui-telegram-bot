@@ -1,9 +1,10 @@
 package com.mhsenpc.v2raybot.bot.pages;
 
-import com.mhsenpc.v2raybot.telegram.dto.InlineKeyboardButton;
-import com.mhsenpc.v2raybot.telegram.dto.InlineKeyboardMarkup;
+import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
+import com.mhsenpc.v2raybot.telegram.types.keyaboard.InlineKeyboardButton;
+import com.mhsenpc.v2raybot.telegram.types.keyaboard.InlineKeyboardMarkup;
 
-public class BuyAccountSelectPaymentMethod extends BasePage {
+public class BuyAccountSelectPaymentMethod extends Page {
 
     public static final String BTN_TRANSFER_MONEY = "کارت به کارت";
     public static final String BTN_USE_BALANCE = "پرداخت با کیف پول";
@@ -11,10 +12,8 @@ public class BuyAccountSelectPaymentMethod extends BasePage {
     public BuyAccountSelectPaymentMethod() {
         setText("مبلغ را چگونه پرداخت می کنید؟");
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(BTN_TRANSFER_MONEY, BTN_TRANSFER_MONEY));
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(BTN_TRANSFER_MONEY, BTN_TRANSFER_MONEY));
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(BTN_USE_BALANCE, BTN_USE_BALANCE));
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(BTN_USE_BALANCE, BTN_USE_BALANCE));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(BTN_TRANSFER_MONEY, PaymentMethod.TRANSFER_MONEY.toString()));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(BTN_USE_BALANCE, PaymentMethod.WALLET.toString()));
 
         this.setReplyMarkup(inlineKeyboardMarkup);
     }

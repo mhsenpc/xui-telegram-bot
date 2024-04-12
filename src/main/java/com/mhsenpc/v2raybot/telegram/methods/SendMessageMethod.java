@@ -1,10 +1,10 @@
-package com.mhsenpc.v2raybot.telegram.dto;
+package com.mhsenpc.v2raybot.telegram.methods;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mhsenpc.v2raybot.telegram.interfaces.IReplyMarkup;
+import com.mhsenpc.v2raybot.telegram.types.keyaboard.IReplyMarkup;
 
-public class SendMessageRequest extends APIRequest {
+public class SendMessageMethod extends BaseTelegramMethod {
 
     @JsonProperty("chat_id")
     private String chatId;
@@ -19,7 +19,7 @@ public class SendMessageRequest extends APIRequest {
     @JsonProperty("reply_markup")
     private IReplyMarkup replyMarkup;
 
-    public SendMessageRequest() {
+    public SendMessageMethod() {
         super();
         this.setMethod("sendMessage");
     }
