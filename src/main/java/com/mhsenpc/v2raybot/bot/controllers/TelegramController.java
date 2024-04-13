@@ -2,19 +2,30 @@ package com.mhsenpc.v2raybot.bot.controllers;
 
 import com.mhsenpc.v2raybot.bot.dto.BuyAccountRequest;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
+import com.mhsenpc.v2raybot.bot.entity.Order;
+import com.mhsenpc.v2raybot.bot.entity.Photo;
+import com.mhsenpc.v2raybot.bot.entity.Plan;
+import com.mhsenpc.v2raybot.bot.entity.User;
+import com.mhsenpc.v2raybot.bot.enums.OrderStatus;
 import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
 import com.mhsenpc.v2raybot.bot.enums.UserStep;
 import com.mhsenpc.v2raybot.bot.pages.*;
+import com.mhsenpc.v2raybot.bot.repository.OrderRepository;
+import com.mhsenpc.v2raybot.bot.repository.PhotoRepository;
+import com.mhsenpc.v2raybot.bot.repository.PlanRepository;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
-import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
-import com.mhsenpc.v2raybot.telegram.types.Update;
 import com.mhsenpc.v2raybot.telegram.methods.Executable;
+import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
+import com.mhsenpc.v2raybot.telegram.types.PhotoSize;
+import com.mhsenpc.v2raybot.telegram.types.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Optional;
 
 @RestController
 public class TelegramController {
@@ -27,6 +38,15 @@ public class TelegramController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private PlanRepository planRepository;
+
+    @Autowired
+    PhotoRepository photoRepository;
+
 
     @RequestMapping("/handle")
     public <T extends Executable> T handleRequests(@RequestBody Update update)  {
@@ -38,16 +58,17 @@ public class TelegramController {
         String message = "";
         String callbackQueryData = "";
         if (update.getCallbackQuery() != null){
-            message = update.getCallbackQuery().getMessage().getText();
+            message = Optional.ofNullable(update.getCallbackQuery().getMessage().getText()).orElse(message);
             chatId = update.getCallbackQuery().getFrom().getId();
             callbackQueryData = update.getCallbackQuery().getData();
         }
         else if(update.getMessage() != null){
-            message = update.getMessage().getText();
+            message = Optional.ofNullable(update.getMessage().getText()).orElse(message);
             chatId = update.getMessage().getFrom().getId();
 
         }
         UserStepWithPayload currentStepWithPayload = userStepWithPayload.get(chatId);
+        User user = userRepository.findByChatId(chatId);
 
         try {
             if(message.equals(Page.BTN_BACK)){
@@ -62,7 +83,7 @@ public class TelegramController {
 
                 // user is on main menu. try to find a submenu for them
                 if (message.equals(HomePage.BTN_BUY_CONFIG)) {
-                    int userId = userRepository.findByChatId(chatId).getUserId();
+                    int userId = user.getUserId();
                     BuyAccountRequest buyAccountRequest = new BuyAccountRequest();
                     buyAccountRequest.setChatId(chatId);
                     buyAccountRequest.setUserId(userId);
@@ -117,6 +138,40 @@ public class TelegramController {
                         }
 
                     }
+
+                case BUY_WAIT_FOR_RECEIPT:
+
+                    Optional<Plan> plan = planRepository.findById(currentPayload.getPlanId());
+                    if(plan.isEmpty()){
+                        throw new RuntimeException("Plan id " + currentPayload.getPlanId() + " not found");
+                    }
+
+
+                    Order order = new Order();
+                    order.setPlan(plan.get());
+                    order.setStatus(OrderStatus.PENDING.getValue());
+                    order.setUser(user);
+                    order.setCreatedAt(new Date());
+                    order = orderRepository.save(order);
+
+                    // store photos
+                    for (PhotoSize photoSize : update.getMessage().getPhotos()) {
+                        Photo photo = new Photo();
+                        photo.setWidth(photoSize.getWidth());
+                        photo.setHeight(photoSize.getHeight());
+                        photo.setFileSize(photoSize.getFileSize());
+                        photo.setTelegramFileId(photoSize.getFileId());
+                        photo.setOrderId(order.getOrderId());
+                        photo.setCreatedAt(new Date());
+                        photoRepository.save(photo);
+                    }
+
+                    SendMessageMethod sendMessageMethod = new SendMessageMethod();
+                    sendMessageMethod.setText("با تشکر از ارسال تصویر فیش وایری. پس از تایید فیش توسط ادمین. کانفیگ برای شما ارسال می شود");
+                    sendMessageMethod.setChatId(update.getMessage().getChat().getId());
+
+                    userStepWithPayload.remove(chatId);
+                    return (T) sendMessageMethod;
 
                 default:
                     HomePage homePage = new HomePage();

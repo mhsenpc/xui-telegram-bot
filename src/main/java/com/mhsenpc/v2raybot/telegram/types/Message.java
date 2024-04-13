@@ -2,6 +2,8 @@ package com.mhsenpc.v2raybot.telegram.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class Message implements IResponse {
     @JsonProperty("message_id")
     private int messageId;
@@ -11,6 +13,9 @@ public class Message implements IResponse {
     private Chat senderChat;
     private int date;
     private Chat chat;
+
+    @JsonProperty("photo")
+    private List<PhotoSize> photos;
 
     public int getMessageId() {
         return messageId;
@@ -60,6 +65,15 @@ public class Message implements IResponse {
         this.chat = chat;
     }
 
+    public List<PhotoSize> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<PhotoSize> photos) {
+        this.photos = photos;
+    }
+
+
     @Override
     public String toString() {
         return "Message{" +
@@ -69,6 +83,7 @@ public class Message implements IResponse {
                 ", senderChat=" + senderChat +
                 ", date=" + date +
                 ", chat=" + chat +
+                ", photos=" + photos +
                 '}';
     }
 }
