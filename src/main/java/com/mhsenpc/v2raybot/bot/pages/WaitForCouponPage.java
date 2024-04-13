@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class WaitForReceipt extends Page {
+public class WaitForCouponPage extends BasePage {
 
     @Autowired
-    public WaitForReceipt() {
+    public WaitForCouponPage() {
 
-        setText("لطفا فیش واریزی را ارسال کنید");
+        setText("لطفا کوپن را ارسال کنید");
     }
 }

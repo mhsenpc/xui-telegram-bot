@@ -3,6 +3,7 @@ package com.mhsenpc.v2raybot.bot.entity;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -31,6 +32,10 @@ public class Order {
     @OneToOne
     @JoinColumn(name = "plan_id")
     private Plan plan;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private List<Photo> photos;
 
     public int getOrderId() {
         return orderId;
@@ -86,6 +91,14 @@ public class Order {
 
     public void setPlan(Plan plan) {
         this.plan = plan;
+    }
+
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
 
     @Override

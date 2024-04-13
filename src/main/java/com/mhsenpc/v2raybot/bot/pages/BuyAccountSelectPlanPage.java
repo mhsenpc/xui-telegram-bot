@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class BuyAccountSelectPlan extends Page {
+public class BuyAccountSelectPlanPage extends BasePage {
 
     @Autowired
-    public BuyAccountSelectPlan(PlanRepository planRepository) {
+    public BuyAccountSelectPlanPage(PlanRepository planRepository) {
 
         setText("کدام پلن را  انتخاب می کنید؟");
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();

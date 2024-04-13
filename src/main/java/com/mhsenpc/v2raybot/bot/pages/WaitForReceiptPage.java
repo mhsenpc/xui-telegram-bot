@@ -3,13 +3,12 @@ package com.mhsenpc.v2raybot.bot.pages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 @Component
-public class WaitForCoupon extends Page {
+public class WaitForReceiptPage extends BasePage {
 
     @Autowired
-    public WaitForCoupon() {
+    public WaitForReceiptPage() {
 
-        setText("لطفا کوپن را ارسال کنید");
+        setText("لطفا فیش واریزی را ارسال کنید");
     }
 }

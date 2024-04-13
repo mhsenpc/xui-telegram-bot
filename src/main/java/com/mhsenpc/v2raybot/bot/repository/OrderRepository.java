@@ -6,5 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
-    // You can add custom query methods if needed
+
+    long countByStatus(int status);
+
+    long countByStatusAndPhotosIsNotEmpty(int orderStatus);
 }

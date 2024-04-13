@@ -10,10 +10,12 @@ import com.mhsenpc.v2raybot.bot.enums.OrderStatus;
 import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
 import com.mhsenpc.v2raybot.bot.enums.UserStep;
 import com.mhsenpc.v2raybot.bot.pages.*;
+import com.mhsenpc.v2raybot.bot.pages.admin.orders.ViewOrdersPage;
 import com.mhsenpc.v2raybot.bot.repository.OrderRepository;
 import com.mhsenpc.v2raybot.bot.repository.PhotoRepository;
 import com.mhsenpc.v2raybot.bot.repository.PlanRepository;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
+import com.mhsenpc.v2raybot.bot.services.OrderService;
 import com.mhsenpc.v2raybot.telegram.methods.Executable;
 import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
 import com.mhsenpc.v2raybot.telegram.types.PhotoSize;
@@ -31,7 +33,7 @@ import java.util.Optional;
 public class TelegramController {
 
     @Autowired
-    private BuyAccountSelectPlan buyAccountSelectPlan;
+    private BuyAccountSelectPlanPage buyAccountSelectPlanPage;
 
     private final HashMap<String, UserStepWithPayload> userStepWithPayload = new HashMap<>();
 
@@ -46,6 +48,9 @@ public class TelegramController {
 
     @Autowired
     PhotoRepository photoRepository;
+
+    @Autowired
+    OrderService orderService;
 
 
     @RequestMapping("/handle")
@@ -71,7 +76,7 @@ public class TelegramController {
         User user = userRepository.findByChatId(chatId);
 
         try {
-            if(message.equals(Page.BTN_BACK)){
+            if(message.equals(BasePage.BTN_BACK)){
                 userStepWithPayload.remove(chatId);
 
                 HomePage homePage = new HomePage();
@@ -83,15 +88,21 @@ public class TelegramController {
 
                 // user is on main menu. try to find a submenu for them
                 if (message.equals(HomePage.BTN_BUY_CONFIG)) {
-                    int userId = user.getUserId();
                     BuyAccountRequest buyAccountRequest = new BuyAccountRequest();
                     buyAccountRequest.setChatId(chatId);
-                    buyAccountRequest.setUserId(userId);
+                    buyAccountRequest.setUserId(user.getUserId());
                     UserStepWithPayload stepWithPayload = new UserStepWithPayload(UserStep.BUY_SELECT_PLAN, buyAccountRequest);
                     userStepWithPayload.put(chatId, stepWithPayload);
 
-                    buyAccountSelectPlan.setChatId(chatId);
-                    return (T) buyAccountSelectPlan;
+                    buyAccountSelectPlanPage.setChatId(chatId);
+                    return (T) buyAccountSelectPlanPage;
+                }
+                else if(message.equals(HomePage.BTN_VIEW_ORDERS)){
+
+                    ViewOrdersPage viewOrdersPage = new ViewOrdersPage();
+                    viewOrdersPage.setText(orderService.getReport());
+                    viewOrdersPage.setChatId(chatId);
+                    return (T) viewOrdersPage;
                 }
                 else{
                     HomePage homePage = new HomePage();
@@ -108,9 +119,9 @@ public class TelegramController {
                     currentStepWithPayload.setUserStep(UserStep.BUY_PAYMENT_METHOD);
                     userStepWithPayload.put(chatId, currentStepWithPayload);
 
-                    BuyAccountSelectPaymentMethod buyAccountSelectPaymentMethod = new BuyAccountSelectPaymentMethod();
-                    buyAccountSelectPaymentMethod.setChatId(chatId);
-                    return (T) buyAccountSelectPaymentMethod;
+                    BuyAccountSelectPaymentMethodPage buyAccountSelectPaymentMethodPage = new BuyAccountSelectPaymentMethodPage();
+                    buyAccountSelectPaymentMethodPage.setChatId(chatId);
+                    return (T) buyAccountSelectPaymentMethodPage;
 
                 case BUY_PAYMENT_METHOD:
                     PaymentMethod paymentMethod = PaymentMethod.valueOf(update.getCallbackQuery().getData());
@@ -118,18 +129,18 @@ public class TelegramController {
                     switch (paymentMethod){
                         case TRANSFER_MONEY -> {
                             currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_RECEIPT);
-                            WaitForReceipt waitForReceipt = new WaitForReceipt();
-                            waitForReceipt.setChatId(chatId);
+                            WaitForReceiptPage waitForReceiptPage = new WaitForReceiptPage();
+                            waitForReceiptPage.setChatId(chatId);
                             userStepWithPayload.put(chatId, currentStepWithPayload);
-                            return (T) waitForReceipt;
+                            return (T) waitForReceiptPage;
                         }
                         case COUPON -> {
                             currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_COUPON);
-                            WaitForCoupon waitForCoupon = new WaitForCoupon();
-                            waitForCoupon.setChatId(chatId);
+                            WaitForCouponPage waitForCouponPage = new WaitForCouponPage();
+                            waitForCouponPage.setChatId(chatId);
                             userStepWithPayload.put(chatId, currentStepWithPayload);
 
-                            return (T) waitForCoupon;
+                            return (T) waitForCouponPage;
                         }
                         case WALLET -> {
                             currentStepWithPayload.setUserStep(UserStep.BUY_CONFIRMATION);
