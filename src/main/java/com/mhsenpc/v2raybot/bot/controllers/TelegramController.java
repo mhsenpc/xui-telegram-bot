@@ -16,6 +16,7 @@ import com.mhsenpc.v2raybot.bot.repository.PhotoRepository;
 import com.mhsenpc.v2raybot.bot.repository.PlanRepository;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
 import com.mhsenpc.v2raybot.bot.services.OrderService;
+import com.mhsenpc.v2raybot.bot.services.UserStepService;
 import com.mhsenpc.v2raybot.telegram.methods.Executable;
 import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
 import com.mhsenpc.v2raybot.telegram.types.PhotoSize;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Optional;
 
 @RestController
@@ -35,7 +35,8 @@ public class TelegramController {
     @Autowired
     private BuyAccountSelectPlanPage buyAccountSelectPlanPage;
 
-    private final HashMap<String, UserStepWithPayload> userStepWithPayload = new HashMap<>();
+    @Autowired
+    private UserStepService userStepService;
 
     @Autowired
     private UserRepository userRepository;
@@ -72,12 +73,12 @@ public class TelegramController {
             chatId = update.getMessage().getFrom().getId();
 
         }
-        UserStepWithPayload currentStepWithPayload = userStepWithPayload.get(chatId);
+        UserStepWithPayload currentStepWithPayload = userStepService.get(chatId);
         User user = userRepository.findByChatId(chatId);
 
         try {
             if(message.equals(BasePage.BTN_BACK)){
-                userStepWithPayload.remove(chatId);
+                userStepService.clear(chatId);
 
                 HomePage homePage = new HomePage();
                 homePage.setChatId(chatId);
@@ -92,12 +93,14 @@ public class TelegramController {
                     buyAccountRequest.setChatId(chatId);
                     buyAccountRequest.setUserId(user.getUserId());
                     UserStepWithPayload stepWithPayload = new UserStepWithPayload(UserStep.BUY_SELECT_PLAN, buyAccountRequest);
-                    userStepWithPayload.put(chatId, stepWithPayload);
+                    userStepService.set(chatId, stepWithPayload);
 
                     buyAccountSelectPlanPage.setChatId(chatId);
                     return (T) buyAccountSelectPlanPage;
                 }
                 else if(message.equals(HomePage.BTN_VIEW_ORDERS)){
+
+                    userStepService.set(chatId, new UserStepWithPayload(UserStep.VIEW_ORDERS));
 
                     ViewOrdersPage viewOrdersPage = new ViewOrdersPage();
                     viewOrdersPage.setText(orderService.getReport());
@@ -117,7 +120,7 @@ public class TelegramController {
                     int planId = Integer.parseInt(callbackQueryData);
                     currentPayload.setPlanId(planId);
                     currentStepWithPayload.setUserStep(UserStep.BUY_PAYMENT_METHOD);
-                    userStepWithPayload.put(chatId, currentStepWithPayload);
+                    userStepService.set(chatId, currentStepWithPayload);
 
                     BuyAccountSelectPaymentMethodPage buyAccountSelectPaymentMethodPage = new BuyAccountSelectPaymentMethodPage();
                     buyAccountSelectPaymentMethodPage.setChatId(chatId);
@@ -131,20 +134,20 @@ public class TelegramController {
                             currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_RECEIPT);
                             WaitForReceiptPage waitForReceiptPage = new WaitForReceiptPage();
                             waitForReceiptPage.setChatId(chatId);
-                            userStepWithPayload.put(chatId, currentStepWithPayload);
+                            userStepService.set(chatId, currentStepWithPayload);
                             return (T) waitForReceiptPage;
                         }
                         case COUPON -> {
                             currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_COUPON);
                             WaitForCouponPage waitForCouponPage = new WaitForCouponPage();
                             waitForCouponPage.setChatId(chatId);
-                            userStepWithPayload.put(chatId, currentStepWithPayload);
+                            userStepService.set(chatId, currentStepWithPayload);
 
                             return (T) waitForCouponPage;
                         }
                         case WALLET -> {
                             currentStepWithPayload.setUserStep(UserStep.BUY_CONFIRMATION);
-                            userStepWithPayload.put(chatId, currentStepWithPayload);
+                            userStepService.set(chatId, currentStepWithPayload);
 
                         }
 
@@ -181,8 +184,21 @@ public class TelegramController {
                     sendMessageMethod.setText("با تشکر از ارسال تصویر فیش وایری. پس از تایید فیش توسط ادمین. کانفیگ برای شما ارسال می شود");
                     sendMessageMethod.setChatId(update.getMessage().getChat().getId());
 
-                    userStepWithPayload.remove(chatId);
+                    userStepService.clear(chatId);
                     return (T) sendMessageMethod;
+
+                case VIEW_ORDERS:
+                    switch (message){
+                        case ViewOrdersPage.BTN_PENDING_ORDERS_WITH_PHOTO -> {
+
+                        }
+                        default -> {
+                            HomePage homePage = new HomePage();
+                            homePage.setChatId(chatId);
+                            return (T) homePage;
+                        }
+                    }
+
 
                 default:
                     HomePage homePage = new HomePage();

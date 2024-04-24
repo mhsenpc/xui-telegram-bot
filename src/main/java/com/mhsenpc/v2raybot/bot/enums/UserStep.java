@@ -8,5 +8,6 @@ public enum UserStep {
     BUY_CONFIRMATION,
     MY_CONFIGS,
     INCREASE_BALANCE,
-    VIEW_CONFIG
+    VIEW_CONFIG,
+    VIEW_ORDERS
 }
