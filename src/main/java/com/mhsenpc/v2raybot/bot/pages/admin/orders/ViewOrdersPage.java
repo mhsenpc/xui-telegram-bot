@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ViewOrdersPage extends BasePage {
 
-    public String BTN_ALL_ORDERS = "همه سفارشات";
-    public String BTN_CONFIRMED_ORDERS = "سفارشات تایید شده";
-    public String BTN_PENDING_ORDERS_WITH_PHOTO = "سفارشات در انتظار تایید";
+    public static final String BTN_ALL_ORDERS = "همه سفارشات";
+    public static final String BTN_CONFIRMED_ORDERS = "سفارشات تایید شده";
+    public static final String BTN_PENDING_ORDERS_WITH_PHOTO = "سفارشات در انتظار تایید";
 
 
     public ViewOrdersPage() {

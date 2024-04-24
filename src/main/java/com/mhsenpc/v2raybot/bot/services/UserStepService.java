@@ -1,9 +1,11 @@
 package com.mhsenpc.v2raybot.bot.services;
 
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
+@Service
 public class UserStepService {
 
     private final HashMap<String, UserStepWithPayload> userStepWithPayload = new HashMap<>();
