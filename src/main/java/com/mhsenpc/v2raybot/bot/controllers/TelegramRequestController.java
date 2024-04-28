@@ -2,8 +2,8 @@ package com.mhsenpc.v2raybot.bot.controllers;
 
 import com.mhsenpc.v2raybot.bot.config.Config;
 import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
-import com.mhsenpc.v2raybot.bot.controllers.telegram.ITelegramController;
-import com.mhsenpc.v2raybot.bot.services.TelegramControllerFactory;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.TelegramController;
+import com.mhsenpc.v2raybot.bot.services.TelegramControllerCreator;
 import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
 import com.mhsenpc.v2raybot.telegram.services.RequestHandler;
 import com.mhsenpc.v2raybot.telegram.types.Message;
@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class TelegramController {
+public class TelegramRequestController {
 
     @Autowired
-    private TelegramControllerFactory telegramControllerFactory;
+    private TelegramControllerCreator telegramControllerCreator;
 
     @Autowired
     private RequestHandler requestHandler;
 
     protected Config config;
 
-    public TelegramController() {
+    public TelegramRequestController() {
 
         ConfigurationManager configurationManager = new ConfigurationManager();
         this.config = configurationManager.getConfig();
@@ -34,7 +34,7 @@ public class TelegramController {
     public void handleRequests(@RequestBody Update update){
         try {
 
-            ITelegramController controller = this.telegramControllerFactory.createController(update);
+            TelegramController controller = this.telegramControllerCreator.getController(update);
             controller.invoke(update);
             System.out.println(controller + " invoked");
         }

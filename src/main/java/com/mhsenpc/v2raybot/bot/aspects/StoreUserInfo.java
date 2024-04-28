@@ -21,7 +21,7 @@ public class StoreUserInfo {
     @Autowired
     UserRepository userRepository;
 
-    @Before("execution(* com.mhsenpc.v2raybot.bot.controllers.TelegramController.handleRequests(*))")
+    @Before("execution(* com.mhsenpc.v2raybot.bot.controllers.TelegramRequestController.handleRequests(*))")
     private void storeUserInfoBeforeHandlingRequest(JoinPoint joinPoint){
 
         Object[] args = joinPoint.getArgs();

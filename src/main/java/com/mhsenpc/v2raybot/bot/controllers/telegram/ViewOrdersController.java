@@ -1,6 +1,5 @@
 package com.mhsenpc.v2raybot.bot.controllers.telegram;
 
-import com.mhsenpc.v2raybot.bot.controllers.BaseController;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.enums.UserStep;
 import com.mhsenpc.v2raybot.bot.pages.admin.orders.ViewOrdersPage;
@@ -12,10 +11,8 @@ import com.mhsenpc.v2raybot.telegram.types.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
-public class ViewOrdersController extends BaseController implements ITelegramController {
+public class ViewOrdersController extends TelegramController {
 
     @Autowired
     private UserStepService userStepService;
@@ -28,21 +25,6 @@ public class ViewOrdersController extends BaseController implements ITelegramCon
 
     @Override
     public void invoke(Update update) {
-
-        // we need to detect what is current step of user
-        String chatId = "";
-        String message = "";
-        String callbackQueryData = "";
-        if (update.getCallbackQuery() != null){
-            message = Optional.ofNullable(update.getCallbackQuery().getMessage().getText()).orElse(message);
-            chatId = update.getCallbackQuery().getFrom().getId();
-            callbackQueryData = update.getCallbackQuery().getData();
-        }
-        else if(update.getMessage() != null){
-            message = Optional.ofNullable(update.getMessage().getText()).orElse(message);
-            chatId = update.getMessage().getFrom().getId();
-
-        }
 
         userStepService.set(chatId, new UserStepWithPayload(UserStep.VIEW_ORDERS));
 

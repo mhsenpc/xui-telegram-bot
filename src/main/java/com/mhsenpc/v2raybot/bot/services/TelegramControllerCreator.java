@@ -1,8 +1,8 @@
 package com.mhsenpc.v2raybot.bot.services;
 
 import com.mhsenpc.v2raybot.bot.controllers.telegram.BuyController;
-import com.mhsenpc.v2raybot.bot.controllers.telegram.ITelegramController;
 import com.mhsenpc.v2raybot.bot.controllers.telegram.MainMenuController;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.TelegramController;
 import com.mhsenpc.v2raybot.bot.controllers.telegram.ViewOrdersController;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.pages.BasePage;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class TelegramControllerFactory {
+public class TelegramControllerCreator {
 
     @Autowired
     private UserStepService userStepService;
@@ -28,11 +28,12 @@ public class TelegramControllerFactory {
     @Autowired
     private ViewOrdersController viewOrdersController;
 
-    public ITelegramController createController(Update update){
+    protected String chatId;
+    protected String message;
+    protected UserStepWithPayload currentStepWithPayload;
 
-        // we need to detect what is current step of user
-        String chatId = "";
-        String message = "";
+    public TelegramController getController(Update update){
+
         if (update.getCallbackQuery() != null){
             message = Optional.ofNullable(update.getCallbackQuery().getMessage().getText()).orElse(message);
             chatId = update.getCallbackQuery().getFrom().getId();
@@ -43,6 +44,15 @@ public class TelegramControllerFactory {
 
         }
         UserStepWithPayload currentStepWithPayload = userStepService.get(chatId);
+
+        TelegramController telegramController = createController(update);
+        telegramController.setMessage(message);
+        telegramController.setChatId(chatId);
+        telegramController.setCurrentStepWithPayload(currentStepWithPayload);
+        return telegramController;
+    }
+
+    protected TelegramController createController(Update update){
 
         switch (message){
             case HomePage.BTN_BUY_CONFIG->{

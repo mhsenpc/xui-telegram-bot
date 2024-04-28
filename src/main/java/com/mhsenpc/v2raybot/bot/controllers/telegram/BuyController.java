@@ -1,6 +1,5 @@
 package com.mhsenpc.v2raybot.bot.controllers.telegram;
 
-import com.mhsenpc.v2raybot.bot.controllers.BaseController;
 import com.mhsenpc.v2raybot.bot.dto.BuyAccountRequest;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.entity.Order;
@@ -28,7 +27,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Component
-public class BuyController extends BaseController implements ITelegramController {
+public class BuyController extends TelegramController {
 
     @Autowired
     private UserStepService userStepService;
@@ -54,20 +53,10 @@ public class BuyController extends BaseController implements ITelegramController
     @Override
     public void invoke(Update update) {
 
-        // we need to detect what is current step of user
-        String chatId = "";
-        String message = "";
         String callbackQueryData = "";
         if (update.getCallbackQuery() != null) {
-            message = Optional.ofNullable(update.getCallbackQuery().getMessage().getText()).orElse(message);
-            chatId = update.getCallbackQuery().getFrom().getId();
             callbackQueryData = update.getCallbackQuery().getData();
-        } else if (update.getMessage() != null) {
-            message = Optional.ofNullable(update.getMessage().getText()).orElse(message);
-            chatId = update.getMessage().getFrom().getId();
-
         }
-        UserStepWithPayload currentStepWithPayload = userStepService.get(chatId);
         User user = this.userRepository.findByChatId(chatId);
 
         if (message.equals(HomePage.BTN_BUY_CONFIG)) {
