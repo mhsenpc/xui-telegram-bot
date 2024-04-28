@@ -1,11 +1,11 @@
 package com.mhsenpc.v2raybot.xui.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mhsenpc.v2raybot.xui.exceptions.InvalidXUIBaseUrl;
 import com.mhsenpc.v2raybot.xui.dto.Client;
 import com.mhsenpc.v2raybot.xui.dto.ClientSettings;
 import com.mhsenpc.v2raybot.xui.dto.CreateUserResponse;
+import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
+import com.mhsenpc.v2raybot.xui.exceptions.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -13,26 +13,24 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
 public class ClientManager {
 
-    private String baseUrl;
-    private String inboundId = "3";
+    @Autowired
+    private Status status;
 
-    public String getBaseUrl() {
+    @Autowired Authentication authentication;
 
-        if(baseUrl.isEmpty()){
-            throw new InvalidXUIBaseUrl();
-        }
+    private XuiConfig xuiConfig;
 
-        return baseUrl;
+    public void setXuiConfig(XuiConfig xuiConfig) {
+        this.xuiConfig = xuiConfig;
     }
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
+    private String inboundId = "1";
 
     public String getInboundId() {
 
@@ -46,7 +44,7 @@ public class ClientManager {
     @Autowired
     private CookieManager cookieManager;
 
-    public CreateUserResponse save(Client client) throws JsonProcessingException {
+    public CreateUserResponse save(Client client) throws UnauthenticatedException, IOException {
 
         // Create a RestTemplate instance
         RestTemplate restTemplate = new RestTemplate();
@@ -66,6 +64,8 @@ public class ClientManager {
         formData.add("id", this.getInboundId() );
         formData.add("settings", clientSettingsJson);
 
+        this.validateCookie();
+
         // Set headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -75,7 +75,19 @@ public class ClientManager {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
 
         // Send the POST request
-        ResponseEntity<CreateUserResponse> response = restTemplate.exchange(this.getBaseUrl() + "/panel/inbound/addClient", HttpMethod.POST, requestEntity, CreateUserResponse.class);
+        ResponseEntity<CreateUserResponse> response = restTemplate.exchange(this.xuiConfig.getBaseUrl() + "/panel/inbound/addClient", HttpMethod.POST, requestEntity, CreateUserResponse.class);
         return response.getBody();
+    }
+
+    private void validateCookie() throws UnauthenticatedException, IOException {
+
+        status.setXuiConfig(xuiConfig);
+        if(!status.check()){
+            authentication.login(xuiConfig.getBaseUrl(), xuiConfig.getUsername(), xuiConfig.getPassword());
+
+            if(!status.check()){
+                throw new UnauthenticatedException();
+            }
+        }
     }
 }

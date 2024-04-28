@@ -1,9 +1,6 @@
 package com.mhsenpc.v2raybot.bot.services;
 
-import com.mhsenpc.v2raybot.bot.controllers.telegram.BuyController;
-import com.mhsenpc.v2raybot.bot.controllers.telegram.MainMenuController;
-import com.mhsenpc.v2raybot.bot.controllers.telegram.TelegramController;
-import com.mhsenpc.v2raybot.bot.controllers.telegram.ViewOrdersController;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.*;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.pages.BasePage;
 import com.mhsenpc.v2raybot.bot.pages.HomePage;
@@ -28,6 +25,9 @@ public class TelegramControllerCreator {
     @Autowired
     private ViewOrdersController viewOrdersController;
 
+    @Autowired
+    private TestAccountController testAccountController;
+
     protected String chatId;
     protected String message;
     protected UserStepWithPayload currentStepWithPayload;
@@ -43,7 +43,7 @@ public class TelegramControllerCreator {
             chatId = update.getMessage().getFrom().getId();
 
         }
-        UserStepWithPayload currentStepWithPayload = userStepService.get(chatId);
+        currentStepWithPayload = userStepService.get(chatId);
 
         TelegramController telegramController = createController(update);
         telegramController.setMessage(message);
@@ -60,6 +60,9 @@ public class TelegramControllerCreator {
             }
             case HomePage.BTN_VIEW_ORDERS -> {
                 return viewOrdersController;
+            }
+            case HomePage.BTN_TEST_ACCOUNT -> {
+                return testAccountController;
             }
             case BasePage.BTN_BACK->{
                 return mainMenuController;

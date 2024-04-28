@@ -1,5 +1,6 @@
 package com.mhsenpc.v2raybot.xui.services;
 
+import com.mhsenpc.v2raybot.xui.exceptions.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class Authentication {
     @Autowired
     private CookieManager cookieManager;
 
-    public boolean login(String baseUrl, String username, String password){
+    public boolean login(String baseUrl, String username, String password) throws UnauthenticatedException, IOException {
 
         RestTemplate restTemplate = new RestTemplate();
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
@@ -38,24 +39,18 @@ public class Authentication {
         List<String> cookies = responseHeaders.get(HttpHeaders.SET_COOKIE);
 
         // Store cookies to your directory or wherever you need
-        if (cookies != null) {
-            for (String cookie : cookies) {
-                // Store cookies to your directory or wherever you need
-                System.out.println("Cookie: " + cookie);
-
-                if(cookie.startsWith("session=")) {
-                    try{
-                        cookieManager.setCookie(cookie);
-                        return true;
-                    } catch (IOException e) {
-                        System.out.println("An error occurred while storing the cookie ");
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } else {
-            System.out.println("No cookies found in the response.");
+        if(cookies == null){
+            throw new UnauthenticatedException();
         }
-        return false;
+
+        for (String cookie : cookies) {
+            // Store cookies to your directory or wherever you need
+            System.out.println("Cookie: " + cookie);
+
+            if (cookie.startsWith("session=")) {
+                cookieManager.setCookie(cookie);
+            }
+        }
+        return true;
     }
 }

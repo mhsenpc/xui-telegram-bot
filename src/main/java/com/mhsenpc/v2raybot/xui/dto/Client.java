@@ -57,8 +57,12 @@ public class Client {
         this.traffic = trafficInBytes;
     }
 
+    public void setTrafficInMB(double trafficInMB) {
+        this.traffic = (long) ((trafficInMB * 1024) * 1024);
+    }
+
     public void setTrafficInGB(long trafficInGB) {
-        this.traffic = (((trafficInGB * 1024) * 1024) * 1024) ;
+        this.traffic = (((trafficInGB * 1024) * 1024) * 1024);
     }
 
     public long getExpiryTime() {
