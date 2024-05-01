@@ -9,21 +9,27 @@ import com.mhsenpc.v2raybot.bot.entity.User;
 import com.mhsenpc.v2raybot.bot.enums.OrderStatus;
 import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
 import com.mhsenpc.v2raybot.bot.enums.UserStep;
-import com.mhsenpc.v2raybot.bot.pages.*;
+import com.mhsenpc.v2raybot.bot.pages.BuyAccountSelectPaymentMethodPage;
+import com.mhsenpc.v2raybot.bot.pages.HomePage;
+import com.mhsenpc.v2raybot.bot.pages.WaitForCouponPage;
+import com.mhsenpc.v2raybot.bot.pages.WaitForReceiptPage;
 import com.mhsenpc.v2raybot.bot.repository.OrderRepository;
 import com.mhsenpc.v2raybot.bot.repository.PhotoRepository;
 import com.mhsenpc.v2raybot.bot.repository.PlanRepository;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
+import com.mhsenpc.v2raybot.bot.services.PlanFormatter;
 import com.mhsenpc.v2raybot.bot.services.UserStepService;
 import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
-import com.mhsenpc.v2raybot.telegram.services.RequestHandler;
 import com.mhsenpc.v2raybot.telegram.types.Message;
 import com.mhsenpc.v2raybot.telegram.types.PhotoSize;
 import com.mhsenpc.v2raybot.telegram.types.Update;
+import com.mhsenpc.v2raybot.telegram.types.keyaboard.InlineKeyboardButton;
+import com.mhsenpc.v2raybot.telegram.types.keyaboard.InlineKeyboardMarkup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -36,9 +42,6 @@ public class BuyController extends TelegramController {
     private UserRepository userRepository;
 
     @Autowired
-    private BuyAccountSelectPlanPage buyAccountSelectPlanPage;
-
-    @Autowired
     private OrderRepository orderRepository;
 
     @Autowired
@@ -48,7 +51,7 @@ public class BuyController extends TelegramController {
     private PhotoRepository photoRepository;
 
     @Autowired
-    private RequestHandler requestHandler;
+    private PlanFormatter planFormatter;
 
     @Override
     public void invoke(Update update) {
@@ -60,16 +63,34 @@ public class BuyController extends TelegramController {
         User user = this.userRepository.findByChatId(chatId);
 
         if (message.equals(HomePage.BTN_BUY_CONFIG)) {
-            BuyAccountRequest buyAccountRequest = new BuyAccountRequest();
-            buyAccountRequest.setChatId(chatId);
-            buyAccountRequest.setUserId(user.getUserId());
-            UserStepWithPayload stepWithPayload = new UserStepWithPayload(UserStep.BUY_SELECT_PLAN, buyAccountRequest);
-            userStepService.set(chatId, stepWithPayload);
 
-            buyAccountSelectPlanPage.setChatId(chatId);
-            buyAccountSelectPlanPage.setToken(this.config.getToken());
+            SendMessageMethod planMessageItem = new SendMessageMethod();
+            planMessageItem.setChatId(chatId);
+            planMessageItem.setToken(this.config.getToken());
 
-            this.requestHandler.send(buyAccountSelectPlanPage, Message.class);
+            List<Plan> planList = planRepository.findAll();
+            if(planList.isEmpty()){
+                planMessageItem.setText("متاسفانه هیچ تعرفه ای در سیستم تعریف نشده است. لطفا از بخش تنظیمات پلن های خود را تعریف کنید");
+                this.requestHandler.send(planMessageItem, Message.class);
+            }
+            else {
+                // set step
+                BuyAccountRequest buyAccountRequest = new BuyAccountRequest();
+                buyAccountRequest.setChatId(chatId);
+                buyAccountRequest.setUserId(user.getUserId());
+                UserStepWithPayload stepWithPayload = new UserStepWithPayload(UserStep.BUY_SELECT_PLAN, buyAccountRequest);
+                userStepService.set(chatId, stepWithPayload);
+
+                // send plans one by one
+                for (Plan plan : planList) {
+                    planMessageItem.setText(planFormatter.format(plan));
+                    InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+                    inlineKeyboardMarkup.addRow(new InlineKeyboardButton("انتخاب", String.valueOf(plan.getPlanId())));
+                    planMessageItem.setReplyMarkup(inlineKeyboardMarkup);
+                    this.requestHandler.send(planMessageItem, Message.class);
+                }
+            }
+
             return;
         }
 
