@@ -4,5 +4,5 @@ import com.mhsenpc.v2raybot.telegram.types.Update;
 
 public interface ITelegramController {
 
-    void invoke(Update update);
+    void invoke(Update update) throws Exception;
 }

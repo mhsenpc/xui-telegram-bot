@@ -11,7 +11,7 @@ public class Client {
     @JsonProperty("totalGB")
     private long traffic;
     private long expiryTime;
-    private boolean enable;
+    private boolean enable = true;
     @JsonProperty("tgId")
     private String telegramID = "";
     private String subId;

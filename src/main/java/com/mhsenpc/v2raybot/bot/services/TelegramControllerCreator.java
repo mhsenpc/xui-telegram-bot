@@ -72,7 +72,7 @@ public class TelegramControllerCreator {
         if(currentStepWithPayload != null){
             return switch (currentStepWithPayload.getUserStep()) {
                 case BUY_SELECT_PLAN, BUY_PAYMENT_METHOD, BUY_WAIT_FOR_RECEIPT -> buyController;
-                case VIEW_ORDERS -> viewOrdersController;
+                case ADMIN_VIEW_ORDERS -> viewOrdersController;
                 default -> mainMenuController;
             };
         }

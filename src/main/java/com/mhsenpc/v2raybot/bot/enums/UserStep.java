@@ -9,5 +9,5 @@ public enum UserStep {
     MY_CONFIGS,
     INCREASE_BALANCE,
     VIEW_CONFIG,
-    VIEW_ORDERS
+    ADMIN_VIEW_ORDERS
 }
