@@ -1,7 +1,6 @@
 package com.mhsenpc.v2raybot.bot.aspects;
 
-import com.mhsenpc.v2raybot.bot.entity.Role;
-import com.mhsenpc.v2raybot.bot.enums.UserRole;
+import com.mhsenpc.v2raybot.bot.entity.UserRole;
 import com.mhsenpc.v2raybot.bot.enums.UserStatus;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
 import com.mhsenpc.v2raybot.telegram.types.Update;
@@ -54,7 +53,7 @@ public class StoreUserInfo {
         dbUser.setChatId(telegramUser.getId());
         dbUser.setStatus(UserStatus.ACTIVE.getValue());
         dbUser.setCreatedAt(new Date());
-        dbUser.addRole(new Role(UserRole.NORMAL.getValue()));
+        dbUser.addRole(new UserRole(com.mhsenpc.v2raybot.bot.enums.UserRole.NORMAL.getValue()));
         userRepository.save(dbUser);
     }
 }

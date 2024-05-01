@@ -30,7 +30,7 @@ public class User {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<Role> roles = new ArrayList<>();
+    private List<UserRole> userRoles = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -115,16 +115,16 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public List<UserRole> getRoles() {
+        return userRoles;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 
-    public void addRole(Role role){
-        this.roles.add(role);
+    public void addRole(UserRole userRole){
+        this.userRoles.add(userRole);
     }
 
     public List<Transaction> getTransactions() {

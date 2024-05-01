@@ -4,11 +4,11 @@ package com.mhsenpc.v2raybot.bot.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "user_roles")
+public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int roleId;
+    private int userRoleId;
     private int role;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -16,18 +16,18 @@ public class Role {
     private User user;
 
     // Constructors, getters, and setters
-    public Role() {}
+    public UserRole() {}
 
-    public Role(int role) {
+    public UserRole(int role) {
         this.role = role;
     }
 
-    public int getRoleId() {
-        return roleId;
+    public int getUserRoleId() {
+        return userRoleId;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setUserRoleId(int userRoleId) {
+        this.userRoleId = userRoleId;
     }
 
     public int getRole() {

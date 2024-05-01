@@ -35,12 +35,12 @@ CREATE TABLE `options` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `roles`
+-- Table structure for table `userRoles`
 --
 
-CREATE TABLE `roles` (
+CREATE TABLE `userRoles` (
   `role_id` int NOT NULL,
-  `role` tinyint NOT NULL,
+  `userRole` tinyint NOT NULL,
   `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -119,9 +119,9 @@ ALTER TABLE `options`
   ADD UNIQUE KEY `option_key` (`option_key`);
 
 --
--- Indexes for table `roles`
+-- Indexes for table `userRoles`
 --
-ALTER TABLE `roles`
+ALTER TABLE `userRoles`
   ADD PRIMARY KEY (`role_id`),
   ADD KEY `user_id` (`user_id`);
 
@@ -159,9 +159,9 @@ ALTER TABLE `vless_accounts`
 --
 
 --
--- AUTO_INCREMENT for table `roles`
+-- AUTO_INCREMENT for table `userRoles`
 --
-ALTER TABLE `roles`
+ALTER TABLE `userRoles`
   MODIFY `role_id` int NOT NULL AUTO_INCREMENT;
 
 --
@@ -193,9 +193,9 @@ ALTER TABLE `vless_accounts`
 --
 
 --
--- Constraints for table `roles`
+-- Constraints for table `userRoles`
 --
-ALTER TABLE `roles`
+ALTER TABLE `userRoles`
   ADD CONSTRAINT `roles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
