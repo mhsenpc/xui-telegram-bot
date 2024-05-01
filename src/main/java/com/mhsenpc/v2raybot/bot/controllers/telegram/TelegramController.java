@@ -2,6 +2,7 @@ package com.mhsenpc.v2raybot.bot.controllers.telegram;
 
 import com.mhsenpc.v2raybot.bot.controllers.BaseController;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
+import com.mhsenpc.v2raybot.bot.services.MessageService;
 import com.mhsenpc.v2raybot.telegram.services.RequestHandler;
 import com.mhsenpc.v2raybot.telegram.types.Update;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public abstract class TelegramController extends BaseController implements ITele
 
     @Override
     public abstract void invoke(Update update) throws Exception;
+
+    @Autowired
+    private MessageService messageService;
 
     public String getChatId() {
         return chatId;
@@ -42,5 +46,10 @@ public abstract class TelegramController extends BaseController implements ITele
 
     public void setCurrentStepWithPayload(UserStepWithPayload currentStepWithPayload) {
         this.currentStepWithPayload = currentStepWithPayload;
+    }
+
+    public void sendMessage(String text){
+
+        this.messageService.send(chatId, text);
     }
 }

@@ -1,8 +1,6 @@
 package com.mhsenpc.v2raybot.bot.controllers.telegram;
 
 import com.mhsenpc.v2raybot.bot.services.name.TestNameProvider;
-import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
-import com.mhsenpc.v2raybot.telegram.types.Message;
 import com.mhsenpc.v2raybot.telegram.types.Update;
 import com.mhsenpc.v2raybot.xui.dto.Client;
 import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
@@ -36,11 +34,8 @@ public class TestAccountController extends TelegramController{
 
     private void sendClientDetails(Client client) {
 
-        SendMessageMethod sendMessageMethod = new SendMessageMethod();
-        sendMessageMethod.setChatId(chatId);
-        sendMessageMethod.setText("اکانت تست با موفقیت ساخته شد");
-        sendMessageMethod.setToken(this.config.getToken());
-        this.requestHandler.send(sendMessageMethod, Message.class);
+        this.sendMessage("اکانت تست با موفقیت ساخته شد");
+
     }
 
     private XuiConfig getConfig(){

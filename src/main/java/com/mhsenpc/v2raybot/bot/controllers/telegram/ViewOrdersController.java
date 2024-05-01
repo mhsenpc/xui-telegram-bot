@@ -42,9 +42,13 @@ public class ViewOrdersController extends TelegramController {
 
         userStepService.set(chatId, new UserStepWithPayload(UserStep.ADMIN_VIEW_ORDERS));
 
+
         switch (message){
             case ViewOrdersPage.BTN_PENDING_ORDERS -> {
                 List<Order> orders = orderRepository.findByStatusAndPhotosIsNotEmpty(OrderStatus.PENDING.getValue());
+                if(orders.isEmpty()){
+                    this.sendMessage("هیچ سفارش در انتظار تایید وجود ندارد");
+                }
                 for (Order tempOrder: orders){
                     SendMessageMethod orderItemMessage = new SendMessageMethod();
                     orderItemMessage.setToken(config.getToken());
@@ -64,6 +68,8 @@ public class ViewOrdersController extends TelegramController {
 
                     requestHandler.send(orderItemMessage, Message.class);
                 }
+
+                userStepService.set(chatId, new UserStepWithPayload(UserStep.ADMIN_WAITING_FOR_ORDER_APPROVAL));
             }
             default -> {
                 ViewOrdersPage viewOrdersPage = new ViewOrdersPage();

@@ -28,6 +28,9 @@ public class TelegramControllerCreator {
     @Autowired
     private TestAccountController testAccountController;
 
+    @Autowired
+    private HandleOrdersController handleOrdersController;
+
     protected String chatId;
     protected String message;
     protected UserStepWithPayload currentStepWithPayload;
@@ -73,6 +76,7 @@ public class TelegramControllerCreator {
             return switch (currentStepWithPayload.getUserStep()) {
                 case BUY_SELECT_PLAN, BUY_PAYMENT_METHOD, BUY_WAIT_FOR_RECEIPT -> buyController;
                 case ADMIN_VIEW_ORDERS -> viewOrdersController;
+                case ADMIN_WAITING_FOR_ORDER_APPROVAL -> handleOrdersController;
                 default -> mainMenuController;
             };
         }
