@@ -1,5 +1,7 @@
 package com.mhsenpc.v2raybot.bot.entity;
 
+import com.mhsenpc.v2raybot.bot.enums.OrderStatus;
+import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -15,6 +17,7 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
     private int status;
+    private int paymentMethod;
     private Date createdAt;
 
     @OneToOne(
@@ -57,8 +60,8 @@ public class Order {
         return status;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatus(OrderStatus status) {
+        this.status = status.getValue();
     }
 
     public Date getCreatedAt() {
@@ -91,6 +94,14 @@ public class Order {
 
     public void setPlan(Plan plan) {
         this.plan = plan;
+    }
+
+    public int getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod.getValue();
     }
 
     public List<Photo> getPhotos() {

@@ -2,6 +2,8 @@ package com.mhsenpc.v2raybot.bot.config;
 
 public class Config {
 
+    private static Config instance;
+
     private String token;
 
     private String baseUrl;
@@ -40,6 +42,16 @@ public class Config {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public static Config getInstance(){
+
+        if(instance == null){
+            ConfigurationManager configurationManager = new ConfigurationManager();
+            instance = configurationManager.getConfig();
+        }
+
+        return instance;
     }
 
     @Override

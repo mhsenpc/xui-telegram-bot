@@ -35,19 +35,12 @@ public class OrderService {
     public void acceptOrder(int orderId){
 
         Order order = orderRepository.findById(orderId).get();
-
-        confirmOrderService.setOrder(order);
-        confirmOrderService.setOrderStatusToConfirmed();
-        confirmOrderService.sendConfirmationMessageToUser();
-        confirmOrderService.sendAccountDetailsTOUser();
+        confirmOrderService.confirm(order);
     }
 
     public void rejectOrder(int orderId){
 
         Order order = orderRepository.findById(orderId).get();
-
-        rejectOrderService.setOrder(order);
-        rejectOrderService.setOrderStatusToRejected();
-        rejectOrderService.sendRejectedMessageToUser();
+        rejectOrderService.reject(order);
     }
 }

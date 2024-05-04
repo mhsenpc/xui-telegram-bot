@@ -18,8 +18,8 @@ public class UserRole {
     // Constructors, getters, and setters
     public UserRole() {}
 
-    public UserRole(int role) {
-        this.role = role;
+    public UserRole(com.mhsenpc.v2raybot.bot.enums.UserRole role) {
+        this.role = role.getValue();
     }
 
     public int getUserRoleId() {

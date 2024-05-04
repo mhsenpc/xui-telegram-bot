@@ -1,6 +1,6 @@
 package com.mhsenpc.v2raybot.bot.services;
 
-import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
+import com.mhsenpc.v2raybot.bot.config.Config;
 import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
 import com.mhsenpc.v2raybot.telegram.services.RequestHandler;
 import com.mhsenpc.v2raybot.telegram.types.Message;
@@ -15,13 +15,10 @@ public class MessageService {
 
     public void send(String chatId, String message){
 
-        ConfigurationManager configurationManager = new ConfigurationManager();
-        var config = configurationManager.getConfig();
-
         SendMessageMethod sendMessageMethod = new SendMessageMethod();
         sendMessageMethod.setChatId(chatId);
         sendMessageMethod.setText(message);
-        sendMessageMethod.setToken(config.getToken());
+        sendMessageMethod.setToken(Config.getInstance().getToken());
         this.requestHandler.send(sendMessageMethod, Message.class);
     }
 }

@@ -75,10 +75,10 @@ public class BuyController extends TelegramController {
             }
             else {
                 // set step
-                BuyAccountRequest buyAccountRequest = new BuyAccountRequest();
-                buyAccountRequest.setChatId(chatId);
-                buyAccountRequest.setUserId(user.getUserId());
-                UserStepWithPayload stepWithPayload = new UserStepWithPayload(UserStep.BUY_SELECT_PLAN, buyAccountRequest);
+                BuyAccountRequest buyAccountRequestPayload = new BuyAccountRequest();
+                buyAccountRequestPayload.setChatId(chatId);
+                buyAccountRequestPayload.setUserId(user.getUserId());
+                UserStepWithPayload stepWithPayload = new UserStepWithPayload(UserStep.BUY_SELECT_PLAN, buyAccountRequestPayload);
                 userStepService.set(chatId, stepWithPayload);
 
                 // send plans one by one
@@ -111,12 +111,13 @@ public class BuyController extends TelegramController {
             case BUY_PAYMENT_METHOD -> {
                 PaymentMethod paymentMethod = PaymentMethod.valueOf(update.getCallbackQuery().getData());
                 currentPayload.setPaymentMethod(paymentMethod);
+                currentStepWithPayload.setPayload(currentPayload);
                 switch (paymentMethod) {
                     case TRANSFER_MONEY -> {
-                        currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_RECEIPT);
                         WaitForReceiptPage waitForReceiptPage = new WaitForReceiptPage();
                         waitForReceiptPage.setChatId(chatId);
                         waitForReceiptPage.setToken(this.config.getToken());
+                        currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_RECEIPT);
                         userStepService.set(chatId, currentStepWithPayload);
                         this.requestHandler.send(waitForReceiptPage, Message.class);
                     }
@@ -148,7 +149,7 @@ public class BuyController extends TelegramController {
 
                 Order order = new Order();
                 order.setPlan(plan.get());
-                order.setStatus(OrderStatus.PENDING.getValue());
+                order.setStatus(OrderStatus.PENDING);
                 order.setUser(user);
                 order.setCreatedAt(new Date());
                 order = orderRepository.save(order);

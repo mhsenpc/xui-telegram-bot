@@ -51,9 +51,9 @@ public class StoreUserInfo {
         dbUser.setLastName(telegramUser.getLastName());
         dbUser.setUsername(telegramUser.getUsername());
         dbUser.setChatId(telegramUser.getId());
-        dbUser.setStatus(UserStatus.ACTIVE.getValue());
+        dbUser.setStatus(UserStatus.ACTIVE);
         dbUser.setCreatedAt(new Date());
-        dbUser.addRole(new UserRole(com.mhsenpc.v2raybot.bot.enums.UserRole.NORMAL.getValue()));
+        dbUser.addRole(new UserRole(com.mhsenpc.v2raybot.bot.enums.UserRole.NORMAL));
         userRepository.save(dbUser);
     }
 }

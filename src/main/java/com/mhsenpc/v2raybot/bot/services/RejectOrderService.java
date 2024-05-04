@@ -17,12 +17,19 @@ public class RejectOrderService {
     @Autowired
     private MessageService messageService;
 
+    public void reject(Order order){
+
+        setOrder(order);
+        setOrderStatusToRejected();
+        sendRejectedMessageToUser();
+    }
+
     public void setOrder(Order order) {
         this.order = order;
     }
 
     public void setOrderStatusToRejected() {
-        order.setStatus(OrderStatus.REJECTED.getValue());
+        order.setStatus(OrderStatus.REJECTED);
         orderRepository.save(order);
     }
 

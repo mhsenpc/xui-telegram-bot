@@ -1,5 +1,6 @@
 package com.mhsenpc.v2raybot.bot.entity;
 
+import com.mhsenpc.v2raybot.bot.enums.UserStatus;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -103,8 +104,8 @@ public class User {
         return status;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatus(UserStatus status) {
+        this.status = status.getValue();
     }
 
     public Date getCreatedAt() {

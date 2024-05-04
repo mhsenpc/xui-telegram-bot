@@ -1,7 +1,6 @@
 package com.mhsenpc.v2raybot.bot.controllers;
 
 import com.mhsenpc.v2raybot.bot.config.Config;
-import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
 import com.mhsenpc.v2raybot.bot.controllers.telegram.TelegramController;
 import com.mhsenpc.v2raybot.bot.services.TelegramControllerCreator;
 import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
@@ -22,14 +21,6 @@ public class TelegramRequestController {
     @Autowired
     private RequestHandler requestHandler;
 
-    protected Config config;
-
-    public TelegramRequestController() {
-
-        ConfigurationManager configurationManager = new ConfigurationManager();
-        this.config = configurationManager.getConfig();
-    }
-
     @RequestMapping("/handle")
     public void handleRequests(@RequestBody Update update){
         try {
@@ -45,7 +36,7 @@ public class TelegramRequestController {
             sendMessageMethod.setText(
                     "یگ مشکل فنی به وجود آمده است" + "\n" +
                             exception.getMessage());
-            sendMessageMethod.setToken(this.config.getToken());
+            sendMessageMethod.setToken(Config.getInstance().getToken());
             this.requestHandler.send(sendMessageMethod, Message.class);
         }
     }
