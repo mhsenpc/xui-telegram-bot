@@ -7,12 +7,12 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "vless_accounts")
-public class VlessAccount {
+@Table(name = "clients")
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int vlessAccountId;
+    private int clientId;
 
     private String name;
 
@@ -33,12 +33,12 @@ public class VlessAccount {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    public int getVlessAccountId() {
-        return vlessAccountId;
+    public int getClientId() {
+        return clientId;
     }
 
-    public void setVlessAccountId(int vlessAccountId) {
-        this.vlessAccountId = vlessAccountId;
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 
     public String getName() {
@@ -99,8 +99,8 @@ public class VlessAccount {
 
     @Override
     public String toString() {
-        return "VlessAccount{" +
-                "vlessAccountId=" + vlessAccountId +
+        return "Client{" +
+                "clientId=" + clientId +
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
                 ", uuid='" + uuid + '\'' +

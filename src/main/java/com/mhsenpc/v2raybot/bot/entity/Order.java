@@ -30,7 +30,7 @@ public class Order {
             cascade = CascadeType.ALL,
             mappedBy = "order"
     )
-    private VlessAccount vlessAccount;
+    private Client client;
 
     @OneToOne
     @JoinColumn(name = "plan_id")
@@ -80,12 +80,12 @@ public class Order {
         this.transaction = transaction;
     }
 
-    public VlessAccount getVlessAccount() {
-        return vlessAccount;
+    public Client getClient() {
+        return client;
     }
 
-    public void setVlessAccount(VlessAccount vlessAccount) {
-        this.vlessAccount = vlessAccount;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Plan getPlan() {

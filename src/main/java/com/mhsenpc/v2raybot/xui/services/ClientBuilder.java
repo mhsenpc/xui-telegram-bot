@@ -1,6 +1,6 @@
 package com.mhsenpc.v2raybot.xui.services;
 
-import com.mhsenpc.v2raybot.xui.dto.Client;
+import com.mhsenpc.v2raybot.xui.dto.XUIClient;
 import com.mhsenpc.v2raybot.xui.dto.CreateUserResponse;
 import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
 import com.mhsenpc.v2raybot.xui.enums.Flow;
@@ -13,26 +13,26 @@ import java.util.UUID;
 @Service
 public abstract class ClientBuilder {
 
-    protected Client client = new Client();
+    protected XUIClient XUIClient = new XUIClient();
     protected XuiConfig xuiConfig;
 
     @Autowired
     protected ClientManager clientManager;
 
-    public Client getClient(){
-        return this.client;
+    public XUIClient getClient(){
+        return this.XUIClient;
     }
 
     public ClientBuilder setTrafficInMB(double trafficInMB) {
 
         long trafficInBytes = (long) ((trafficInMB * 1024) * 1024);
-        client.setTraffic(trafficInBytes);
+        XUIClient.setTraffic(trafficInBytes);
         return this;
     }
 
     public ClientBuilder setEmail(String email) {
 
-        client.setEmail(email);
+        XUIClient.setEmail(email);
         return this;
     }
 
@@ -43,14 +43,14 @@ public abstract class ClientBuilder {
     }
 
     public ClientBuilder setConnectionLimit(int connectionLimit){
-        this.client.setLimitIp(connectionLimit);
+        this.XUIClient.setLimitIp(connectionLimit);
         return this;
     }
 
     public ClientBuilder setTrafficLimitInGB(long trafficLimitInGB){
 
         long trafficInBytes = (((trafficLimitInGB * 1024) * 1024) * 1024);
-        client.setTraffic(trafficInBytes);
+        XUIClient.setTraffic(trafficInBytes);
         return this;
     }
 
@@ -59,26 +59,26 @@ public abstract class ClientBuilder {
         LocalDateTime next3Months = LocalDateTime.now().plusMonths(months);
         long timestamp = next3Months.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli();
 
-        client.setExpiryTime(timestamp);
+        XUIClient.setExpiryTime(timestamp);
         return this;
     }
 
-    public Client build(){
+    public XUIClient build(){
 
-        client.setId(UUID.randomUUID().toString());
-        client.setFlow(Flow.XTLS_RPRX_VISION);
+        XUIClient.setId(UUID.randomUUID().toString());
+        XUIClient.setFlow(Flow.XTLS_RPRX_VISION);
         clientManager.setXuiConfig(this.xuiConfig);
         clientManager.setInboundId("2"); //todo: this should be dynamic
 
         CreateUserResponse createUserResponse = null;
         try {
-            createUserResponse = clientManager.save(client);
+            createUserResponse = clientManager.save(XUIClient);
         } catch (Exception e) {
             System.out.println(e);
         }
 
         if (createUserResponse != null && createUserResponse.isSuccess()) {
-            return client;
+            return XUIClient;
         }
         return null;
     }

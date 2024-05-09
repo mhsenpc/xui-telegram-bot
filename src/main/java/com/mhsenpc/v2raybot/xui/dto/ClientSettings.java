@@ -6,13 +6,13 @@ import java.util.List;
 
 public class ClientSettings {
     @JsonProperty("clients")
-    private List<Client> clients;
+    private List<XUIClient> XUIClients;
 
-    public List<Client> getClients() {
-        return clients;
+    public List<XUIClient> getClients() {
+        return XUIClients;
     }
 
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
+    public void setClients(List<XUIClient> XUIClients) {
+        this.XUIClients = XUIClients;
     }
 }

@@ -39,7 +39,7 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<VlessAccount> vlessAccounts = new ArrayList<>();
+    private List<Client> clients = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -140,16 +140,16 @@ public class User {
         this.transactions.add(transaction);
     }
 
-    public List<VlessAccount> getVlessAccounts() {
-        return vlessAccounts;
+    public List<Client> getClients() {
+        return clients;
     }
 
-    public void setVlessAccounts(List<VlessAccount> vlessAccounts) {
-        this.vlessAccounts = vlessAccounts;
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
     }
 
-    public void addVlessAccount(VlessAccount vlessAccount){
-        this.vlessAccounts.add(vlessAccount);
+    public void addClient(Client client){
+        this.clients.add(client);
     }
 
     public List<TestConfig> getTestConfigs() {

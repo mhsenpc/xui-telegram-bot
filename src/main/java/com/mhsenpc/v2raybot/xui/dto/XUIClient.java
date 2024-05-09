@@ -2,8 +2,9 @@ package com.mhsenpc.v2raybot.xui.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mhsenpc.v2raybot.xui.enums.Flow;
+import com.mhsenpc.v2raybot.xui.services.VPNConfig;
 
-public class Client {
+public class XUIClient {
     private String id;
     private Flow flow;
     private String email;
@@ -95,5 +96,11 @@ public class Client {
 
     public void setReset(int reset) {
         this.reset = reset;
+    }
+
+    public String getConfig(){
+
+        VPNConfig vpnConfig = new VPNConfig(this);
+        return vpnConfig.getConfig();
     }
 }

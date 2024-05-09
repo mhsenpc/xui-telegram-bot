@@ -1,7 +1,7 @@
 package com.mhsenpc.v2raybot.xui.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mhsenpc.v2raybot.xui.dto.Client;
+import com.mhsenpc.v2raybot.xui.dto.XUIClient;
 import com.mhsenpc.v2raybot.xui.dto.ClientSettings;
 import com.mhsenpc.v2raybot.xui.dto.CreateUserResponse;
 import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
@@ -44,14 +44,14 @@ public class ClientManager {
     @Autowired
     private CookieManager cookieManager;
 
-    public CreateUserResponse save(Client client) throws UnauthenticatedException, IOException {
+    public CreateUserResponse save(XUIClient XUIClient) throws UnauthenticatedException, IOException {
 
         // Create a RestTemplate instance
         RestTemplate restTemplate = new RestTemplate();
 
         // save client to client settings
         ClientSettings clientSettings = new ClientSettings();
-        clientSettings.setClients(List.of(client));
+        clientSettings.setClients(List.of(XUIClient));
 
         // Convert Payload to JSON
         ObjectMapper mapper = new ObjectMapper();
