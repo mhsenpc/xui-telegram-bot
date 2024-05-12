@@ -52,8 +52,7 @@ public class InboundService {
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
             ResponseEntity<InboundsListResponse> responseEntity = restTemplate.exchange(this.xuiConfig.getBaseUrl() + "/panel/inbound/list", HttpMethod.POST, requestEntity, InboundsListResponse.class);
             if(responseEntity.hasBody()){
-                InboundsListResponse inboundsListResponse = responseEntity.getBody();
-                return inboundsListResponse;
+                return responseEntity.getBody();
             }
         }
         catch (Exception exception){

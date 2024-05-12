@@ -1,10 +1,7 @@
 package com.mhsenpc.v2raybot.xui.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mhsenpc.v2raybot.xui.dto.XUIClient;
-import com.mhsenpc.v2raybot.xui.dto.ClientSettings;
-import com.mhsenpc.v2raybot.xui.dto.CreateUserResponse;
-import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
+import com.mhsenpc.v2raybot.xui.dto.*;
 import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import com.mhsenpc.v2raybot.xui.exceptions.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +34,8 @@ public class ClientManager {
     public int getInboundId() throws InboundNotRetrievedException {
 
         inboundService.setXuiConfig(this.xuiConfig);
-        return this.inboundService.getActiveInbound().getId();
+        Inbound activeInbound = this.inboundService.getActiveInbound();
+        return activeInbound.getId();
     }
 
     @Autowired

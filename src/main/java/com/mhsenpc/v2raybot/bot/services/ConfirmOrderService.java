@@ -1,5 +1,6 @@
 package com.mhsenpc.v2raybot.bot.services;
 
+import com.mhsenpc.v2raybot.bot.config.Config;
 import com.mhsenpc.v2raybot.bot.entity.Client;
 import com.mhsenpc.v2raybot.bot.entity.Order;
 import com.mhsenpc.v2raybot.bot.entity.Transaction;
@@ -9,6 +10,7 @@ import com.mhsenpc.v2raybot.bot.repository.OrderRepository;
 import com.mhsenpc.v2raybot.bot.repository.TransactionRepository;
 import com.mhsenpc.v2raybot.xui.dto.XUIClient;
 import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
+import com.mhsenpc.v2raybot.xui.services.VPNConfigBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,21 +35,30 @@ public class ConfirmOrderService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private VPNConfigBuilder vpnConfigBuilder;
+
     public void confirm(Order order) throws InboundNotRetrievedException, IOException {
 
-        XUIClient XUIClient = clientDirector.build(order);
+        XuiConfigAdapter configAdapter = new XuiConfigAdapter(Config.getInstance());
+
+        XUIClient xuiClient = clientDirector.build(order);
+        String vpnConfig = this.vpnConfigBuilder
+                .setClient(xuiClient)
+                .setXUIConfig(configAdapter)
+                .build();
         setOrderStatusToConfirmed(order);
         sendConfirmationMessageToUser(order);
-        sendAccountDetailsToUser(order, XUIClient);
+        sendAccountDetailsToUser(order, vpnConfig);
         createTransaction(order);
-        storeClient(order, XUIClient);
+        storeClient(order, xuiClient, vpnConfig);
     }
 
-    private void storeClient(Order order, XUIClient xuiClient) {
+    private void storeClient(Order order, XUIClient xuiClient, String vpnConfig) {
 
         Client client = new Client();
         client.setName(xuiClient.getEmail());
-        client.setUrl(xuiClient.getConfig());
+        client.setUrl(vpnConfig);
         client.setOrder(order);
         client.setUser(order.getUser());
         client.setCreatedAt(new Date());
@@ -81,9 +92,9 @@ public class ConfirmOrderService {
     }
 
 
-    private void sendAccountDetailsToUser(Order order, XUIClient XUIClient){
+    private void sendAccountDetailsToUser(Order order, String vpnConfig){
 
-        String message = "برای اتصال به وی پی ان باید این کانفیگ را کپی کنید" + XUIClient.getConfig();
+        String message = "برای اتصال به وی پی ان باید این کانفیگ را کپی کنید" + vpnConfig;
         String receiver = order.getUser().getChatId();
 
         messageService.send(receiver, message);

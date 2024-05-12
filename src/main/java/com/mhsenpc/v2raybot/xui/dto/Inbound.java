@@ -1,5 +1,9 @@
 package com.mhsenpc.v2raybot.xui.dto;
 
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
 
 public class Inbound {
@@ -67,8 +71,19 @@ public class Inbound {
         return settings;
     }
 
-    public String getStreamSettings() {
-        return streamSettings;
+    public StreamSettings getStreamSettings(){
+
+        if(streamSettings == null || streamSettings.isEmpty()){
+            return null;
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(this.streamSettings, StreamSettings.class);
+        } catch (JsonProcessingException e) {
+            System.out.println(e);
+        }
+        return null;
     }
 
     public String getTag() {
