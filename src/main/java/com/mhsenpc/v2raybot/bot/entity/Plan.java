@@ -8,7 +8,6 @@ public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int planId;
-    private String title;
     private float price;
     private int months;
     private int trafficLimit;
@@ -17,8 +16,7 @@ public class Plan {
     public Plan() {
     }
 
-    public Plan(String title, float price, int months, int trafficLimit, int connectionLimit) {
-        this.title = title;
+    public Plan(float price, int months, int trafficLimit, int connectionLimit) {
         this.price = price;
         this.months = months;
         this.trafficLimit = trafficLimit;
@@ -31,14 +29,6 @@ public class Plan {
 
     public void setPlanId(int planId) {
         this.planId = planId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public float getPrice() {
@@ -77,7 +67,6 @@ public class Plan {
     public String toString() {
         return "Plan{" +
                 "planId=" + planId +
-                ", title='" + title + '\'' +
                 ", price=" + price +
                 ", months=" + months +
                 ", trafficLimit=" + trafficLimit +

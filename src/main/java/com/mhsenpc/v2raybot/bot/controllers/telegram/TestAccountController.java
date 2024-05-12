@@ -15,12 +15,15 @@ public class TestAccountController extends TelegramController{
     @Override
     public void invoke(Update update) {
 
-        XUIClient XUIClient = testClientDirector.build();
-        if(XUIClient == null){
-            System.out.println("failed to create a test client");
+        XUIClient XUIClient = null;
+        try {
+            XUIClient = testClientDirector.build();
+            this.sendClientDetails(XUIClient);
+        } catch (Exception e) {
+            System.out.println(e);
+            this.sendMessage("متاسفانه در فرآیند ساخت اکانت تست یک مشکل فنی به وجود آمده است");
         }
 
-        this.sendClientDetails(XUIClient);
     }
 
     private void sendClientDetails(XUIClient XUIClient) {

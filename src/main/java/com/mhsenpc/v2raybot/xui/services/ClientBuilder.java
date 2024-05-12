@@ -4,9 +4,11 @@ import com.mhsenpc.v2raybot.xui.dto.XUIClient;
 import com.mhsenpc.v2raybot.xui.dto.CreateUserResponse;
 import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
 import com.mhsenpc.v2raybot.xui.enums.Flow;
+import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -63,19 +65,13 @@ public abstract class ClientBuilder {
         return this;
     }
 
-    public XUIClient build(){
+    public XUIClient build() throws InboundNotRetrievedException, IOException {
 
         XUIClient.setId(UUID.randomUUID().toString());
         XUIClient.setFlow(Flow.XTLS_RPRX_VISION);
         clientManager.setXuiConfig(this.xuiConfig);
-        clientManager.setInboundId("2"); //todo: this should be dynamic
 
-        CreateUserResponse createUserResponse = null;
-        try {
-            createUserResponse = clientManager.save(XUIClient);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        CreateUserResponse createUserResponse = clientManager.save(XUIClient);
 
         if (createUserResponse != null && createUserResponse.isSuccess()) {
             return XUIClient;

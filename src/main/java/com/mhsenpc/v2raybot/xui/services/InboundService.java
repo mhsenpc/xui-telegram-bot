@@ -1,7 +1,9 @@
 package com.mhsenpc.v2raybot.xui.services;
 
-import com.mhsenpc.v2raybot.xui.dto.SystemInfoResponse;
+import com.mhsenpc.v2raybot.xui.dto.Inbound;
+import com.mhsenpc.v2raybot.xui.dto.InboundsListResponse;
 import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
+import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,7 +15,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class Status {
+public class InboundService {
 
     private XuiConfig xuiConfig;
 
@@ -24,7 +26,22 @@ public class Status {
     @Autowired
     private CookieManager cookieManager;
 
-    protected SystemInfoResponse getStatus(){
+    public Inbound getActiveInbound() throws InboundNotRetrievedException {
+
+        InboundsListResponse inboundsListResponse = getAllInbounds();
+        if(inboundsListResponse == null || !inboundsListResponse.isSuccess() || inboundsListResponse.getInbounds().isEmpty()){
+            throw new InboundNotRetrievedException();
+        }
+
+        for(Inbound inbound: inboundsListResponse.getInbounds()){
+            if(inbound.isEnable()){
+                return inbound;
+            }
+        }
+        throw new InboundNotRetrievedException();
+    }
+
+    protected InboundsListResponse getAllInbounds(){
 
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -33,22 +50,16 @@ public class Status {
 
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
-            ResponseEntity<SystemInfoResponse> responseEntity = restTemplate.exchange(this.xuiConfig.getBaseUrl() + "/server/status", HttpMethod.POST, requestEntity, SystemInfoResponse.class);
+            ResponseEntity<InboundsListResponse> responseEntity = restTemplate.exchange(this.xuiConfig.getBaseUrl() + "/panel/inbound/list", HttpMethod.POST, requestEntity, InboundsListResponse.class);
             if(responseEntity.hasBody()){
-                SystemInfoResponse systemInfoResponse = responseEntity.getBody();
-                return systemInfoResponse;
+                InboundsListResponse inboundsListResponse = responseEntity.getBody();
+                return inboundsListResponse;
             }
         }
         catch (Exception exception){
             System.out.println(exception.getMessage());
+
         }
-
         return null;
-    }
-
-    public boolean check(){
-
-        SystemInfoResponse systemInfoResponse = getStatus();
-        return systemInfoResponse != null && systemInfoResponse.isSuccess();
     }
 }

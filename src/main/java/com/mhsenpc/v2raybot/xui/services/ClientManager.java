@@ -5,6 +5,7 @@ import com.mhsenpc.v2raybot.xui.dto.XUIClient;
 import com.mhsenpc.v2raybot.xui.dto.ClientSettings;
 import com.mhsenpc.v2raybot.xui.dto.CreateUserResponse;
 import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
+import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import com.mhsenpc.v2raybot.xui.exceptions.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -24,27 +25,25 @@ public class ClientManager {
 
     @Autowired Authentication authentication;
 
+    @Autowired
+    private InboundService inboundService;
+
     private XuiConfig xuiConfig;
 
     public void setXuiConfig(XuiConfig xuiConfig) {
         this.xuiConfig = xuiConfig;
     }
 
-    private String inboundId = "1";
+    public int getInboundId() throws InboundNotRetrievedException {
 
-    public String getInboundId() {
-
-        return inboundId;
-    }
-
-    public void setInboundId(String inboundId) {
-        this.inboundId = inboundId;
+        inboundService.setXuiConfig(this.xuiConfig);
+        return this.inboundService.getActiveInbound().getId();
     }
 
     @Autowired
     private CookieManager cookieManager;
 
-    public CreateUserResponse save(XUIClient XUIClient) throws UnauthenticatedException, IOException {
+    public CreateUserResponse save(XUIClient XUIClient) throws UnauthenticatedException, IOException, InboundNotRetrievedException {
 
         // Create a RestTemplate instance
         RestTemplate restTemplate = new RestTemplate();
@@ -55,13 +54,12 @@ public class ClientManager {
 
         // Convert Payload to JSON
         ObjectMapper mapper = new ObjectMapper();
-        String clientSettingsJson;
 
-        clientSettingsJson = mapper.writeValueAsString(clientSettings);
+        String clientSettingsJson = mapper.writeValueAsString(clientSettings);
 
         // create form data
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        formData.add("id", this.getInboundId() );
+        formData.add("id", String.valueOf(getInboundId()));
         formData.add("settings", clientSettingsJson);
 
         this.validateCookie();

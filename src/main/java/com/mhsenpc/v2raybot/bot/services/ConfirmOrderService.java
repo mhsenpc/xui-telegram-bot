@@ -8,15 +8,15 @@ import com.mhsenpc.v2raybot.bot.repository.ClientRepository;
 import com.mhsenpc.v2raybot.bot.repository.OrderRepository;
 import com.mhsenpc.v2raybot.bot.repository.TransactionRepository;
 import com.mhsenpc.v2raybot.xui.dto.XUIClient;
+import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Date;
 
 @Service
 public class ConfirmOrderService {
-
-    private Order order;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -33,13 +33,12 @@ public class ConfirmOrderService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public void confirm(Order order){
+    public void confirm(Order order) throws InboundNotRetrievedException, IOException {
 
-        setOrder(order);
-        setOrderStatusToConfirmed();
-        sendConfirmationMessageToUser();
         XUIClient XUIClient = clientDirector.build(order);
-        sendAccountDetailsToUser(XUIClient);
+        setOrderStatusToConfirmed(order);
+        sendConfirmationMessageToUser(order);
+        sendAccountDetailsToUser(order, XUIClient);
         createTransaction(order);
         storeClient(order, XUIClient);
     }
@@ -67,13 +66,13 @@ public class ConfirmOrderService {
         transactionRepository.save(transaction);
     }
 
-    private void setOrderStatusToConfirmed(){
+    private void setOrderStatusToConfirmed(Order order){
 
         order.setStatus(OrderStatus.CONFIRMED);
         orderRepository.save(order);
     }
 
-    private void sendConfirmationMessageToUser(){
+    private void sendConfirmationMessageToUser(Order order){
 
         String message = "تبریک. سفارش شما به شماره " + order.getOrderId() + " تایید شد";
         String receiver = order.getUser().getChatId();
@@ -82,15 +81,11 @@ public class ConfirmOrderService {
     }
 
 
-    private void sendAccountDetailsToUser(XUIClient XUIClient){
+    private void sendAccountDetailsToUser(Order order, XUIClient XUIClient){
 
         String message = "برای اتصال به وی پی ان باید این کانفیگ را کپی کنید" + XUIClient.getConfig();
         String receiver = order.getUser().getChatId();
 
         messageService.send(receiver, message);
-    }
-
-    private void setOrder(Order order) {
-        this.order = order;
     }
 }

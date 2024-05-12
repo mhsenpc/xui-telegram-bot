@@ -74,6 +74,8 @@ public class BuyController extends TelegramController {
                 this.requestHandler.send(planMessageItem, Message.class);
             }
             else {
+                this.sendMessage("لطفا از بین تعرفه های زیر یک گزینه را انتخاب گنید");
+
                 // set step
                 BuyAccountRequest buyAccountRequestPayload = new BuyAccountRequest();
                 buyAccountRequestPayload.setChatId(chatId);

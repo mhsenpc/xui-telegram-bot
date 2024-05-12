@@ -3,9 +3,12 @@ package com.mhsenpc.v2raybot.bot.services;
 import com.mhsenpc.v2raybot.bot.config.Config;
 import com.mhsenpc.v2raybot.bot.services.name.TestNameProvider;
 import com.mhsenpc.v2raybot.xui.dto.XUIClient;
+import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import com.mhsenpc.v2raybot.xui.services.TestClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class TestClientDirector {
@@ -18,7 +21,7 @@ public class TestClientDirector {
     @Autowired
     private TestNameProvider testNameProvider;
 
-    public XUIClient build(){
+    public XUIClient build() throws InboundNotRetrievedException, IOException {
         XuiConfigAdapter configAdapter = new XuiConfigAdapter(Config.getInstance());
         testClientBuilder.setXuiConfig(configAdapter);
         testClientBuilder.setEmail(testNameProvider.getName());

@@ -8,8 +8,7 @@ public class PlanFormatter {
 
     public String format(Plan plan){
 
-        return  plan.getTitle() + "\n" +
-                plan.getMonths() + " ماهه" + "\n" +
+        return  plan.getMonths() + " ماهه" + "\n" +
                 plan.getTrafficLimit() + " گیگ" + "\n" +
                 plan.getConnectionLimit() + " کاربره" + "\n" +
                 plan.getPrice() +  " تومان" ;

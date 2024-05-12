@@ -5,9 +5,12 @@ import com.mhsenpc.v2raybot.bot.entity.Order;
 import com.mhsenpc.v2raybot.bot.entity.Plan;
 import com.mhsenpc.v2raybot.bot.services.name.ClientNameProvider;
 import com.mhsenpc.v2raybot.xui.dto.XUIClient;
+import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import com.mhsenpc.v2raybot.xui.services.ClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class ClientDirector {
@@ -18,7 +21,7 @@ public class ClientDirector {
     @Autowired
     private ClientNameProvider clientNameProvider;
 
-    public XUIClient build(Order order){
+    public XUIClient build(Order order) throws InboundNotRetrievedException, IOException {
 
         XuiConfigAdapter configAdapter = new XuiConfigAdapter(Config.getInstance());
         clientBuilder.setXuiConfig(configAdapter);
