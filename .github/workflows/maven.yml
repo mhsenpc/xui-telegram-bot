@@ -54,7 +54,6 @@ jobs:
         run: mvn -B package --file pom.xml
         
       - name: Run tests with Maven
-        needs: Wait for MySQL to be ready
         run: mvn test
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/testdb
