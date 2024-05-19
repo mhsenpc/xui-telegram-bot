@@ -42,9 +42,11 @@ jobs:
           cache: maven
           
       - name: Wait for MySQL to be ready
+        env:
+          MYSQL_PWD: testpassword
         run: |
           echo "Waiting for MySQL to be ready..."
-          while ! mysqladmin ping -h localhost -u testuser -ptestpassword --silent; do
+          while ! mysqladmin ping -h localhost -u testuser --silent; do
             sleep 1
           done
 
