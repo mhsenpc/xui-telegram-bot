@@ -22,7 +22,6 @@ public class WebhookController extends BaseController {
 
         SetWebhookMethodBase setWebhookMethod = new SetWebhookMethodBase();
         setWebhookMethod.addQueryParam("url", url + "handle");
-        setWebhookMethod.setToken(this.config.getToken());
         SetWebhookResponse response = requestHandler.send(setWebhookMethod, SetWebhookResponse.class);
 
         return response.toString();

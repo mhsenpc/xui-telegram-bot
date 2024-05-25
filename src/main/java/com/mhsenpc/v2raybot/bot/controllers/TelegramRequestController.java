@@ -36,7 +36,6 @@ public class TelegramRequestController {
             sendMessageMethod.setText(
                     "یگ مشکل فنی به وجود آمده است" + "\n" +
                             exception.getMessage());
-            sendMessageMethod.setToken(Config.getInstance().getToken());
             this.requestHandler.send(sendMessageMethod, Message.class);
         }
     }

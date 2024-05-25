@@ -29,9 +29,7 @@ public class User {
 
     private Date createdAt;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private List<UserRole> userRoles = new ArrayList<>();
+    private int role;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -108,24 +106,20 @@ public class User {
         this.status = status.getValue();
     }
 
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public List<UserRole> getRoles() {
-        return userRoles;
-    }
-
-    public void setRoles(List<UserRole> userRoles) {
-        this.userRoles = userRoles;
-    }
-
-    public void addRole(UserRole userRole){
-        this.userRoles.add(userRole);
     }
 
     public List<Transaction> getTransactions() {

@@ -18,7 +18,6 @@ public class MessageService {
         SendMessageMethod sendMessageMethod = new SendMessageMethod();
         sendMessageMethod.setChatId(chatId);
         sendMessageMethod.setText(message);
-        sendMessageMethod.setToken(Config.getInstance().getToken());
         this.requestHandler.send(sendMessageMethod, Message.class);
     }
 }

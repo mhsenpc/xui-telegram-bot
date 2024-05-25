@@ -1,6 +1,6 @@
 package com.mhsenpc.v2raybot.bot.aspects;
 
-import com.mhsenpc.v2raybot.bot.entity.UserRole;
+import com.mhsenpc.v2raybot.bot.enums.UserRole;
 import com.mhsenpc.v2raybot.bot.enums.UserStatus;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
 import com.mhsenpc.v2raybot.telegram.types.Update;
@@ -21,7 +21,7 @@ public class StoreUserInfo {
     UserRepository userRepository;
 
     @Before("execution(* com.mhsenpc.v2raybot.bot.controllers.TelegramRequestController.handleRequests(*))")
-    private void storeUserInfoBeforeHandlingRequest(JoinPoint joinPoint){
+    private void tryToGetUserInfoFromRequest(JoinPoint joinPoint){
 
         Object[] args = joinPoint.getArgs();
         Update update = (Update) args[0];
@@ -53,7 +53,7 @@ public class StoreUserInfo {
         dbUser.setChatId(telegramUser.getId());
         dbUser.setStatus(UserStatus.ACTIVE);
         dbUser.setCreatedAt(new Date());
-        dbUser.addRole(new UserRole(com.mhsenpc.v2raybot.bot.enums.UserRole.NORMAL));
+        dbUser.setRole(UserRole.NORMAL.getValue());
         userRepository.save(dbUser);
     }
 }

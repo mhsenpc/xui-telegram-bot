@@ -10,7 +10,7 @@ import com.mhsenpc.v2raybot.bot.enums.OrderStatus;
 import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
 import com.mhsenpc.v2raybot.bot.enums.UserStep;
 import com.mhsenpc.v2raybot.bot.pages.BuyAccountSelectPaymentMethodPage;
-import com.mhsenpc.v2raybot.bot.pages.HomePage;
+import com.mhsenpc.v2raybot.bot.pages.UserHomePage;
 import com.mhsenpc.v2raybot.bot.pages.WaitForCouponPage;
 import com.mhsenpc.v2raybot.bot.pages.WaitForReceiptPage;
 import com.mhsenpc.v2raybot.bot.repository.OrderRepository;
@@ -62,11 +62,10 @@ public class BuyController extends TelegramController {
         }
         User user = this.userRepository.findByChatId(chatId);
 
-        if (message.equals(HomePage.BTN_BUY_CONFIG)) {
+        if (message.equals(UserHomePage.BTN_BUY_CONFIG)) {
 
             SendMessageMethod planMessageItem = new SendMessageMethod();
             planMessageItem.setChatId(chatId);
-            planMessageItem.setToken(this.config.getToken());
 
             List<Plan> planList = planRepository.findAll();
             if(planList.isEmpty()){
@@ -106,7 +105,6 @@ public class BuyController extends TelegramController {
 
                 BuyAccountSelectPaymentMethodPage buyAccountSelectPaymentMethodPage = new BuyAccountSelectPaymentMethodPage();
                 buyAccountSelectPaymentMethodPage.setChatId(chatId);
-                buyAccountSelectPaymentMethodPage.setToken(this.config.getToken());
                 this.requestHandler.send(buyAccountSelectPaymentMethodPage, Message.class);
             }
 
@@ -118,7 +116,6 @@ public class BuyController extends TelegramController {
                     case TRANSFER_MONEY -> {
                         WaitForReceiptPage waitForReceiptPage = new WaitForReceiptPage();
                         waitForReceiptPage.setChatId(chatId);
-                        waitForReceiptPage.setToken(this.config.getToken());
                         currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_RECEIPT);
                         userStepService.set(chatId, currentStepWithPayload);
                         this.requestHandler.send(waitForReceiptPage, Message.class);
@@ -127,7 +124,6 @@ public class BuyController extends TelegramController {
                         currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_COUPON);
                         WaitForCouponPage waitForCouponPage = new WaitForCouponPage();
                         waitForCouponPage.setChatId(chatId);
-                        waitForCouponPage.setToken(this.config.getToken());
                         userStepService.set(chatId, currentStepWithPayload);
 
                         this.requestHandler.send(waitForCouponPage, Message.class);
@@ -171,7 +167,6 @@ public class BuyController extends TelegramController {
                 SendMessageMethod sendMessageMethod = new SendMessageMethod();
                 sendMessageMethod.setText("با تشکر از ارسال تصویر فیش وایری. پس از تایید فیش توسط ادمین. کانفیگ برای شما ارسال می شود");
                 sendMessageMethod.setChatId(update.getMessage().getChat().getId());
-                sendMessageMethod.setToken(this.config.getToken());
 
                 userStepService.clear(chatId);
                 this.requestHandler.send(sendMessageMethod, Message.class);

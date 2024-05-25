@@ -51,7 +51,6 @@ public class ViewOrdersController extends TelegramController {
                 }
                 for (Order tempOrder: orders){
                     SendMessageMethod orderItemMessage = new SendMessageMethod();
-                    orderItemMessage.setToken(config.getToken());
                     orderItemMessage.setChatId(chatId);
                     orderItemMessage.setText(orderFormatter.getFormattedOrder(tempOrder));
 
@@ -75,7 +74,6 @@ public class ViewOrdersController extends TelegramController {
                 ViewOrdersPage viewOrdersPage = new ViewOrdersPage();
                 viewOrdersPage.setText(orderService.getReport());
                 viewOrdersPage.setChatId(chatId);
-                viewOrdersPage.setToken(this.config.getToken());
 
                 this.requestHandler.send(viewOrdersPage, Message.class);
             }

@@ -3,7 +3,8 @@ package com.mhsenpc.v2raybot.bot.services;
 import com.mhsenpc.v2raybot.bot.controllers.telegram.*;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.pages.BasePage;
-import com.mhsenpc.v2raybot.bot.pages.HomePage;
+import com.mhsenpc.v2raybot.bot.pages.UserHomePage;
+import com.mhsenpc.v2raybot.bot.pages.admin.AdminHomePage;
 import com.mhsenpc.v2raybot.telegram.types.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,13 +59,13 @@ public class TelegramControllerCreator {
     protected TelegramController createController(Update update){
 
         switch (message){
-            case HomePage.BTN_BUY_CONFIG->{
+            case UserHomePage.BTN_BUY_CONFIG->{
                 return buyController;
             }
-            case HomePage.BTN_VIEW_ORDERS -> {
+            case AdminHomePage.BTN_VIEW_ORDERS -> {
                 return viewOrdersController;
             }
-            case HomePage.BTN_TEST_ACCOUNT -> {
+            case UserHomePage.BTN_TEST_ACCOUNT -> {
                 return testAccountController;
             }
             case BasePage.BTN_BACK->{
