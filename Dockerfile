@@ -1,5 +1,5 @@
 # Use a base image that contains JDK
-FROM eclipse-temurin:17-jdk-focal
+FROM eclipse-temurin:21
 
 # Set the working directory inside the container
 WORKDIR /app

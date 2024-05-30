@@ -4,9 +4,7 @@ echo "compiling jar file"
 mvn clean package -DskipTests
 
 echo "building docker image"
-docker build . -t mhsenpc/xui_bot:latest
-
 echo "pushing docker image"
-docker push mhsenpc/xui_bot:latest
+docker buildx build --platform linux/amd64,linux/arm64 -t mhsenpc/xui_bot --push .
 
 echo "Done"
