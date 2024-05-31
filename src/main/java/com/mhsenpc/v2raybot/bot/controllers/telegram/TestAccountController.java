@@ -1,6 +1,7 @@
 package com.mhsenpc.v2raybot.bot.controllers.telegram;
 
 import com.mhsenpc.v2raybot.bot.config.Config;
+import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
 import com.mhsenpc.v2raybot.bot.services.TestClientDirector;
 import com.mhsenpc.v2raybot.bot.services.XuiConfigAdapter;
 import com.mhsenpc.v2raybot.telegram.types.Update;
@@ -19,6 +20,9 @@ public class TestAccountController extends TelegramController{
     @Autowired
     private VPNConfigBuilder vpnConfigBuilder;
 
+    @Autowired
+    private ConfigurationManager configurationManager;
+
     @Override
     public void invoke(Update update) {
 
@@ -35,7 +39,7 @@ public class TestAccountController extends TelegramController{
 
     private void sendClientDetails(XUIClient xuiClient) throws InboundNotRetrievedException {
 
-        XuiConfigAdapter configAdapter = new XuiConfigAdapter(Config.getInstance());
+        XuiConfigAdapter configAdapter = new XuiConfigAdapter(configurationManager.getConfig());
         String vpnConfig = this.vpnConfigBuilder
                 .setClient(xuiClient)
                 .setXUIConfig(configAdapter)

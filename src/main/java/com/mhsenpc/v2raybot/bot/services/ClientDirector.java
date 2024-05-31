@@ -1,6 +1,7 @@
 package com.mhsenpc.v2raybot.bot.services;
 
 import com.mhsenpc.v2raybot.bot.config.Config;
+import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
 import com.mhsenpc.v2raybot.bot.entity.Order;
 import com.mhsenpc.v2raybot.bot.entity.Plan;
 import com.mhsenpc.v2raybot.bot.services.name.ClientNameProvider;
@@ -21,9 +22,12 @@ public class ClientDirector {
     @Autowired
     private ClientNameProvider clientNameProvider;
 
+    @Autowired
+    private ConfigurationManager configurationManager;
+
     public XUIClient build(Order order) throws InboundNotRetrievedException, IOException {
 
-        XuiConfigAdapter configAdapter = new XuiConfigAdapter(Config.getInstance());
+        XuiConfigAdapter configAdapter = new XuiConfigAdapter(configurationManager.getConfig());
         clientBuilder.setXuiConfig(configAdapter);
         clientBuilder.setEmail(clientNameProvider.getName());
         Plan plan = order.getPlan();
