@@ -7,10 +7,12 @@ services:
       MYSQL_USER: xui_user
       MYSQL_PASSWORD: 54asd54sa23
       MYSQL_ROOT_PASSWORD: root_password
-  healthcheck:
-    test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-    timeout: 20s
-    retries: 10
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - xui_mysql_data:/var/lib/mysql
 
   app:
     image: mhsenpc/xui_bot:latest
@@ -25,3 +27,6 @@ services:
       DATABASE_PASSWORD: 54asd54sa23
     depends_on:
       - mysql
+
+volumes:
+  xui_mysql_data:
