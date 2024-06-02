@@ -34,8 +34,8 @@ jobs:
       DATABASE_HOST: mysql
       DATABASE_PORT: 3306
       DATABASE_NAME: testdb
-      DATABASE_USERNAME: testuser
-      DATABASE_PASSWORD: testpassword
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: password
 
     steps:
       - name: Checkout code
