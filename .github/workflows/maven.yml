@@ -28,9 +28,9 @@ jobs:
           --health-retries 5
 
     env:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/testdb
-      SPRING_DATASOURCE_USERNAME: testuser
-      SPRING_DATASOURCE_PASSWORD: testpassword
+      #SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/testdb
+      #SPRING_DATASOURCE_USERNAME: testuser
+      #SPRING_DATASOURCE_PASSWORD: testpassword
       DATABASE_HOST: mysql
       DATABASE_PORT: 3306
       DATABASE_NAME: testdb
