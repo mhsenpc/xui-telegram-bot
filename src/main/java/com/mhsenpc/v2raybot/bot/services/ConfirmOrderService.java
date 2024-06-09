@@ -97,7 +97,7 @@ public class ConfirmOrderService {
 
     private void sendAccountDetailsToUser(Order order, String vpnConfig){
 
-        String message = "برای اتصال به وی پی ان باید این کانفیگ را کپی کنید" + vpnConfig;
+        String message = "برای اتصال به وی پی ان باید این کانفیگ را کپی کنید" + System.lineSeparator() + "<CODE>" + vpnConfig + "<CODE>" ;
         String receiver = order.getUser().getChatId();
 
         messageService.send(receiver, message);

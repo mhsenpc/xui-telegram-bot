@@ -1,6 +1,8 @@
 package com.mhsenpc.v2raybot.bot.services;
 
 import com.mhsenpc.v2raybot.bot.controllers.telegram.*;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.HandleOrdersController;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.ViewOrdersController;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.pages.BasePage;
 import com.mhsenpc.v2raybot.bot.pages.UserHomePage;
@@ -31,6 +33,9 @@ public class TelegramControllerCreator {
 
     @Autowired
     private HandleOrdersController handleOrdersController;
+
+    @Autowired
+    private MyConfigsController myConfigsController;
 
     protected String chatId;
     protected String message;
@@ -70,6 +75,9 @@ public class TelegramControllerCreator {
             }
             case BasePage.BTN_BACK->{
                 return mainMenuController;
+            }
+            case UserHomePage.BTN_MY_CONFIGS -> {
+                return myConfigsController;
             }
         }
 
