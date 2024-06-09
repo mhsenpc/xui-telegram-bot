@@ -1,9 +1,7 @@
 package com.mhsenpc.v2raybot.bot.enums;
 
 public enum PaymentMethod {
-    TRANSFER_MONEY(1),
-    WALLET(2),
-    COUPON(3);
+    WALLET(2);
 
     private final int value;
 

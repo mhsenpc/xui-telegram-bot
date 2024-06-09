@@ -9,9 +9,7 @@ import com.mhsenpc.v2raybot.bot.entity.User;
 import com.mhsenpc.v2raybot.bot.enums.OrderStatus;
 import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
 import com.mhsenpc.v2raybot.bot.enums.UserStep;
-import com.mhsenpc.v2raybot.bot.pages.BuyAccountSelectPaymentMethodPage;
 import com.mhsenpc.v2raybot.bot.pages.UserHomePage;
-import com.mhsenpc.v2raybot.bot.pages.WaitForCouponPage;
 import com.mhsenpc.v2raybot.bot.pages.WaitForReceiptPage;
 import com.mhsenpc.v2raybot.bot.repository.OrderRepository;
 import com.mhsenpc.v2raybot.bot.repository.PhotoRepository;
@@ -79,6 +77,7 @@ public class BuyController extends TelegramController {
                 BuyAccountRequest buyAccountRequestPayload = new BuyAccountRequest();
                 buyAccountRequestPayload.setChatId(chatId);
                 buyAccountRequestPayload.setUserId(user.getUserId());
+                buyAccountRequestPayload.setPaymentMethod(PaymentMethod.WALLET);
                 UserStepWithPayload stepWithPayload = new UserStepWithPayload(UserStep.BUY_SELECT_PLAN, buyAccountRequestPayload);
                 userStepService.set(chatId, stepWithPayload);
 
@@ -97,44 +96,18 @@ public class BuyController extends TelegramController {
 
         BuyAccountRequest currentPayload = (BuyAccountRequest) currentStepWithPayload.getPayload();
         switch (currentStepWithPayload.getUserStep()) {
+
             case BUY_SELECT_PLAN -> {
                 int planId = Integer.parseInt(callbackQueryData);
                 currentPayload.setPlanId(planId);
                 currentStepWithPayload.setUserStep(UserStep.BUY_PAYMENT_METHOD);
                 userStepService.set(chatId, currentStepWithPayload);
 
-                BuyAccountSelectPaymentMethodPage buyAccountSelectPaymentMethodPage = new BuyAccountSelectPaymentMethodPage();
-                buyAccountSelectPaymentMethodPage.setChatId(chatId);
-                this.requestHandler.send(buyAccountSelectPaymentMethodPage, Message.class);
-            }
-
-            case BUY_PAYMENT_METHOD -> {
-                PaymentMethod paymentMethod = PaymentMethod.valueOf(update.getCallbackQuery().getData());
-                currentPayload.setPaymentMethod(paymentMethod);
-                currentStepWithPayload.setPayload(currentPayload);
-                switch (paymentMethod) {
-                    case TRANSFER_MONEY -> {
-                        WaitForReceiptPage waitForReceiptPage = new WaitForReceiptPage();
-                        waitForReceiptPage.setChatId(chatId);
-                        currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_RECEIPT);
-                        userStepService.set(chatId, currentStepWithPayload);
-                        this.requestHandler.send(waitForReceiptPage, Message.class);
-                    }
-                    case COUPON -> {
-                        currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_COUPON);
-                        WaitForCouponPage waitForCouponPage = new WaitForCouponPage();
-                        waitForCouponPage.setChatId(chatId);
-                        userStepService.set(chatId, currentStepWithPayload);
-
-                        this.requestHandler.send(waitForCouponPage, Message.class);
-
-                    }
-                    case WALLET -> {
-                        currentStepWithPayload.setUserStep(UserStep.BUY_CONFIRMATION);
-                        userStepService.set(chatId, currentStepWithPayload);
-
-                    }
-                }
+                WaitForReceiptPage waitForReceiptPage = new WaitForReceiptPage();
+                waitForReceiptPage.setChatId(chatId);
+                currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_RECEIPT);
+                userStepService.set(chatId, currentStepWithPayload);
+                this.requestHandler.send(waitForReceiptPage, Message.class);
             }
 
             case BUY_WAIT_FOR_RECEIPT -> {
