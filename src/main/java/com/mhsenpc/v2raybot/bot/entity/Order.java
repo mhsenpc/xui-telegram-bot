@@ -13,9 +13,11 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
     private int status;
     private int paymentMethod;
     private Date createdAt;
@@ -32,7 +34,7 @@ public class Order {
     )
     private Client client;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "plan_id")
     private Plan plan;
 

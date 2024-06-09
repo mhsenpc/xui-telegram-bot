@@ -117,11 +117,11 @@ public class BuyController extends TelegramController {
                     throw new RuntimeException("Plan id " + currentPayload.getPlanId() + " not found");
                 }
 
-
                 Order order = new Order();
                 order.setPlan(plan.get());
                 order.setStatus(OrderStatus.PENDING);
                 order.setUser(user);
+                order.setPaymentMethod(currentPayload.getPaymentMethod());
                 order.setCreatedAt(new Date());
                 order = orderRepository.save(order);
 

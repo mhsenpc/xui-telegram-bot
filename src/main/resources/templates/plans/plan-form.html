@@ -11,12 +11,6 @@
 
     <form th:object="${plan}" method="post" th:action="@{/plans/save}">
         <div class="form-group row">
-            <label for="" class="col-4 col-form-label">عنوان</label>
-            <div class="col-8">
-                <input th:field="*{title}" placeholder="یک ماهه ۱۰۰ گیگ تک کاربره" type="text" class="form-control" required="required">
-            </div>
-        </div>
-        <div class="form-group row">
             <label for="" class="col-4 col-form-label">تعداد ماه</label>
             <div class="col-8">
                 <select th:field="*{months}" class="custom-select" required="required">

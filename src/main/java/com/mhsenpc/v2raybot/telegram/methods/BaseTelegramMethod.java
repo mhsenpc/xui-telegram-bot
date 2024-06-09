@@ -50,6 +50,10 @@ public abstract class BaseTelegramMethod implements Executable {
 
     @JsonIgnore
     public String getRequestUrl(){
+
+        if(token == null || token.isEmpty()){
+            throw new RuntimeException("Telegram token is not set");
+        }
         return baseUrl + token + "/" + method +  "?" + queryParamsToQueryString(queryParams);
     }
 
