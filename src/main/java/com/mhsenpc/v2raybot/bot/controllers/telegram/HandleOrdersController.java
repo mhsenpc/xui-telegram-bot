@@ -8,10 +8,12 @@ import com.mhsenpc.v2raybot.bot.services.OrderItemButtonCallbackSerializer;
 import com.mhsenpc.v2raybot.bot.services.OrderService;
 import com.mhsenpc.v2raybot.bot.services.UserStepService;
 import com.mhsenpc.v2raybot.telegram.types.Update;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class HandleOrdersController extends TelegramController {
 
     @Autowired
@@ -33,7 +35,7 @@ public class HandleOrdersController extends TelegramController {
 
             } catch (Exception e) {
                 this.sendMessage("متاسفانه مشکلی در دریافت فرمان شما پیش آمده است");
-                System.out.println(e);
+                log.error(e.getMessage());
             }
 
             userStepService.set(chatId, new UserStepWithPayload(UserStep.ADMIN_VIEW_ORDERS));
@@ -61,6 +63,7 @@ public class HandleOrdersController extends TelegramController {
             this.sendMessage("این سفارش رد شد و به زودی به اطلاع کاربر می رسد");
         }
         catch (Exception exception) {
+            log.error("Reject order failed: " + exception);
             this.sendMessage("عملیات رد کردن سفارش با مشکل فنی مواجه شد");
         }
     }
@@ -71,6 +74,7 @@ public class HandleOrdersController extends TelegramController {
             this.sendMessage("این سفارش با موفقیت تایید شد. کاربر به زودی اطلاعات اکانت را دریافت خواهد کرد");
 
         } catch (Exception exception) {
+            log.error("Accept order failed: " + exception);
             this.sendMessage("متاسفانه تایید این سفارش با مشکل مواجه شد. لطفا مجدد امتحان کنید");
         }
     }

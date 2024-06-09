@@ -1,12 +1,14 @@
 package com.mhsenpc.v2raybot.xui.services;
 
 import com.mhsenpc.v2raybot.xui.exceptions.CookieNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
 @Service
+@Slf4j
 public class CookieManager {
 
     TextReader textReader = new TextReader();
@@ -17,7 +19,7 @@ public class CookieManager {
         FileWriter writer = new FileWriter(cookieFileName);
         writer.write(cookie);
         writer.close();
-        System.out.println("Successfully wrote to the file: " + cookieFileName);
+        log.info("Successfully wrote to the file: " + cookieFileName);
     }
 
     public String getCookie() throws CookieNotFoundException {

@@ -43,6 +43,8 @@ public class ClientManager {
 
     public CreateUserResponse save(XUIClient XUIClient) throws UnauthenticatedException, IOException, InboundNotRetrievedException {
 
+        this.validateCookie();
+
         // Create a RestTemplate instance
         RestTemplate restTemplate = new RestTemplate();
 
@@ -59,8 +61,6 @@ public class ClientManager {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("id", String.valueOf(getInboundId()));
         formData.add("settings", clientSettingsJson);
-
-        this.validateCookie();
 
         // Set headers
         HttpHeaders headers = new HttpHeaders();

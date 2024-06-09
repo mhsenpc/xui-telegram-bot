@@ -8,10 +8,12 @@ import com.mhsenpc.v2raybot.telegram.types.Update;
 import com.mhsenpc.v2raybot.xui.dto.XUIClient;
 import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import com.mhsenpc.v2raybot.xui.services.VPNConfigBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class TestAccountController extends TelegramController{
 
     @Autowired
@@ -31,8 +33,8 @@ public class TestAccountController extends TelegramController{
             XUIClient = testClientDirector.build();
             this.sendClientDetails(XUIClient);
         } catch (Exception e) {
-            System.out.println(e);
             this.sendMessage("متاسفانه در فرآیند ساخت اکانت تست یک مشکل فنی به وجود آمده است");
+            log.error(e.getMessage());
         }
 
     }

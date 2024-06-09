@@ -4,6 +4,7 @@ import com.mhsenpc.v2raybot.xui.dto.Inbound;
 import com.mhsenpc.v2raybot.xui.dto.InboundsListResponse;
 import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
 import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +16,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@Slf4j
 public class InboundService {
 
     private XuiConfig xuiConfig;
@@ -56,7 +58,7 @@ public class InboundService {
             }
         }
         catch (Exception exception){
-            System.out.println(exception.getMessage());
+            log.error(exception.getMessage());
 
         }
         return null;
