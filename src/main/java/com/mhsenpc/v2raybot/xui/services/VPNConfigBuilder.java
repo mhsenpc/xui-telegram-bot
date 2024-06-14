@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class VPNConfigBuilder {
 
-    private final String REALITY_PATTERN = "%s://%s@%s:%s?type=tcp&security=%s&pbk=%s&fp=%s&sni=%s&sid=%s&spx=/&flow=%s#%s";
+    private final String UNSECURE_PATTERN = "%s://%s@%s:%s?type=tcp&security=%s#%s";
+    private final String REALITY_PATTERN = "%s://%s@%s:%s?type=tcp&security=%s&pbk=%s&fp=%s&sni=%s&sid=%s&spx=%%2F&flow=%s#%s";
+    private final String HOST = "bot.ferfere.de"; // todo: this should come from a config
 
     @Autowired
     private InboundService inboundService;
@@ -33,11 +35,21 @@ public class VPNConfigBuilder {
         Inbound inbound = inboundService.getActiveInbound();
         StreamSettings streamSettings = inbound.getStreamSettings();
         switch (streamSettings.getSecurity()){
+            case "none" -> {
+                return String.format(UNSECURE_PATTERN,
+                        inbound.getProtocol(),
+                        xuiClient.getId(),
+                        HOST,
+                        inbound.getPort(),
+                        streamSettings.getSecurity(),
+                        xuiClient.getEmail()
+                );
+            }
             case "reality" -> {
                 return String.format(REALITY_PATTERN,
                         inbound.getProtocol(),
                         xuiClient.getId(),
-                        "1.1.1.1",
+                        HOST,
                         inbound.getPort(),
                         streamSettings.getSecurity(),
                         streamSettings.getRealitySettings().getSettings().getPublicKey(),
@@ -49,6 +61,6 @@ public class VPNConfigBuilder {
                  );
             }
         }
-        return "Technical error";
+        return "Technical error: cannot generate vpn config url";
     }
 }

@@ -78,6 +78,4 @@ public abstract class ClientBuilder {
         }
         return null;
     }
-
-
 }
