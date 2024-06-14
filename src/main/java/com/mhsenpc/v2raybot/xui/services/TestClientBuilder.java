@@ -5,18 +5,17 @@ import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
+import java.time.LocalDateTime;
 
 @Service
 public class TestClientBuilder extends ClientBuilder {
 
     public void setExpiryNextDay(){
 
-        //TODO: fix this. doesn't correctly set timestamp
-        LocalDate nextDay = LocalDate.now().plusDays(1);
-        long nextDayEpoch = nextDay.atStartOfDay(ZoneOffset.UTC).toEpochSecond();
-        this.XUIClient.setExpiryTime(nextDayEpoch);
+        LocalDateTime nextDayEpoch = LocalDateTime.now().plusDays(1);
+        long timestamp = nextDayEpoch.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+        this.XUIClient.setExpiryTime(timestamp);
     }
 
     @Override
