@@ -9,14 +9,13 @@ public class UserHomePage extends SendMessageMethod {
     public static final String BTN_BUY_CONFIG = "خرید کانفیگ";
     public static final String BTN_MY_CONFIGS = "کانفیگ های من";
     public static final String BTN_TEST_ACCOUNT = "دریافت اکانت تست";
-    public static final String BTN_VIEW_BALANCE = "وضعیت کانفیگ";
 
     public UserHomePage() {
 
         setText("کاربر گرامی. به ربات خرید وی پی ان خوش آمدید");
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.addRow(new KeyboardButton(BTN_MY_CONFIGS), new KeyboardButton(BTN_BUY_CONFIG));
-        replyKeyboardMarkup.addRow(new KeyboardButton(BTN_TEST_ACCOUNT), new KeyboardButton(BTN_VIEW_BALANCE));
+        replyKeyboardMarkup.addRow(new KeyboardButton(BTN_TEST_ACCOUNT));
         this.setReplyMarkup(replyKeyboardMarkup);
     }
 }
