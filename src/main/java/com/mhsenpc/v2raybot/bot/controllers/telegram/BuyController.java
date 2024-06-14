@@ -10,7 +10,6 @@ import com.mhsenpc.v2raybot.bot.enums.OrderStatus;
 import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
 import com.mhsenpc.v2raybot.bot.enums.UserStep;
 import com.mhsenpc.v2raybot.bot.pages.UserHomePage;
-import com.mhsenpc.v2raybot.bot.pages.WaitForReceiptPage;
 import com.mhsenpc.v2raybot.bot.repository.OrderRepository;
 import com.mhsenpc.v2raybot.bot.repository.PhotoRepository;
 import com.mhsenpc.v2raybot.bot.repository.PlanRepository;
@@ -99,15 +98,23 @@ public class BuyController extends TelegramController {
 
             case BUY_SELECT_PLAN -> {
                 int planId = Integer.parseInt(callbackQueryData);
-                currentPayload.setPlanId(planId);
-                currentStepWithPayload.setUserStep(UserStep.BUY_PAYMENT_METHOD);
-                userStepService.set(chatId, currentStepWithPayload);
+                Optional<Plan> plan = planRepository.findById(planId);
+                if(plan.isEmpty()){
+                    throw new RuntimeException("تعرفه انتخاب شده معتبر نیست");
+                }
 
-                WaitForReceiptPage waitForReceiptPage = new WaitForReceiptPage();
-                waitForReceiptPage.setChatId(chatId);
+                currentPayload.setPlanId(planId);
+
                 currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_RECEIPT);
                 userStepService.set(chatId, currentStepWithPayload);
-                this.requestHandler.send(waitForReceiptPage, Message.class);
+
+                sendMessage( "لطفا مبلغ  "  + plan.get().getPrice()
+                        + " را به حساب زیر واریز نمایید" + System.lineSeparator()
+                        + "5022291081433623" + System.lineSeparator()
+                        + "به نام شامحمدی" + System.lineSeparator()
+                        + "و سپس  فیش واریزی را ارسال کنید" + System.lineSeparator()
+
+                );
             }
 
             case BUY_WAIT_FOR_RECEIPT -> {
