@@ -41,6 +41,9 @@ public class ConfirmOrderService {
     @Autowired
     private ConfigurationManager configurationManager;
 
+    @Autowired
+    private QRCodeService qrCodeService;
+
     public void confirm(Order order) throws InboundNotRetrievedException, IOException {
 
         XuiConfigAdapter configAdapter = new XuiConfigAdapter(configurationManager.getConfig());
@@ -96,9 +99,12 @@ public class ConfirmOrderService {
 
     private void sendAccountDetailsToUser(Order order, String vpnConfig){
 
-        String message = "برای اتصال به وی پی ان باید این کانفیگ را کپی کنید" + System.lineSeparator() + vpnConfig ;
-        String receiver = order.getUser().getChatId();
+        String message = "برای اتصال به وی پی ان باید این کانفیگ را کپی کنید" + System.lineSeparator() ;
+        String receiverChatId = order.getUser().getChatId();
 
-        messageService.send(receiver, message);
+        String qrCodeUrl = qrCodeService.getQRCodeUrl(vpnConfig);
+        messageService.send(receiverChatId, message);
+
+        messageService.sendPhoto(receiverChatId, qrCodeUrl, vpnConfig);
     }
 }

@@ -3,8 +3,9 @@ package com.mhsenpc.v2raybot.bot.controllers.telegram;
 import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
 import com.mhsenpc.v2raybot.bot.entity.TestConfig;
 import com.mhsenpc.v2raybot.bot.entity.User;
-import com.mhsenpc.v2raybot.bot.repository.TestConfigRepository;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
+import com.mhsenpc.v2raybot.bot.services.MessageService;
+import com.mhsenpc.v2raybot.bot.services.QRCodeService;
 import com.mhsenpc.v2raybot.bot.services.TestClientDirector;
 import com.mhsenpc.v2raybot.bot.services.XuiConfigAdapter;
 import com.mhsenpc.v2raybot.telegram.types.Update;
@@ -14,7 +15,6 @@ import com.mhsenpc.v2raybot.xui.services.VPNConfigBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
 
 @Component
@@ -32,6 +32,12 @@ public class TestAccountController extends TelegramController{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private QRCodeService qrCodeService;
+
+    @Autowired
+    private MessageService messageService;
 
     @Override
     public void invoke(Update update) {
@@ -71,8 +77,9 @@ public class TestAccountController extends TelegramController{
 
     private void sendClientDetails(String configUrl) {
 
+        String qrCodeUrl = qrCodeService.getQRCodeUrl(configUrl);
         this.sendMessage(" اکانت تست با موفقیت ساخته شد");
-        this.sendMessage(configUrl);
 
+        messageService.sendPhoto(chatId, qrCodeUrl, configUrl);
     }
 }
