@@ -9,11 +9,8 @@ import com.mhsenpc.v2raybot.bot.enums.OrderStatus;
 import com.mhsenpc.v2raybot.bot.enums.UserStep;
 import com.mhsenpc.v2raybot.bot.pages.admin.orders.ViewOrdersPage;
 import com.mhsenpc.v2raybot.bot.repository.OrderRepository;
-import com.mhsenpc.v2raybot.bot.services.OrderFormatter;
-import com.mhsenpc.v2raybot.bot.services.OrderItemButtonCallbackSerializer;
-import com.mhsenpc.v2raybot.bot.services.OrderService;
-import com.mhsenpc.v2raybot.bot.services.UserStepService;
-import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
+import com.mhsenpc.v2raybot.bot.services.*;
+import com.mhsenpc.v2raybot.telegram.methods.SendPhotoMethod;
 import com.mhsenpc.v2raybot.telegram.types.Message;
 import com.mhsenpc.v2raybot.telegram.types.Update;
 import com.mhsenpc.v2raybot.telegram.types.keyaboard.InlineKeyboardButton;
@@ -38,6 +35,9 @@ public class ViewOrdersController extends TelegramController {
     @Autowired
     private OrderFormatter orderFormatter;
 
+    @Autowired
+    private OrderPhotoService orderPhotoService;
+
     @Override
     public void invoke(Update update) throws Exception {
 
@@ -50,14 +50,15 @@ public class ViewOrdersController extends TelegramController {
                 if(orders.isEmpty()){
                     this.sendMessage("هیچ سفارش در انتظار تایید وجود ندارد");
                 }
-                for (Order tempOrder: orders){
-                    SendMessageMethod orderItemMessage = new SendMessageMethod();
+                for (Order order: orders){
+                    SendPhotoMethod orderItemMessage = new SendPhotoMethod();
                     orderItemMessage.setChatId(chatId);
-                    orderItemMessage.setText(orderFormatter.getFormattedOrder(tempOrder));
+                    orderItemMessage.setPhoto(orderPhotoService.getOrderPhoto(order));
+                    orderItemMessage.setCaption(orderFormatter.getFormattedOrder(order));
 
                     InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-                    String denyOrderCallbackData = OrderItemButtonCallbackSerializer.serialize( new OrderItemButtonCallback(tempOrder.getOrderId(), OrderCommandType.DENY));
-                    String acceptOrderCallbackData = OrderItemButtonCallbackSerializer.serialize( new OrderItemButtonCallback(tempOrder.getOrderId(), OrderCommandType.ACCEPT));
+                    String denyOrderCallbackData = OrderItemButtonCallbackSerializer.serialize( new OrderItemButtonCallback(order.getOrderId(), OrderCommandType.DENY));
+                    String acceptOrderCallbackData = OrderItemButtonCallbackSerializer.serialize( new OrderItemButtonCallback(order.getOrderId(), OrderCommandType.ACCEPT));
 
                     inlineKeyboardMarkup.addRow(
                             new InlineKeyboardButton("رد", denyOrderCallbackData ),
