@@ -13,19 +13,18 @@
     <table class="table table-striped mt-3">
         <thead>
         <tr>
-            <th scope="col">عنوان</th>
-            <th scope="col">چند گیگ؟</th>
-            <th scope="col">چند ماهه؟</th>
-            <th scope="col">چه قیمت؟</th>
+            <th scope="col">حجم</th>
+            <th scope="col">زمان</th>
+            <th scope="col">قیمت</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="plan: ${plans}">
-            <td th:text="${plan.trafficLimit}"></td>
-            <td th:text="${plan.months}"></td>
-            <td th:text="${plan.price}"></td>
+            <td th:text="${plan.trafficLimit}+ گیگ"></td>
+            <td th:text="${plan.months}+ ماهه"></td>
+            <td th:text="${plan.price}+ تومان"></td>
             <td><a class="btn btn-default" th:href="@{'/plans/' + ${plan.planId} }" >ویرایش</a></td>
             <td><a class="btn btn-danger" th:href="@{'/plans/' + ${plan.planId} + '/delete' }" onclick="return confirm('آیا از حذف این بسته مطمئن هستید؟')">حذف</a></td>
         </tr>

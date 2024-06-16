@@ -88,16 +88,15 @@ public class ConfirmOrderService {
 
     private void sendConfirmationMessageToUser(Order order){
 
-        String message = "تبریک. سفارش شما به شماره " + order.getOrderId() + " تایید شد";
+        String message = "تبریک. سفارش شما برای ساخت اکانت  " + order.getPlan().getMonths()  + " ماهه با حجم "  + order.getPlan().getTrafficLimit() + "گیگ تایید شد";
         String receiver = order.getUser().getChatId();
 
         messageService.send(receiver, message);
     }
 
-
     private void sendAccountDetailsToUser(Order order, String vpnConfig){
 
-        String message = "برای اتصال به وی پی ان باید این کانفیگ را کپی کنید" + System.lineSeparator() + "<CODE>" + vpnConfig + "<CODE>" ;
+        String message = "برای اتصال به وی پی ان باید این کانفیگ را کپی کنید" + System.lineSeparator() + vpnConfig ;
         String receiver = order.getUser().getChatId();
 
         messageService.send(receiver, message);

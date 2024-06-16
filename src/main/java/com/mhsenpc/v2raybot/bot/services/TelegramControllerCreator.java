@@ -1,6 +1,7 @@
 package com.mhsenpc.v2raybot.bot.services;
 
 import com.mhsenpc.v2raybot.bot.controllers.telegram.*;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.CreateConfigController;
 import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.HandleOrdersController;
 import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.ViewOrdersController;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
@@ -36,6 +37,9 @@ public class TelegramControllerCreator {
 
     @Autowired
     private MyConfigsController myConfigsController;
+
+    @Autowired
+    private CreateConfigController createConfigController;
 
     protected String chatId;
     protected String message;
@@ -79,6 +83,9 @@ public class TelegramControllerCreator {
             case UserHomePage.BTN_MY_CONFIGS -> {
                 return myConfigsController;
             }
+            case AdminHomePage.BTN_CREATE_CONFIG -> {
+                return createConfigController;
+            }
         }
 
         if(currentStepWithPayload != null){
@@ -86,6 +93,7 @@ public class TelegramControllerCreator {
                 case BUY_SELECT_PLAN, BUY_PAYMENT_METHOD, BUY_WAIT_FOR_RECEIPT -> buyController;
                 case ADMIN_VIEW_ORDERS -> viewOrdersController;
                 case ADMIN_WAITING_FOR_ORDER_APPROVAL -> handleOrdersController;
+                case ADMIN_SELECT_PLAN -> createConfigController;
                 default -> mainMenuController;
             };
         }
