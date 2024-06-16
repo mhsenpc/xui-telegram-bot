@@ -6,6 +6,7 @@ import com.mhsenpc.v2raybot.xui.dto.XUIClient;
 import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
 import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,10 +14,15 @@ public class VPNConfigBuilder {
 
     private final String UNSECURE_PATTERN = "%s://%s@%s:%s?type=tcp&security=%s#%s";
     private final String REALITY_PATTERN = "%s://%s@%s:%s?type=tcp&security=%s&pbk=%s&fp=%s&sni=%s&sid=%s&spx=%%2F&flow=%s#%s";
-    private final String HOST = "bot.ferfere.de"; // todo: this should come from a config
 
     @Autowired
     private InboundService inboundService;
+
+    @Value("${xui.host}")
+    private String HOST;
+
+    @Value("${xui.port}")
+    private String PORT;
 
     private XUIClient xuiClient;
 
@@ -40,7 +46,7 @@ public class VPNConfigBuilder {
                         inbound.getProtocol(),
                         xuiClient.getId(),
                         HOST,
-                        inbound.getPort(),
+                        PORT,
                         streamSettings.getSecurity(),
                         xuiClient.getEmail()
                 );
@@ -50,7 +56,7 @@ public class VPNConfigBuilder {
                         inbound.getProtocol(),
                         xuiClient.getId(),
                         HOST,
-                        inbound.getPort(),
+                        PORT,
                         streamSettings.getSecurity(),
                         streamSettings.getRealitySettings().getSettings().getPublicKey(),
                         streamSettings.getRealitySettings().getSettings().getFingerprint(),
