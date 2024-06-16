@@ -34,7 +34,7 @@ public class ClientManager {
     public int getInboundId() throws InboundNotRetrievedException {
 
         inboundService.setXuiConfig(this.xuiConfig);
-        Inbound activeInbound = this.inboundService.getActiveInbound();
+        Inbound activeInbound = this.inboundService.getDefaultInbound();
         return activeInbound.getId();
     }
 

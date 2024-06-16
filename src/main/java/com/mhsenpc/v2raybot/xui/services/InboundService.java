@@ -6,6 +6,7 @@ import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
 import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -25,15 +26,42 @@ public class InboundService {
         this.xuiConfig = xuiConfig;
     }
 
+    @Value("${xui.inbound.id:0}")
+    private int inboundIdOverride;
+
     @Autowired
     private CookieManager cookieManager;
 
-    public Inbound getActiveInbound() throws InboundNotRetrievedException {
+
+    public Inbound getDefaultInbound() throws InboundNotRetrievedException {
 
         InboundsListResponse inboundsListResponse = getAllInbounds();
         if(inboundsListResponse == null || !inboundsListResponse.isSuccess() || inboundsListResponse.getInbounds().isEmpty()){
             throw new InboundNotRetrievedException();
         }
+
+        Inbound inbound;
+        try{
+            inbound = getOverrideInbound(inboundsListResponse);
+        }
+        catch (InboundNotRetrievedException exception){
+            inbound = getActiveInbound(inboundsListResponse);
+        }
+
+        return inbound;
+    }
+
+    public Inbound getOverrideInbound(InboundsListResponse inboundsListResponse) throws InboundNotRetrievedException {
+
+        for(Inbound inbound: inboundsListResponse.getInbounds()){
+            if(inbound.getId() == inboundIdOverride ){
+                return inbound;
+            }
+        }
+        throw new InboundNotRetrievedException();
+    }
+
+    public Inbound getActiveInbound(InboundsListResponse inboundsListResponse) throws InboundNotRetrievedException {
 
         for(Inbound inbound: inboundsListResponse.getInbounds()){
             if(inbound.isEnable()){

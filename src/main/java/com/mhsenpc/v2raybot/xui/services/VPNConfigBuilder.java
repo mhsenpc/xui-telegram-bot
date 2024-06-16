@@ -32,7 +32,7 @@ public class VPNConfigBuilder {
 
     public String build() throws InboundNotRetrievedException {
 
-        Inbound inbound = inboundService.getActiveInbound();
+        Inbound inbound = inboundService.getDefaultInbound();
         StreamSettings streamSettings = inbound.getStreamSettings();
         switch (streamSettings.getSecurity()){
             case "none" -> {
