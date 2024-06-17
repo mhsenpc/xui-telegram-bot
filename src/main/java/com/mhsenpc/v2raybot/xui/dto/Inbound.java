@@ -8,9 +8,9 @@ import java.util.List;
 
 public class Inbound {
     private int id;
-    private int up;
-    private int down;
-    private int total;
+    private long up;
+    private long down;
+    private long total;
     private String remark;
     private boolean enable;
     private long expiryTime;
@@ -27,15 +27,15 @@ public class Inbound {
         return id;
     }
 
-    public int getUp() {
+    public long getUp() {
         return up;
     }
 
-    public int getDown() {
+    public long getDown() {
         return down;
     }
 
-    public int getTotal() {
+    public long getTotal() {
         return total;
     }
 

@@ -5,8 +5,8 @@ public class ClientStat {
     private int inboundId;
     private boolean enable;
     private String email;
-    private int up;
-    private int down;
+    private long up;
+    private long down;
     private long expiryTime;
     private long total;
     private int reset;
@@ -27,11 +27,11 @@ public class ClientStat {
         return email;
     }
 
-    public int getUp() {
+    public long getUp() {
         return up;
     }
 
-    public int getDown() {
+    public long getDown() {
         return down;
     }
 
