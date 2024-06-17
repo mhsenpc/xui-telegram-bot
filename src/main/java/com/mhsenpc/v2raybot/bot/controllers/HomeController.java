@@ -1,16 +1,15 @@
 package com.mhsenpc.v2raybot.bot.controllers;
 
-import lombok.extern.apachecommons.CommonsLog;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@CommonsLog
-public class HomeController extends BaseController {
+@RestController
+public class HomeController {
 
-    @GetMapping("/")
-    public String home() {
+    @RequestMapping("/")
+    public String showWelcome(){
 
-        return "home";
+
+        return "Welcome to XUI bot";
     }
 }

@@ -1,15 +1,17 @@
 package com.mhsenpc.v2raybot.bot.controllers.telegram;
 
-import com.mhsenpc.v2raybot.bot.controllers.BaseController;
+import com.mhsenpc.v2raybot.bot.config.Config;
+import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.services.MessageService;
 import com.mhsenpc.v2raybot.telegram.services.RequestHandler;
 import com.mhsenpc.v2raybot.telegram.types.Update;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public abstract class TelegramController extends BaseController implements ITelegramController {
+public abstract class TelegramController implements ITelegramController {
 
     protected String chatId;
     protected String message;
@@ -23,6 +25,17 @@ public abstract class TelegramController extends BaseController implements ITele
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private ConfigurationManager configurationManager;
+
+    protected Config config;
+
+    @PostConstruct
+    public void initializeConfig(){
+
+        this.config = this.configurationManager.getConfig();
+    }
 
     public String getChatId() {
         return chatId;
