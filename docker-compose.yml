@@ -27,6 +27,9 @@ services:
       DATABASE_PASSWORD: 54asd54sa23
     depends_on:
       - mysql
+    volumes:
+      - xui_storage:/app/storage
 
 volumes:
   xui_mysql_data:
+  xui_storage:
