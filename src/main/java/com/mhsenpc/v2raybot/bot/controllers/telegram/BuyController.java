@@ -134,7 +134,7 @@ public class BuyController extends TelegramController {
                     return;
                 }
 
-                if(update.getMessage().getPhotos().isEmpty()){
+                if(update.getMessage().getPhotos() == null || update.getMessage().getPhotos().isEmpty()){
                     sendMessage("لطفا فیش واریز شده را ارسال نمایید");
                     return;
                 }
