@@ -18,7 +18,7 @@ public class OrderFormatter {
         text += "%s گیگ" + System.lineSeparator();
         text += "کاربره %s" + System.lineSeparator();
         text += "خریدار: %s" + System.lineSeparator();
-        text += "%s تومن" + System.lineSeparator();
+        text += "%s تومان" + System.lineSeparator();
 
         Plan plan = order.getPlan();
         User user = order.getUser();
