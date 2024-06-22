@@ -125,8 +125,21 @@ public class BuyController extends TelegramController {
 
                 Optional<Plan> plan = planRepository.findById(currentPayload.getPlanId());
                 if (plan.isEmpty()) {
+                    sendMessage("تعرفه انتخاب شده معتبر نیست");
                     throw new RuntimeException("Plan id " + currentPayload.getPlanId() + " not found");
                 }
+
+                if(update.getMessage() == null){
+                    sendMessage("پیام ارسال شده معتبر نیست");
+                    return;
+                }
+
+                if(update.getMessage().getPhotos().isEmpty()){
+                    sendMessage("لطفا فیش واریز شده را ارسال نمایید");
+                    return;
+                }
+
+
 
                 Order order = new Order();
                 order.setPlan(plan.get());
