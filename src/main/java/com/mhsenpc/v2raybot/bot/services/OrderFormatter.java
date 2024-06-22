@@ -5,6 +5,9 @@ import com.mhsenpc.v2raybot.bot.entity.Plan;
 import com.mhsenpc.v2raybot.bot.entity.User;
 import org.springframework.stereotype.Service;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 @Service
 public class OrderFormatter {
 
@@ -20,6 +23,10 @@ public class OrderFormatter {
         Plan plan = order.getPlan();
         User user = order.getUser();
         String buyerText = user.getUsername() + "(" + user.getFirstName() + " " + user.getLastName() +  ")";
-        return String.format(text, plan.getMonths(), plan.getTrafficLimit(), plan.getConnectionLimit(), buyerText , plan.getPrice());
+
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        String formattedNumber = numberFormat.format(plan.getPrice());
+
+        return String.format(text, plan.getMonths(), plan.getTrafficLimit(), plan.getConnectionLimit(), buyerText , formattedNumber);
     }
 }
