@@ -13,6 +13,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByChatId(String chatId);
 
 
-    @Query("SELECT * FROM User WHERE role = 7")
+    @Query("SELECT u FROM User u WHERE u.role = 7")
     List<User> getAdmins();
 }
