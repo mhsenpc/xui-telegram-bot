@@ -14,6 +14,7 @@ import com.mhsenpc.v2raybot.bot.repository.OrderRepository;
 import com.mhsenpc.v2raybot.bot.repository.PhotoRepository;
 import com.mhsenpc.v2raybot.bot.repository.PlanRepository;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
+import com.mhsenpc.v2raybot.bot.services.NewOrderNotifier;
 import com.mhsenpc.v2raybot.bot.services.PlanFormatter;
 import com.mhsenpc.v2raybot.bot.services.UserStepService;
 import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
@@ -49,6 +50,9 @@ public class BuyController extends TelegramController {
 
     @Autowired
     private PlanFormatter planFormatter;
+
+    @Autowired
+    private NewOrderNotifier newOrderNotifier;
 
     @Override
     public void invoke(Update update) {
@@ -150,6 +154,8 @@ public class BuyController extends TelegramController {
 
                 userStepService.clear(chatId);
                 this.requestHandler.send(sendMessageMethod, Message.class);
+
+                newOrderNotifier.notify(order);
             }
         }
 
