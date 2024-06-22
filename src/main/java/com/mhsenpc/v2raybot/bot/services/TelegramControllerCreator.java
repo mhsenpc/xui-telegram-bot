@@ -1,10 +1,7 @@
 package com.mhsenpc.v2raybot.bot.services;
 
 import com.mhsenpc.v2raybot.bot.controllers.telegram.*;
-import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.CreateConfigController;
-import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.HandleOrdersController;
-import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.ViewOrdersController;
-import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.ViewUsersController;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.*;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.pages.BasePage;
 import com.mhsenpc.v2raybot.bot.pages.UserHomePage;
@@ -35,6 +32,9 @@ public class TelegramControllerCreator {
 
     @Autowired
     private HandleOrdersController handleOrdersController;
+
+    @Autowired
+    private HandleUsersController handleUsersController;
 
     @Autowired
     private MyConfigsController myConfigsController;
@@ -90,13 +90,16 @@ public class TelegramControllerCreator {
             case AdminHomePage.BTN_CREATE_CONFIG -> {
                 return createConfigController;
             }
+            case AdminHomePage.BTN_VIEW_USERS -> {
+                return viewUsersController;
+            }
         }
 
         if(currentStepWithPayload != null){
             return switch (currentStepWithPayload.getUserStep()) {
                 case BUY_SELECT_PLAN, BUY_PAYMENT_METHOD, BUY_WAIT_FOR_RECEIPT -> buyController;
                 case ADMIN_VIEW_ORDERS -> viewOrdersController;
-                case ADMIN_VIEW_USERS -> viewUsersController;
+                case ADMIN_VIEW_USERS -> handleUsersController;
                 case ADMIN_WAITING_FOR_ORDER_APPROVAL -> handleOrdersController;
                 case ADMIN_SELECT_PLAN -> createConfigController;
                 default -> mainMenuController;

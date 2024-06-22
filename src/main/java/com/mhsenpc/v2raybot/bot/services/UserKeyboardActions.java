@@ -33,6 +33,8 @@ public class UserKeyboardActions {
         }
 
         inlineKeyboardMarkup.addRow(getInspectToUserButton(user));
+
+        return inlineKeyboardMarkup;
     }
 
     private InlineKeyboardButton getBlockUserButton(User user) throws Exception {
