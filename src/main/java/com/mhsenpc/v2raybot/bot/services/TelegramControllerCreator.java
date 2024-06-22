@@ -4,6 +4,7 @@ import com.mhsenpc.v2raybot.bot.controllers.telegram.*;
 import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.CreateConfigController;
 import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.HandleOrdersController;
 import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.ViewOrdersController;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.ViewUsersController;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.pages.BasePage;
 import com.mhsenpc.v2raybot.bot.pages.UserHomePage;
@@ -40,6 +41,9 @@ public class TelegramControllerCreator {
 
     @Autowired
     private CreateConfigController createConfigController;
+
+    @Autowired
+    private ViewUsersController viewUsersController;
 
     protected String chatId;
     protected String message;
@@ -92,6 +96,7 @@ public class TelegramControllerCreator {
             return switch (currentStepWithPayload.getUserStep()) {
                 case BUY_SELECT_PLAN, BUY_PAYMENT_METHOD, BUY_WAIT_FOR_RECEIPT -> buyController;
                 case ADMIN_VIEW_ORDERS -> viewOrdersController;
+                case ADMIN_VIEW_USERS -> viewUsersController;
                 case ADMIN_WAITING_FOR_ORDER_APPROVAL -> handleOrdersController;
                 case ADMIN_SELECT_PLAN -> createConfigController;
                 default -> mainMenuController;
