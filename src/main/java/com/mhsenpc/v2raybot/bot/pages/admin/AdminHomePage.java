@@ -17,6 +17,7 @@ public class AdminHomePage extends SendMessageMethod {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.addRow(new KeyboardButton(UserHomePage.BTN_TEST_ACCOUNT), new KeyboardButton(BTN_CREATE_CONFIG));
         replyKeyboardMarkup.addRow(new KeyboardButton(BTN_VIEW_ORDERS));
+        replyKeyboardMarkup.addRow(new KeyboardButton(UserHomePage.BTN_BUY_CONFIG));
         this.setReplyMarkup(replyKeyboardMarkup);
     }
 }
