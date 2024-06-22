@@ -4,11 +4,14 @@ import com.mhsenpc.v2raybot.bot.controllers.telegram.TelegramController;
 import com.mhsenpc.v2raybot.bot.dto.OrderItemButtonCallback;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.entity.Order;
+import com.mhsenpc.v2raybot.bot.entity.User;
 import com.mhsenpc.v2raybot.bot.enums.OrderCommandType;
 import com.mhsenpc.v2raybot.bot.enums.OrderStatus;
+import com.mhsenpc.v2raybot.bot.enums.UserRole;
 import com.mhsenpc.v2raybot.bot.enums.UserStep;
 import com.mhsenpc.v2raybot.bot.pages.admin.orders.ViewOrdersPage;
 import com.mhsenpc.v2raybot.bot.repository.OrderRepository;
+import com.mhsenpc.v2raybot.bot.repository.UserRepository;
 import com.mhsenpc.v2raybot.bot.services.*;
 import com.mhsenpc.v2raybot.telegram.methods.SendPhotoMethod;
 import com.mhsenpc.v2raybot.telegram.types.Message;
@@ -38,8 +41,18 @@ public class ViewOrdersController extends TelegramController {
     @Autowired
     private OrderPhotoService orderPhotoService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public void invoke(Update update) throws Exception {
+
+        User user = this.userRepository.findByChatId(chatId);
+
+        if(user.getRole() != UserRole.ADMIN.getValue()){
+            sendMessage("شما اجازه دسترسی به این بخش را ندارید. لطفا با مدیر سیستم تماس بگیرید");
+            return;
+        }
 
         userStepService.set(chatId, new UserStepWithPayload(UserStep.ADMIN_VIEW_ORDERS));
 

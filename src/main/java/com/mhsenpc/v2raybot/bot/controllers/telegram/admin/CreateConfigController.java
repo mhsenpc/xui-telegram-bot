@@ -61,7 +61,7 @@ public class CreateConfigController extends TelegramController {
         User user = this.userRepository.findByChatId(chatId);
 
         if(user.getRole() != UserRole.ADMIN.getValue()){
-            sendMessage("شما اجازه دسترسی به این بخش را ندارید. لطفا با مدیر سیستم بگیرید");
+            sendMessage("شما اجازه دسترسی به این بخش را ندارید. لطفا با مدیر سیستم تماس بگیرید");
             return;
         }
 
