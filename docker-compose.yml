@@ -18,7 +18,7 @@ services:
     image: mhsenpc/xui_bot:latest
     restart: always
     ports:
-      - "8080:8080"
+      - "8888:8080"
     environment:
       DATABASE_HOST: mysql
       DATABASE_PORT: 3306
@@ -29,6 +29,14 @@ services:
       - mysql
     volumes:
       - xui_storage:/app/storage
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - "9999:8080"
+    depends_on:
+      - mysql
 
 volumes:
   xui_mysql_data:
