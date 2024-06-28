@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -47,6 +47,33 @@ jobs:
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-        
+
       - name: Run tests with Maven
         run: mvn test
+
+      - name: Get the current timestamp
+        id: get-timestamp
+        run: echo "VERSION=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        run: |
+          echo "compiling jar file"
+          mvn clean package -DskipTests
+          echo "building docker image"
+          docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:${{ env.VERSION }} -t ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:latest .
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          echo "pushing docker image with version ${{ env.VERSION }}"
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:${{ env.VERSION }}
+          echo "pushing docker image with latest tag"
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:latest
+
+      - name: Done
+        run: echo "Done"
