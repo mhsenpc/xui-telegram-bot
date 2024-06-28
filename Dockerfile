@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the application JAR file to the container
 COPY target/bot*.jar app.jar
 
+# Copy tools to the container
+COPY tools/* /tools/
+
 # Expose the port that your Spring Boot application runs on
 EXPOSE 8080
 
