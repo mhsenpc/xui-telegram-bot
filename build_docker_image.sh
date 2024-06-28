@@ -1,18 +1,7 @@
 #!/bin/sh
 
-# Get the current Git commit hash
-COMMIT_HASH=$(git rev-parse --short HEAD)
-
-# Optional: Get the current Git tag (if any) and use it as a version
-# TAG=$(git describe --tags --abbrev=0 2>/dev/null)
-# if [ -z "$TAG" ]; then
-#   VERSION=$COMMIT_HASH
-# else
-#   VERSION=$TAG
-# fi
-
-# For simplicity, we'll just use the commit hash as the version
-VERSION=$COMMIT_HASH
+# Get the current timestamp
+VERSION=$(date +%Y%m%d%H%M%S)
 
 echo "Version: $VERSION"
 
