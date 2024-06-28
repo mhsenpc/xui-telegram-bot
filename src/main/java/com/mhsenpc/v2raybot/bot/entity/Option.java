@@ -18,7 +18,7 @@ public class Option {
     @Column(unique=true, name = "option_key")
     private String key;
 
-    @Column(unique=true, name = "option_value")
+    @Column(name = "option_value")
     private String value;
 
     public String getKey() {
