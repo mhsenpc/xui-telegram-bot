@@ -55,22 +55,22 @@ jobs:
         id: get-timestamp
         run: echo "VERSION=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build and Push Docker image
+      - name: Build Docker image
         run: |
-          echo "building docker image"
-          docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:${{ env.VERSION }} -t ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:latest --push .
+          echo "Building docker image"
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:${{ env.VERSION }} -t ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:latest
+
+      - name: Push Docker image
+        run: |
+          echo "Pushing docker image"
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:${{ env.VERSION }}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:latest
 
       - name: Done
         run: echo "Done"
