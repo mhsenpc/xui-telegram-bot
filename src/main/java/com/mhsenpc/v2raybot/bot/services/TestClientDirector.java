@@ -1,6 +1,6 @@
 package com.mhsenpc.v2raybot.bot.services;
 
-import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
+import com.mhsenpc.v2raybot.bot.config.XUIConfigBuilder;
 import com.mhsenpc.v2raybot.bot.services.name.TestNameProvider;
 import com.mhsenpc.v2raybot.xui.dto.XUIClient;
 import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
@@ -21,12 +21,8 @@ public class TestClientDirector {
     @Autowired
     private TestNameProvider testNameProvider;
 
-    @Autowired
-    private ConfigurationManager configurationManager;
-
     public XUIClient build() throws InboundNotRetrievedException, IOException {
-        XuiConfigAdapter configAdapter = new XuiConfigAdapter(configurationManager.getConfig());
-        testClientBuilder.setXuiConfig(configAdapter);
+        testClientBuilder.setXuiConfig(XUIConfigBuilder.build());
         testClientBuilder.setEmail(testNameProvider.getName());
         testClientBuilder.setTrafficInMB(TRAFFIC_IN_MB);
         testClientBuilder.setExpiryNextDay();

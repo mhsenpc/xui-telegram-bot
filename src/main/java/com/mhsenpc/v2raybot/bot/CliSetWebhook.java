@@ -1,7 +1,7 @@
 package com.mhsenpc.v2raybot.bot;
 
-import com.mhsenpc.v2raybot.bot.config.Config;
 import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
+import com.mhsenpc.v2raybot.bot.enums.ConfigName;
 import com.mhsenpc.v2raybot.telegram.methods.SetWebhookMethodBase;
 import com.mhsenpc.v2raybot.telegram.services.RequestHandler;
 import com.mhsenpc.v2raybot.telegram.types.SetWebhookResponse;
@@ -28,11 +28,15 @@ public class CliSetWebhook implements ApplicationRunner {
 
             Scanner scanner = new Scanner(System.in);
 
-            System.out.print("Enter bot url: ");
+            String token = configurationManager.getConfig(ConfigName.BOT_TOKEN);
+            if(token.isEmpty()) {
+                System.out.print("Enter Bot token: ");
+                token = scanner.nextLine();
+                configurationManager.setConfig(ConfigName.BOT_TOKEN, token);
+            }
+
+            System.out.print("Enter bot url (https): ");
             String url = scanner.nextLine();
-
-
-            Config config = configurationManager.getConfig();
 
             if(!url.endsWith("/")){
                 url += "/";
@@ -40,7 +44,7 @@ public class CliSetWebhook implements ApplicationRunner {
 
             SetWebhookMethodBase setWebhookMethod = new SetWebhookMethodBase();
             setWebhookMethod.addQueryParam("url", url + "handle");
-            setWebhookMethod.setToken(config.getToken());
+            setWebhookMethod.setToken(token);
 
             try {
                 SetWebhookResponse response = requestHandler.send(setWebhookMethod, SetWebhookResponse.class);
@@ -48,7 +52,7 @@ public class CliSetWebhook implements ApplicationRunner {
             }
             catch (Exception exception){
                 System.out.println( "Failed to set webhook" + System.lineSeparator() + exception.getMessage()
-                        + "Token: " + config.getToken()
+                        + "Token: " + token
                         + "Url: " + url);;
             }
 

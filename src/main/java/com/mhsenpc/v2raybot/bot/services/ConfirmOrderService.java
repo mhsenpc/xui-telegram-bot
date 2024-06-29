@@ -1,6 +1,7 @@
 package com.mhsenpc.v2raybot.bot.services;
 
 import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
+import com.mhsenpc.v2raybot.bot.config.XUIConfigBuilder;
 import com.mhsenpc.v2raybot.bot.entity.Client;
 import com.mhsenpc.v2raybot.bot.entity.Order;
 import com.mhsenpc.v2raybot.bot.entity.Transaction;
@@ -46,12 +47,10 @@ public class ConfirmOrderService {
 
     public void confirm(Order order) throws InboundNotRetrievedException, IOException {
 
-        XuiConfigAdapter configAdapter = new XuiConfigAdapter(configurationManager.getConfig());
-
         XUIClient xuiClient = clientDirector.build(order);
         String vpnConfig = this.vpnConfigBuilder
                 .setClient(xuiClient)
-                .setXUIConfig(configAdapter)
+                .setXUIConfig(XUIConfigBuilder.build())
                 .build();
         setOrderStatusToConfirmed(order);
         sendConfirmationMessageToUser(order);

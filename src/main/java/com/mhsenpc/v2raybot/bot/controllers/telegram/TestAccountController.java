@@ -1,6 +1,7 @@
 package com.mhsenpc.v2raybot.bot.controllers.telegram;
 
 import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
+import com.mhsenpc.v2raybot.bot.config.XUIConfigBuilder;
 import com.mhsenpc.v2raybot.bot.entity.TestConfig;
 import com.mhsenpc.v2raybot.bot.entity.User;
 import com.mhsenpc.v2raybot.bot.enums.UserRole;
@@ -25,9 +26,6 @@ public class TestAccountController extends TelegramController{
 
     @Autowired
     private VPNConfigBuilder vpnConfigBuilder;
-
-    @Autowired
-    private ConfigurationManager configurationManager;
 
     @Autowired
     private UserRepository userRepository;
@@ -68,10 +66,9 @@ public class TestAccountController extends TelegramController{
 
     private String generateUrlForClient(XUIClient xuiClient) throws InboundNotRetrievedException {
 
-        XuiConfigAdapter configAdapter = new XuiConfigAdapter(configurationManager.getConfig());
         return vpnConfigBuilder
                 .setClient(xuiClient)
-                .setXUIConfig(configAdapter)
+                .setXUIConfig(XUIConfigBuilder.build())
                 .build();
     }
 

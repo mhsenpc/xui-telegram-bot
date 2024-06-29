@@ -3,8 +3,8 @@ package com.mhsenpc.v2raybot.telegram.methods;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mhsenpc.v2raybot.bot.SpringContext;
-import com.mhsenpc.v2raybot.bot.config.Config;
 import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
+import com.mhsenpc.v2raybot.bot.enums.ConfigName;
 import com.mhsenpc.v2raybot.telegram.types.keyaboard.IReplyMarkup;
 
 public class SendMessageMethod extends BaseTelegramMethod {
@@ -26,8 +26,7 @@ public class SendMessageMethod extends BaseTelegramMethod {
         super();
         this.setMethod("sendMessage");
 
-        Config config = SpringContext.getBean(ConfigurationManager.class).getConfig();
-        setToken(config.getToken());
+        setToken(SpringContext.getBean(ConfigurationManager.class).getConfig(ConfigName.BOT_TOKEN));
     }
 
     public String getChatId() {

@@ -1,7 +1,7 @@
 package com.mhsenpc.v2raybot.bot;
 
-import com.mhsenpc.v2raybot.bot.config.Config;
 import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
+import com.mhsenpc.v2raybot.bot.enums.ConfigName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -21,21 +21,18 @@ public class CliConfiguration implements ApplicationRunner {
         if (args.containsOption("config")) {
 
             Scanner scanner = new Scanner(System.in);
-            Config config = new Config();
 
             System.out.print("Enter Bot token: ");
-            config.setToken(scanner.nextLine());
+            configurationManager.setConfig(ConfigName.BOT_TOKEN, scanner.nextLine());
 
             System.out.print("Enter panel URL: ");
-            config.setBaseUrl(scanner.nextLine());
+            configurationManager.setConfig(ConfigName.PANEL_BASE_URL, scanner.nextLine());
 
             System.out.print("Enter panel username: ");
-            config.setUsername(scanner.nextLine());
+            configurationManager.setConfig(ConfigName.PANEL_USERNAME, scanner.nextLine());
 
             System.out.print("Enter panel password: ");
-            config.setPassword(scanner.nextLine());
-
-            configurationManager.setConfig(config);
+            configurationManager.setConfig(ConfigName.PANEL_PASSWORD, scanner.nextLine());
 
             System.out.println("config saved successfully");
 
