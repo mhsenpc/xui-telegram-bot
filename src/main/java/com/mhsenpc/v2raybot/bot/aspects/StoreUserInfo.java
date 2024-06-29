@@ -53,7 +53,14 @@ public class StoreUserInfo {
         dbUser.setChatId(telegramUser.getId());
         dbUser.setStatus(UserStatus.ACTIVE);
         dbUser.setCreatedAt(new Date());
-        dbUser.setRole(UserRole.NORMAL.getValue());
+
+        // first user that visit the bot will be admin
+        if(userRepository.count() == 0){
+            dbUser.setRole(UserRole.ADMIN.getValue());
+        }
+        else{
+            dbUser.setRole(UserRole.NORMAL.getValue());
+        }
         userRepository.save(dbUser);
     }
 }
