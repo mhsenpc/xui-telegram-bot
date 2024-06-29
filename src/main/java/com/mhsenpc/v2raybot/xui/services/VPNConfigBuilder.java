@@ -6,7 +6,6 @@ import com.mhsenpc.v2raybot.xui.dto.XUIClient;
 import com.mhsenpc.v2raybot.xui.dto.XuiConfig;
 import com.mhsenpc.v2raybot.xui.exceptions.InboundNotRetrievedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,13 +17,8 @@ public class VPNConfigBuilder {
     @Autowired
     private InboundService inboundService;
 
-    @Value("${xui.host}")
-    private String HOST;
-
-    @Value("${xui.port}")
-    private String PORT;
-
     private XUIClient xuiClient;
+    private XuiConfig xuiConfig;
 
     public VPNConfigBuilder setClient(XUIClient xuiClient){
         this.xuiClient = xuiClient;
@@ -33,6 +27,7 @@ public class VPNConfigBuilder {
 
     public VPNConfigBuilder setXUIConfig(XuiConfig xuiConfig){
         inboundService.setXuiConfig(xuiConfig);
+        this.xuiConfig = xuiConfig;
         return this;
     }
 
@@ -45,8 +40,8 @@ public class VPNConfigBuilder {
                 return String.format(UNSECURE_PATTERN,
                         inbound.getProtocol(),
                         xuiClient.getId(),
-                        HOST,
-                        PORT,
+                        xuiConfig.getVpnHost(),
+                        xuiConfig.getVpnPort(),
                         streamSettings.getSecurity(),
                         xuiClient.getEmail()
                 );
@@ -55,8 +50,8 @@ public class VPNConfigBuilder {
                 return String.format(REALITY_PATTERN,
                         inbound.getProtocol(),
                         xuiClient.getId(),
-                        HOST,
-                        PORT,
+                        xuiConfig.getVpnHost(),
+                        xuiConfig.getVpnPort(),
                         streamSettings.getSecurity(),
                         streamSettings.getRealitySettings().getSettings().getPublicKey(),
                         streamSettings.getRealitySettings().getSettings().getFingerprint(),

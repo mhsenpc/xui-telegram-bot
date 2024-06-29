@@ -26,9 +26,6 @@ public class InboundService {
         this.xuiConfig = xuiConfig;
     }
 
-    @Value("${xui.inbound.id:0}")
-    private int inboundIdOverride;
-
     @Autowired
     private CookieManager cookieManager;
 
@@ -53,8 +50,10 @@ public class InboundService {
 
     public Inbound getOverrideInbound(InboundsListResponse inboundsListResponse) throws InboundNotRetrievedException {
 
+        int overrideInboundId = Integer.parseInt(this.xuiConfig.getOverrideInboundId());
+
         for(Inbound inbound: inboundsListResponse.getInbounds()){
-            if(inbound.getId() == inboundIdOverride ){
+            if(inbound.getId() == overrideInboundId ){
                 return inbound;
             }
         }

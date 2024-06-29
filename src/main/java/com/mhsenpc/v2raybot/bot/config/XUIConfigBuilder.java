@@ -16,7 +16,10 @@ public class XUIConfigBuilder {
         return new XuiConfig(
                 configurationManager.getConfig(ConfigName.PANEL_BASE_URL),
                 configurationManager.getConfig(ConfigName.PANEL_USERNAME),
-                configurationManager.getConfig(ConfigName.PANEL_PASSWORD)
+                configurationManager.getConfig(ConfigName.PANEL_PASSWORD),
+                configurationManager.getConfig(ConfigName.INBOUND_ID_OVERRIDE),
+                configurationManager.getConfig(ConfigName.VPN_HOST),
+                configurationManager.getConfig(ConfigName.VPN_PORT)
         );
     }
 }

@@ -8,45 +8,42 @@ public class XuiConfig {
 
     private String password;
 
-    public XuiConfig() {
-    }
+    private String overrideInboundId;
 
-    public XuiConfig(String baseUrl, String username, String password) {
+    private String vpnHost;
+
+    private String vpnPort;
+
+    public XuiConfig(String baseUrl, String username, String password, String overrideInboundId, String vpnHost, String vpnPort) {
         this.baseUrl = baseUrl;
         this.username = username;
         this.password = password;
+        this.overrideInboundId = overrideInboundId;
+        this.vpnHost = vpnHost;
+        this.vpnPort = vpnPort;
     }
 
     public String getBaseUrl() {
         return baseUrl;
     }
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
-
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getOverrideInboundId() {
+        return overrideInboundId;
     }
 
-    @Override
-    public String toString() {
-        return "XuiConfig{" +
-                "baseUrl='" + baseUrl + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public String getVpnHost() {
+        return vpnHost;
+    }
+
+    public String getVpnPort() {
+        return vpnPort;
     }
 }

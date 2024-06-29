@@ -4,5 +4,8 @@ public enum ConfigName {
     PANEL_BASE_URL,
     PANEL_USERNAME,
     PANEL_PASSWORD,
+    INBOUND_ID_OVERRIDE,
+    VPN_HOST,
+    VPN_PORT,
     BOT_TOKEN
 }
