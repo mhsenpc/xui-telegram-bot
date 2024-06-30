@@ -7,5 +7,6 @@ public enum ConfigName {
     INBOUND_ID_OVERRIDE,
     VPN_HOST,
     VPN_PORT,
+    SAVE_ORDER_MESSAGE,
     BOT_TOKEN
 }

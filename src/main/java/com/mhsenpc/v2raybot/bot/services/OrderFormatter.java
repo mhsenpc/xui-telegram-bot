@@ -3,13 +3,14 @@ package com.mhsenpc.v2raybot.bot.services;
 import com.mhsenpc.v2raybot.bot.entity.Order;
 import com.mhsenpc.v2raybot.bot.entity.Plan;
 import com.mhsenpc.v2raybot.bot.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.text.NumberFormat;
-import java.util.Locale;
 
 @Service
 public class OrderFormatter {
+
+    @Autowired
+    private NumberFormatter numberFormatter;
 
     public String getFormattedOrder(Order order){
 
@@ -24,8 +25,7 @@ public class OrderFormatter {
         User user = order.getUser();
         String buyerText = user.getUsername() + "(" + user.getFirstName() + " " + user.getLastName() +  ")";
 
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
-        String formattedNumber = numberFormat.format(plan.getPrice());
+        String formattedNumber = numberFormatter.format(plan.getPrice());
 
         return String.format(text, plan.getMonths(), plan.getTrafficLimit(), plan.getConnectionLimit(), buyerText , formattedNumber);
     }

@@ -1,11 +1,13 @@
 package com.mhsenpc.v2raybot.bot.controllers.telegram;
 
+import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
 import com.mhsenpc.v2raybot.bot.dto.BuyAccountRequest;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.entity.Order;
 import com.mhsenpc.v2raybot.bot.entity.Photo;
 import com.mhsenpc.v2raybot.bot.entity.Plan;
 import com.mhsenpc.v2raybot.bot.entity.User;
+import com.mhsenpc.v2raybot.bot.enums.ConfigName;
 import com.mhsenpc.v2raybot.bot.enums.OrderStatus;
 import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
 import com.mhsenpc.v2raybot.bot.enums.UserStep;
@@ -15,6 +17,7 @@ import com.mhsenpc.v2raybot.bot.repository.PhotoRepository;
 import com.mhsenpc.v2raybot.bot.repository.PlanRepository;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
 import com.mhsenpc.v2raybot.bot.services.NewOrderNotifier;
+import com.mhsenpc.v2raybot.bot.services.NumberFormatter;
 import com.mhsenpc.v2raybot.bot.services.PlanFormatter;
 import com.mhsenpc.v2raybot.bot.services.UserStepService;
 import com.mhsenpc.v2raybot.telegram.methods.SendMessageMethod;
@@ -53,6 +56,12 @@ public class BuyController extends TelegramController {
 
     @Autowired
     private NewOrderNotifier newOrderNotifier;
+
+    @Autowired
+    private ConfigurationManager configurationManager;
+
+    @Autowired
+    private NumberFormatter numberFormatter;
 
     @Override
     public void invoke(Update update) {
@@ -112,13 +121,13 @@ public class BuyController extends TelegramController {
                 currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_RECEIPT);
                 userStepService.set(chatId, currentStepWithPayload);
 
-                sendMessage( "لطفا مبلغ  "  + plan.get().getPrice()
-                        + " را به حساب زیر واریز نمایید" + System.lineSeparator()
-                        + "5022291081433623" + System.lineSeparator()
-                        + "به نام شامحمدی" + System.lineSeparator()
-                        + "و سپس  فیش واریزی را ارسال کنید" + System.lineSeparator()
+                String formattedNumber = numberFormatter.format(plan.get().getPrice());
+                sendMessage("سفارش شما با موفقیت ثبت شد. هزینه کانفیگ "  +  formattedNumber + " تومان");
 
-                );
+                String customPostOrderMessage = configurationManager.getConfig(ConfigName.SAVE_ORDER_MESSAGE);
+                if(!customPostOrderMessage.isEmpty()) {
+                    sendMessage(customPostOrderMessage);
+                }
             }
 
             case BUY_WAIT_FOR_RECEIPT -> {
@@ -138,8 +147,6 @@ public class BuyController extends TelegramController {
                     sendMessage("لطفا فیش واریز شده را ارسال نمایید");
                     return;
                 }
-
-
 
                 Order order = new Order();
                 order.setPlan(plan.get());

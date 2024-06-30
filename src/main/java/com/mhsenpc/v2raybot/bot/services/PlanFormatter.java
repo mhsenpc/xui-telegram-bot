@@ -1,18 +1,18 @@
 package com.mhsenpc.v2raybot.bot.services;
 
 import com.mhsenpc.v2raybot.bot.entity.Plan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.text.NumberFormat;
-import java.util.Locale;
 
 @Service
 public class PlanFormatter {
 
+    @Autowired
+    private NumberFormatter numberFormatter;
+
     public String format(Plan plan){
 
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
-        String formattedNumber = numberFormat.format(plan.getPrice());
+        String formattedNumber = numberFormatter.format(plan.getPrice());
 
         return  plan.getMonths() + " ماهه" + "\n" +
                 plan.getTrafficLimit() + " گیگ" + "\n" +
