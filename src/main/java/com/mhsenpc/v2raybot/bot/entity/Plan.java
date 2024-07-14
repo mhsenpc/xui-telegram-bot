@@ -2,6 +2,8 @@ package com.mhsenpc.v2raybot.bot.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "plans")
 public class Plan {
@@ -12,6 +14,7 @@ public class Plan {
     private int months;
     private int trafficLimit;
     private int connectionLimit;
+    private Date deletedAt;
 
     public Plan() {
     }
@@ -61,6 +64,14 @@ public class Plan {
 
     public void setConnectionLimit(int connectionLimit) {
         this.connectionLimit = connectionLimit;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     @Override

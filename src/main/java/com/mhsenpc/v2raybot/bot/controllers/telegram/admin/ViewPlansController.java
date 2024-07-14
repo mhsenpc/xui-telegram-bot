@@ -59,12 +59,12 @@ public class ViewPlansController extends TelegramController {
 
                 ViewPlansPage viewPlansPage = new ViewPlansPage();
                 viewPlansPage.setChatId(chatId);
-                viewPlansPage.setText("لست تعرفه ها");
+                viewPlansPage.setText("لیست تعرفه ها");
 
                 this.requestHandler.send(viewPlansPage, Message.class);
 
 
-                List<Plan> plans = planRepository.findAll();
+                List<Plan> plans = planRepository.findAllNonDeletedPlans();
                 if(plans.isEmpty()){
                     this.sendMessage("تاکنون هیچ تعرفه ای ثبت نشده است. بدون ثبت تعرفه کاربران توانایی ثبت سفارش ندارند");
                 }

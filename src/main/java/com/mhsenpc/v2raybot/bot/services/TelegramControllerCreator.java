@@ -48,6 +48,9 @@ public class TelegramControllerCreator {
     @Autowired
     private ViewPlansController viewPlansController;
 
+    @Autowired
+    private HandlePlansController handlePlansController;
+
     protected String chatId;
     protected String message;
     protected UserStepWithPayload currentStepWithPayload;
@@ -109,6 +112,7 @@ public class TelegramControllerCreator {
                 case ADMIN_WAITING_FOR_ORDER_COMMANDS -> handleOrdersController;
                 case ADMIN_SELECT_PLAN -> createConfigController;
                 case ADMIN_VIEW_PLANS -> viewPlansController;
+                case ADMIN_WAITING_FOR_PLAN_COMMANDS -> handlePlansController;
                 default -> mainMenuController;
             };
         }

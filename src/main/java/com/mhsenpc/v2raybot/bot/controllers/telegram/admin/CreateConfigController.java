@@ -70,7 +70,7 @@ public class CreateConfigController extends TelegramController {
             SendMessageMethod planMessageItem = new SendMessageMethod();
             planMessageItem.setChatId(chatId);
 
-            List<Plan> planList = planRepository.findAll();
+            List<Plan> planList = planRepository.findAllNonDeletedPlans();
             if(planList.isEmpty()){
                 planMessageItem.setText("متاسفانه هیچ تعرفه ای در سیستم تعریف نشده است. لطفا از بخش تنظیمات پلن های خود را تعریف کنید");
                 this.requestHandler.send(planMessageItem, Message.class);
