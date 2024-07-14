@@ -10,7 +10,9 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Component
 public class CliSetWebhook implements ApplicationRunner {
@@ -24,39 +26,40 @@ public class CliSetWebhook implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
 
-        if (args.containsOption("webhook")) {
+        Path path = Paths.get("./storage/webhook.set");
+        boolean isWebhookAlreadySet = Files.exists(path);
 
-            Scanner scanner = new Scanner(System.in);
+        if (args.containsOption("webhook") || !isWebhookAlreadySet) {
 
             String token = configurationManager.getConfig(ConfigName.BOT_TOKEN);
-            if(token.isEmpty()) {
-                System.out.print("Enter Bot token: ");
-                token = scanner.nextLine();
+            if(token.isEmpty()){
+                throw new RuntimeException("Bot token was not set in config");
             }
 
-            System.out.print("Enter bot url (https): ");
-            String url = scanner.nextLine();
+            String botHostUrl = configurationManager.getConfig(ConfigName.BOT_HOST_URL);
 
-            if(!url.endsWith("/")){
-                url += "/";
+            if(!botHostUrl.endsWith("/")){
+                botHostUrl += "/";
             }
 
             SetWebhookMethodBase setWebhookMethod = new SetWebhookMethodBase();
-            setWebhookMethod.addQueryParam("url", url + "handle");
+            setWebhookMethod.addQueryParam("url", botHostUrl + "handle");
             setWebhookMethod.setToken(token);
 
             try {
                 SetWebhookResponse response = requestHandler.send(setWebhookMethod, SetWebhookResponse.class);
-                System.out.println( "Success. webhook set");;
+                Files.write(path, "1".getBytes());
+                System.out.println( "Success. webhook set. Telegram request will be sent to " + botHostUrl);;
             }
             catch (Exception exception){
                 System.out.println( "Failed to set webhook" + System.lineSeparator() + exception.getMessage()
                         + "Token: " + token
-                        + "Url: " + url);;
+                        + "Url: " + botHostUrl);
+
+                System.out.println("Please consider check BOT_TOKEN and BOT_HOST_URL in your config!");
+
+                System.exit(0);
             }
-
-
-            System.exit(0);
         }
     }
 }
