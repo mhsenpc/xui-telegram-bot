@@ -2,10 +2,18 @@ package com.mhsenpc.v2raybot.bot.services;
 
 import com.mhsenpc.v2raybot.bot.controllers.telegram.*;
 import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.*;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.Orders.HandleOrdersController;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.Orders.ViewOrdersController;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.Plans.AddPlanController;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.Plans.HandlePlansController;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.Plans.ViewPlansController;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.Users.HandleUsersController;
+import com.mhsenpc.v2raybot.bot.controllers.telegram.admin.Users.ViewUsersController;
 import com.mhsenpc.v2raybot.bot.dto.UserStepWithPayload;
 import com.mhsenpc.v2raybot.bot.pages.BasePage;
 import com.mhsenpc.v2raybot.bot.pages.UserHomePage;
 import com.mhsenpc.v2raybot.bot.pages.admin.AdminHomePage;
+import com.mhsenpc.v2raybot.bot.pages.admin.ViewPlansPage;
 import com.mhsenpc.v2raybot.telegram.types.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +58,9 @@ public class TelegramControllerCreator {
 
     @Autowired
     private HandlePlansController handlePlansController;
+
+    @Autowired
+    private AddPlanController addPlanController;
 
     protected String chatId;
     protected String message;
@@ -102,6 +113,9 @@ public class TelegramControllerCreator {
             case AdminHomePage.BTN_VIEW_PLANS -> {
                 return viewPlansController;
             }
+            case ViewPlansPage.BTN_ADD_PLAN -> {
+                return addPlanController;
+            }
         }
 
         if(currentStepWithPayload != null){
@@ -113,6 +127,7 @@ public class TelegramControllerCreator {
                 case ADMIN_SELECT_PLAN -> createConfigController;
                 case ADMIN_VIEW_PLANS -> viewPlansController;
                 case ADMIN_WAITING_FOR_PLAN_COMMANDS -> handlePlansController;
+                case ADMIN_CREATE_PLAN_WAIT_FOR_CONNECTIONS, ADMIN_CREATE_PLAN_WAIT_FOR_MONTH, ADMIN_CREATE_PLAN_WAIT_FOR_PRICE, ADMIN_CREATE_PLAN_WAIT_FOR_TRAFFIC -> addPlanController;
                 default -> mainMenuController;
             };
         }

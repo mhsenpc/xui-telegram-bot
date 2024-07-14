@@ -80,8 +80,6 @@ public class CreateConfigController extends TelegramController {
 
                 // set step
                 BuyAccountRequest buyAccountRequestPayload = new BuyAccountRequest();
-                buyAccountRequestPayload.setChatId(chatId);
-                buyAccountRequestPayload.setUserId(user.getUserId());
                 buyAccountRequestPayload.setPaymentMethod(PaymentMethod.WALLET);
                 UserStepWithPayload stepWithPayload = new UserStepWithPayload(UserStep.ADMIN_SELECT_PLAN, buyAccountRequestPayload);
                 userStepService.set(chatId, stepWithPayload);
