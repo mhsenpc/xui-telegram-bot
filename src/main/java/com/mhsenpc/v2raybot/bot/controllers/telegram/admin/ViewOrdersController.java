@@ -56,7 +56,6 @@ public class ViewOrdersController extends TelegramController {
 
         userStepService.set(chatId, new UserStepWithPayload(UserStep.ADMIN_VIEW_ORDERS));
 
-
         switch (message){
             case ViewOrdersPage.BTN_PENDING_ORDERS -> {
                 List<Order> orders = orderRepository.findByStatusAndPhotosIsNotEmpty(OrderStatus.PENDING.getValue());
@@ -83,7 +82,7 @@ public class ViewOrdersController extends TelegramController {
                     requestHandler.send(orderItemMessage, Message.class);
                 }
 
-                userStepService.set(chatId, new UserStepWithPayload(UserStep.ADMIN_WAITING_FOR_ORDER_APPROVAL));
+                userStepService.set(chatId, new UserStepWithPayload(UserStep.ADMIN_WAITING_FOR_ORDER_COMMANDS));
             }
             default -> {
                 ViewOrdersPage viewOrdersPage = new ViewOrdersPage();

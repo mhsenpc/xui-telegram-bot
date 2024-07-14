@@ -45,6 +45,9 @@ public class TelegramControllerCreator {
     @Autowired
     private ViewUsersController viewUsersController;
 
+    @Autowired
+    private ViewPlansController viewPlansController;
+
     protected String chatId;
     protected String message;
     protected UserStepWithPayload currentStepWithPayload;
@@ -93,6 +96,9 @@ public class TelegramControllerCreator {
             case AdminHomePage.BTN_VIEW_USERS -> {
                 return viewUsersController;
             }
+            case AdminHomePage.BTN_VIEW_PLANS -> {
+                return viewPlansController;
+            }
         }
 
         if(currentStepWithPayload != null){
@@ -100,8 +106,9 @@ public class TelegramControllerCreator {
                 case BUY_SELECT_PLAN, BUY_PAYMENT_METHOD, BUY_WAIT_FOR_RECEIPT -> buyController;
                 case ADMIN_VIEW_ORDERS -> viewOrdersController;
                 case ADMIN_VIEW_USERS -> handleUsersController;
-                case ADMIN_WAITING_FOR_ORDER_APPROVAL -> handleOrdersController;
+                case ADMIN_WAITING_FOR_ORDER_COMMANDS -> handleOrdersController;
                 case ADMIN_SELECT_PLAN -> createConfigController;
+                case ADMIN_VIEW_PLANS -> viewPlansController;
                 default -> mainMenuController;
             };
         }

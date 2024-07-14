@@ -8,5 +8,6 @@ public enum ConfigName {
     VPN_HOST,
     VPN_PORT,
     SAVE_ORDER_MESSAGE,
-    BOT_TOKEN
+    BOT_TOKEN,
+    BOT_HOST_URL,
 }
