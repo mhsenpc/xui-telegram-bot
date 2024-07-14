@@ -3,26 +3,8 @@ package com.mhsenpc.v2raybot.bot.dto;
 import com.mhsenpc.v2raybot.bot.enums.PaymentMethod;
 
 public class BuyAccountRequest {
-    private int userId;
-    private String chatId;
     private int planId;
     private PaymentMethod paymentMethod;
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(String chatId) {
-        this.chatId = chatId;
-    }
 
     public PaymentMethod getPaymentMethod() {
         return paymentMethod;
@@ -43,8 +25,6 @@ public class BuyAccountRequest {
     @Override
     public String toString() {
         return "BuyAccountRequest{" +
-                "userId=" + userId +
-                ", chatId=" + chatId +
                 ", planId=" + planId +
                 ", paymentMethod=" + paymentMethod +
                 '}';

@@ -1,4 +1,4 @@
-package com.mhsenpc.v2raybot.bot.controllers.telegram.admin;
+package com.mhsenpc.v2raybot.bot.controllers.telegram.admin.Plans;
 
 import com.mhsenpc.v2raybot.bot.controllers.telegram.TelegramController;
 import com.mhsenpc.v2raybot.bot.dto.PlanItemButtonCallback;
@@ -51,41 +51,32 @@ public class ViewPlansController extends TelegramController {
 
         userStepService.set(chatId, new UserStepWithPayload(UserStep.ADMIN_VIEW_PLANS));
 
-        switch (message){
-            case ViewPlansPage.BTN_ADD_PLAN -> {
-                sendMessage("این قسمت هنوز فعال نشده است");
-            }
-            default -> {
+        ViewPlansPage viewPlansPage = new ViewPlansPage();
+        viewPlansPage.setChatId(chatId);
+        viewPlansPage.setText("لیست تعرفه ها");
 
-                ViewPlansPage viewPlansPage = new ViewPlansPage();
-                viewPlansPage.setChatId(chatId);
-                viewPlansPage.setText("لیست تعرفه ها");
+        this.requestHandler.send(viewPlansPage, Message.class);
 
-                this.requestHandler.send(viewPlansPage, Message.class);
-
-
-                List<Plan> plans = planRepository.findAllNonDeletedPlans();
-                if(plans.isEmpty()){
-                    this.sendMessage("تاکنون هیچ تعرفه ای ثبت نشده است. بدون ثبت تعرفه کاربران توانایی ثبت سفارش ندارند");
-                }
-                for (Plan plan: plans){
-                    SendMessageMethod planItemMessage = new SendMessageMethod();
-                    planItemMessage.setChatId(chatId);
-                    planItemMessage.setText(planFormatter.format(plan));
-
-                    InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-                    String removePlanCallbackData = PlanItemButtonCallbackSerializer.serialize(new PlanItemButtonCallback(plan.getPlanId(), PlanCommandType.REMOVE));
-
-                    inlineKeyboardMarkup.addRow(
-                            new InlineKeyboardButton("حذف", removePlanCallbackData)
-                    );
-
-                    planItemMessage.setReplyMarkup(inlineKeyboardMarkup);
-                    requestHandler.send(planItemMessage, Message.class);
-                }
-
-                userStepService.set(chatId, new UserStepWithPayload(UserStep.ADMIN_WAITING_FOR_PLAN_COMMANDS));
-            }
+        List<Plan> plans = planRepository.findAllNonDeletedPlans();
+        if(plans.isEmpty()){
+            this.sendMessage("تاکنون هیچ تعرفه ای ثبت نشده است. بدون ثبت تعرفه کاربران توانایی ثبت سفارش ندارند");
         }
+        for (Plan plan: plans){
+            SendMessageMethod planItemMessage = new SendMessageMethod();
+            planItemMessage.setChatId(chatId);
+            planItemMessage.setText(planFormatter.format(plan));
+
+            InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+            String removePlanCallbackData = PlanItemButtonCallbackSerializer.serialize(new PlanItemButtonCallback(plan.getPlanId(), PlanCommandType.REMOVE));
+
+            inlineKeyboardMarkup.addRow(
+                    new InlineKeyboardButton("حذف", removePlanCallbackData)
+            );
+
+            planItemMessage.setReplyMarkup(inlineKeyboardMarkup);
+            requestHandler.send(planItemMessage, Message.class);
+        }
+
+        userStepService.set(chatId, new UserStepWithPayload(UserStep.ADMIN_WAITING_FOR_PLAN_COMMANDS));
     }
 }
