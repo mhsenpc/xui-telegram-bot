@@ -1,34 +1,66 @@
 package com.mhsenpc.v2raybot.bot.config;
 
-import com.mhsenpc.v2raybot.bot.entity.Option;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mhsenpc.v2raybot.bot.enums.ConfigName;
-import com.mhsenpc.v2raybot.bot.repository.OptionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.Map;
 
 @Component
+@Slf4j
 public class ConfigurationManager {
 
-    @Autowired
-    private OptionRepository optionRepository;
+    private Map<String, String> configMap;
 
-    public String getConfig(ConfigName configName){
+    @Value("${config.file.path}")
+    private String configFilePath;
 
-        Option configRecord = optionRepository.findFirstByKey(configName.name());
-        if(configRecord == null) {
-            return "";
+    @PostConstruct
+    public void init() {
+
+        File configFile = new File(configFilePath);
+
+        if (!configFile.exists()) {
+            initConfig();
+            String message = "Configuration file not found. A new one has been initialized. Please configure it and restart the application.";
+            System.out.println(message);
+            log.error(message);
+            System.exit(1);
         }
-        return configRecord.getValue();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            configFile = new File(configFilePath);
+            if (configFile.exists()) {
+                configMap = objectMapper.readValue(configFile, Map.class);
+            } else {
+                throw new RuntimeException("Configuration file not found. Please run the application with the appropriate setup.");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load configuration file", e);
+        }
     }
 
-    public void setConfig(ConfigName configName, String value){
+    public String getConfig(ConfigName configName) {
+        return configMap.get(configName.name());
+    }
 
-        Option configRecord = optionRepository.findFirstByKey(configName.name());
-        if (configRecord != null) {
-            configRecord.setValue(value);
-        } else {
-            configRecord = new Option(configName.name(), value);
+    public void initConfig() {
+        try (InputStream exampleConfigStream = getClass().getClassLoader().getResourceAsStream("config.json.example")) {
+            if (exampleConfigStream == null) {
+                throw new RuntimeException("Example config file not found");
+            }
+            File configFile = new File(configFilePath);
+            Files.copy(exampleConfigStream, configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to initialize configuration file", e);
         }
-        optionRepository.save(configRecord);
     }
 }

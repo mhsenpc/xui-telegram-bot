@@ -32,7 +32,6 @@ public class CliSetWebhook implements ApplicationRunner {
             if(token.isEmpty()) {
                 System.out.print("Enter Bot token: ");
                 token = scanner.nextLine();
-                configurationManager.setConfig(ConfigName.BOT_TOKEN, token);
             }
 
             System.out.print("Enter bot url (https): ");
