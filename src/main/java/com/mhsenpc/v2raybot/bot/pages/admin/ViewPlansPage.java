@@ -14,6 +14,7 @@ public class ViewPlansPage extends BasePage {
 
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.addRow(new KeyboardButton(BTN_ADD_PLAN));
+        replyKeyboardMarkup.addRow(new KeyboardButton(AdminHomePage.BTN_VIEW_PLANS));
         replyKeyboardMarkup.addRow(new KeyboardButton(BasePage.BTN_BACK));
         this.setReplyMarkup(replyKeyboardMarkup);
     }

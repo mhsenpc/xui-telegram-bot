@@ -9,6 +9,8 @@ import com.mhsenpc.v2raybot.bot.enums.UserStep;
 import com.mhsenpc.v2raybot.bot.repository.PlanRepository;
 import com.mhsenpc.v2raybot.bot.services.PlanItemButtonCallbackSerializer;
 import com.mhsenpc.v2raybot.bot.services.UserStepService;
+import com.mhsenpc.v2raybot.telegram.methods.DeleteMessageMethod;
+import com.mhsenpc.v2raybot.telegram.types.Message;
 import com.mhsenpc.v2raybot.telegram.types.Update;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,8 @@ public class HandlePlansController extends TelegramController {
                 callbackQueryData = update.getCallbackQuery().getData();
 
                 PlanItemButtonCallback response = PlanItemButtonCallbackSerializer.deserialize(callbackQueryData);
-                this.handleButtonCallback(response);
+                int messageId = update.getCallbackQuery().getMessage().getMessageId();
+                this.handleButtonCallback(response, messageId);
 
             } catch (Exception e) {
                 this.sendMessage("متاسفانه مشکلی در دریافت فرمان شما پیش آمده است");
@@ -49,11 +52,11 @@ public class HandlePlansController extends TelegramController {
 
     }
 
-    private void handleButtonCallback(PlanItemButtonCallback response) {
+    private void handleButtonCallback(PlanItemButtonCallback planItemButtonCallback, int messageId) {
 
-        if(response.getCommandType() == PlanCommandType.REMOVE) {
+        if(planItemButtonCallback.getCommandType() == PlanCommandType.REMOVE) {
 
-            Optional<Plan> plan = planRepository.findById(response.getPlanId());
+            Optional<Plan> plan = planRepository.findById(planItemButtonCallback.getPlanId());
             if(plan.isEmpty()){
                 sendMessage("این تعرفه وجود ندارد");
                 return;
@@ -63,6 +66,11 @@ public class HandlePlansController extends TelegramController {
             planToDelete.setDeletedAt(new Date());
 
             planRepository.save(planToDelete);
+
+            DeleteMessageMethod deleteMessageMethod = new DeleteMessageMethod();
+            deleteMessageMethod.setChatId(chatId);
+            deleteMessageMethod.setMessageId(messageId);
+            this.requestHandler.send(deleteMessageMethod, Message.class);
             sendMessage("تعرفه با موفقیت حذف شد");
         }
     }
