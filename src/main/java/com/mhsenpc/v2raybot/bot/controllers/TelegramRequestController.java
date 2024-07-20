@@ -33,7 +33,7 @@ public class TelegramRequestController {
         catch (Exception exception) {
             SendMessageMethod sendMessageMethod = new SendMessageMethod();
             log.error(exception.toString());
-            sendMessageMethod.setChatId(update.getMessage().getChat().getId());
+            sendMessageMethod.setChatId(getChatId(update));
             sendMessageMethod.setText(
                     "یگ مشکل فنی به وجود آمده است" + "\n" +
                             exception.getMessage());
@@ -41,4 +41,14 @@ public class TelegramRequestController {
         }
     }
 
+    private String getChatId(Update update){
+
+        if (update.getCallbackQuery() != null){
+            return update.getCallbackQuery().getFrom().getId();
+        }
+        else if(update.getMessage() != null){
+            return update.getMessage().getFrom().getId();
+        }
+        return "";
+    }
 }

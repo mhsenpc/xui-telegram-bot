@@ -107,9 +107,6 @@ public class CreateConfigController extends TelegramController {
 
             currentPayload.setPlanId(planId);
 
-            currentStepWithPayload.setUserStep(UserStep.BUY_WAIT_FOR_RECEIPT);
-            userStepService.set(chatId, currentStepWithPayload);
-
             Order order = new Order();
             order.setPlan(plan.get());
             order.setStatus(OrderStatus.PENDING);
