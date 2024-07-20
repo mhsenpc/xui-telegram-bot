@@ -28,8 +28,8 @@ public class ConfigurationManager {
         File configFile = new File(configFilePath);
 
         if (!configFile.exists()) {
-            initConfig();
-            String message = "Configuration file not found. A new one has been initialized. Please configure it and restart the application.";
+            CreateExampleConfig();
+            String message = "Configuration file (config.json) not found. Please create one and restart the program.";
             System.out.println(message);
             log.error(message);
             System.exit(1);
@@ -52,15 +52,15 @@ public class ConfigurationManager {
         return configMap.get(configName.name());
     }
 
-    public void initConfig() {
+    public void CreateExampleConfig() {
         try (InputStream exampleConfigStream = getClass().getClassLoader().getResourceAsStream("config.json.example")) {
             if (exampleConfigStream == null) {
                 throw new RuntimeException("Example config file not found");
             }
-            File configFile = new File(configFilePath);
+            File configFile = new File(configFilePath + ".example" );
             Files.copy(exampleConfigStream, configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to initialize configuration file", e);
+            throw new RuntimeException("Failed to initialize example configuration file", e);
         }
     }
 }
