@@ -21,6 +21,9 @@ jobs:
           name: built-artifact
           path: target/
 
+      - name: List target directory
+        run: ls -al target
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:

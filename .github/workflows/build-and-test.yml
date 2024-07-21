@@ -2,9 +2,9 @@ name: Build and Test Java Application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -52,6 +52,9 @@ jobs:
 
       - name: Run tests with Maven
         run: mvn test
+
+      - name: List target directory
+        run: ls -al target
 
       - name: Archive built artifacts
         uses: actions/upload-artifact@v3
