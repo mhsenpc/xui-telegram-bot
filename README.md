@@ -10,10 +10,10 @@
 ### راه اندازی روی سرور
 * ساخت ربات تلگرامی از طریق https://t.me/BotFather
 * نصب Docker, Docker compose
-* دانلود Docker compose 
-
- `curl -L https://raw.githubusercontent.com/mhsenpc/xui-telegram-bot/main/docker-compose.yml -o docker-compose.yml`
- * ساخت فایل config.json
+* دانلود Docker compose
+* `curl -L https://raw.githubusercontent.com/mhsenpc/xui-telegram-bot/main/docker-compose.yml -o docker-compose.yml`
+* `mkdir storage`
+* `nano storage/config.json`
 ```
 {
     "BOT_HOST_URL": "https://bot.example.com:8080",
