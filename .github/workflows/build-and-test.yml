@@ -61,6 +61,3 @@ jobs:
         with:
           name: built-artifact
           path: target/*.jar
-
-      - name: Done
-        run: echo "Build and Test Done"
