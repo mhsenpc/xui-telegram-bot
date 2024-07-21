@@ -17,8 +17,6 @@ jobs:
 
       - name: Download built artifact
         uses: actions/download-artifact@v3
-        with:
-          name: built-artifact
 
       - name: List target directory
         run: ls -al target
