@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the application JAR file to the container
 COPY target/bot*.jar app.jar
 
+# Copy the keystore file to the container
+COPY src/main/resources/keystore.p12 keystore.p12
+
 # Expose the port that your Spring Boot application runs on
 EXPOSE 8080
 
