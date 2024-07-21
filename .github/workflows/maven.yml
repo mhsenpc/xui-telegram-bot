@@ -65,11 +65,14 @@ jobs:
     if: success() # Ensure this job only runs if the previous job is successful
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Download JAR file
         uses: actions/download-artifact@v3
         with:
           name: my-app
-          path: .
+          path: ./target
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -78,7 +81,7 @@ jobs:
         uses: docker/setup-qemu-action@v2
 
       - name: List files
-        run: ls -la
+        run: ls -la && ls -la target
 
       - name: Get the current timestamp
         run: echo "VERSION=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
