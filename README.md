@@ -10,6 +10,8 @@
 
 ## تصاویری از ربات
 
+<img width="420" alt="image" src="https://github.com/user-attachments/assets/d19a97fe-2054-4602-b492-9bfde7aeec8a">
+
 
 ![image](https://github.com/mhsenpc/xui-telegram-bot/assets/5123843/ca857c73-157a-43a1-a148-4c390aff46a5)
 ![image](https://github.com/mhsenpc/xui-telegram-bot/assets/5123843/8ba2572b-d98d-4592-9dcf-38e9b99704de)
