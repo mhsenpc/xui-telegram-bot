@@ -25,7 +25,6 @@ services:
       DATABASE_NAME: xui_bot
       DATABASE_USERNAME: xui_user
       DATABASE_PASSWORD: 54asd54sa23
-      CONFIG_FILE_PATH: ./config.json
     depends_on:
       - mysql
     volumes:
