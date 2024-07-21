@@ -20,7 +20,7 @@
     "PANEL_BASE_URL": "https://example.com",
     "PANEL_USERNAME": "admin",
     "PANEL_PASSWORD": "password123",
-    "INBOUND_ID_OVERRIDE": "ID12345",
+    "INBOUND_ID_OVERRIDE": "3",
     "VPN_HOST": "vpn.example.com",
     "VPN_PORT": "8080",
     "SAVE_ORDER_MESSAGE": "لطفا مبلغ را به شماره کارت ۲۳۲۳۲۳۲۳۲۳۲۳ واریز کنید. در اسرع وقت اکانت شما آماده خواهد شد",
