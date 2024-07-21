@@ -19,7 +19,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: built-artifacts
-          path: target/
+          path: /
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
