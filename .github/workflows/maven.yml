@@ -65,8 +65,10 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
+      - name: list files
+        run: pwd && ls -la
+
       - name: Get the current timestamp
-        id: get-timestamp
         run: echo "VERSION=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
       - name: Log in to Docker Hub
