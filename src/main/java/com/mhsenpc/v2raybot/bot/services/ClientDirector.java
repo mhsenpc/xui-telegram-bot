@@ -25,9 +25,12 @@ public class ClientDirector {
     @Autowired
     private ConfigurationManager configurationManager;
 
+    @Autowired
+    private XUIConfigBuilder xuiConfigBuilder;
+
     public XUIClient build(Order order) throws InboundNotRetrievedException, IOException {
 
-        clientBuilder.setXuiConfig(XUIConfigBuilder.build());
+        clientBuilder.setXuiConfig(xuiConfigBuilder.build());
         clientBuilder.setEmail(clientNameProvider.getName());
         Plan plan = order.getPlan();
         clientBuilder.setTrafficLimitInGB(plan.getTrafficLimit());

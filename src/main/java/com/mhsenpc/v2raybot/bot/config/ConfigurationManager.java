@@ -28,7 +28,7 @@ public class ConfigurationManager {
         File configFile = new File(configFilePath);
 
         if (!configFile.exists()) {
-            CreateExampleConfig();
+            createExampleConfig();
             String message = "Configuration file (config.json) not found. Please create one and restart the program.";
             System.out.println(message);
             log.error(message);
@@ -52,7 +52,7 @@ public class ConfigurationManager {
         return configMap.get(configName.name());
     }
 
-    public void CreateExampleConfig() {
+    public void createExampleConfig() {
         try (InputStream exampleConfigStream = getClass().getClassLoader().getResourceAsStream("config.json.example")) {
             if (exampleConfigStream == null) {
                 throw new RuntimeException("Example config file not found");

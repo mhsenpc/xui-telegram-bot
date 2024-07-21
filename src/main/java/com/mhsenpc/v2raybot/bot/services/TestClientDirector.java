@@ -21,8 +21,11 @@ public class TestClientDirector {
     @Autowired
     private TestNameProvider testNameProvider;
 
+    @Autowired
+    private XUIConfigBuilder xuiConfigBuilder;
+
     public XUIClient build() throws InboundNotRetrievedException, IOException {
-        testClientBuilder.setXuiConfig(XUIConfigBuilder.build());
+        testClientBuilder.setXuiConfig(xuiConfigBuilder.build());
         testClientBuilder.setEmail(testNameProvider.getName());
         testClientBuilder.setTrafficInMB(TRAFFIC_IN_MB);
         testClientBuilder.setExpiryNextDay();

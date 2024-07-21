@@ -45,12 +45,15 @@ public class ConfirmOrderService {
     @Autowired
     private QRCodeService qrCodeService;
 
+    @Autowired
+    private XUIConfigBuilder xuiConfigBuilder;
+
     public void confirm(Order order) throws InboundNotRetrievedException, IOException {
 
         XUIClient xuiClient = clientDirector.build(order);
         String vpnConfig = this.vpnConfigBuilder
                 .setClient(xuiClient)
-                .setXUIConfig(XUIConfigBuilder.build())
+                .setXUIConfig(xuiConfigBuilder.build())
                 .build();
         setOrderStatusToConfirmed(order);
         sendConfirmationMessageToUser(order);

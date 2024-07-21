@@ -39,6 +39,9 @@ public class TestAccountController extends TelegramController{
     @Autowired
     private NewTestAccountNotifier newTestAccountNotifier;
 
+    @Autowired
+    private XUIConfigBuilder xuiConfigBuilder;
+
     @Override
     public void invoke(Update update) {
 
@@ -68,7 +71,7 @@ public class TestAccountController extends TelegramController{
 
         return vpnConfigBuilder
                 .setClient(xuiClient)
-                .setXUIConfig(XUIConfigBuilder.build())
+                .setXUIConfig(xuiConfigBuilder.build())
                 .build();
     }
 

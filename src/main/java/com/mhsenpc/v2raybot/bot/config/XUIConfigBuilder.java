@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 public class XUIConfigBuilder {
 
     @Autowired
-    private static ConfigurationManager configurationManager;
+    private ConfigurationManager configurationManager;
 
-    public static XuiConfig build(){
+    public XuiConfig build(){
 
         return new XuiConfig(
                 configurationManager.getConfig(ConfigName.PANEL_BASE_URL),
