@@ -6,6 +6,13 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  DATABASE_HOST: localhost
+  DATABASE_PORT: 3306
+  DATABASE_NAME: testdb
+  DATABASE_USERNAME: testuser
+  DATABASE_PASSWORD: testpassword
+
 jobs:
   build-jar:
     runs-on: ubuntu-latest
@@ -25,13 +32,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
-    env:
-      DATABASE_HOST: localhost
-      DATABASE_PORT: 3306
-      DATABASE_NAME: testdb
-      DATABASE_USERNAME: testuser
-      DATABASE_PASSWORD: testpassword
 
     steps:
       - name: Checkout code
@@ -75,8 +75,8 @@ jobs:
 
   push-docker-image:
     runs-on: ubuntu-latest
-    needs: build-jar
-    if: success() # Ensure this job only runs if the previous jobs were successful
+    needs: [build-jar, run-tests]
+    if: success() # Ensure this job only runs if both previous jobs are successful
 
     steps:
       - name: Set up Docker Buildx
