@@ -45,6 +45,10 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Create sample config.json
+        run: |
+          cp src/main/resources/config.json.example storage/config.json
+
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
