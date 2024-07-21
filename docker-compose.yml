@@ -29,7 +29,7 @@ services:
     depends_on:
       - mysql
     volumes:
-      - xui_storage:/app/storage
+      - ./storage:/app/storage
 
 volumes:
   xui_mysql_data:
