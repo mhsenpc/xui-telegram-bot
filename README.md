@@ -16,7 +16,7 @@
 * `nano storage/config.json`
 ```
 {
-    "BOT_HOST_URL": "https://bot.example.com:8080",
+    "BOT_HOST_URL": "https://bot.example.com:8888",
     "PANEL_BASE_URL": "https://example.com",
     "PANEL_USERNAME": "admin",
     "PANEL_PASSWORD": "password123",
