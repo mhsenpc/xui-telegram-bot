@@ -12,7 +12,7 @@
 * نصب Docker, Docker compose
 * دانلود Docker compose 
 
- `curl -L https://raw.githubusercontent.com/mhsenpc/xui-telegram-bot/main/docker-compose.yml`
+ `curl -L https://raw.githubusercontent.com/mhsenpc/xui-telegram-bot/main/docker-compose.yml -o docker-compose.yml`
  * ساخت فایل config.json
 ```
 {
