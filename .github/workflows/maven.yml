@@ -1,0 +1,97 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-jar:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:latest
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: testdb
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpassword
+        options: >-
+          --health-cmd "mysqladmin ping -h localhost"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 3306
+      DATABASE_NAME: testdb
+      DATABASE_USERNAME: testuser
+      DATABASE_PASSWORD: testpassword
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Create sample config.json
+        run: |
+          pwd && ls && cp src/main/resources/config.json.example storage/config.json;
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Get the current timestamp
+        id: get-timestamp
+        run: echo "VERSION=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+
+  run-tests:
+    runs-on: ubuntu-latest
+    needs: build-jar
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run tests with Maven
+        run: mvn test
+
+  push-docker-image:
+    runs-on: ubuntu-latest
+    needs: build-jar
+    if: success() # Ensure this job only runs if the previous jobs were successful
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build and Push Docker image
+        run: |
+          echo "building docker image"
+          docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:${{ env.VERSION }} -t ${{ secrets.DOCKER_HUB_USERNAME }}/xui_bot:latest --push .
