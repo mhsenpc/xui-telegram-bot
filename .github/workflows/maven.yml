@@ -80,9 +80,6 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
-      - name: List files
-        run: ls -la && ls -la target
-
       - name: Get the current timestamp
         run: echo "VERSION=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
