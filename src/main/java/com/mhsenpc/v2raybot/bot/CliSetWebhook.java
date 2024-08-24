@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import java.io.IOException;
+import java.io.InputStream;
+
 
 @Component
 public class CliSetWebhook implements ApplicationRunner {
@@ -24,7 +27,7 @@ public class CliSetWebhook implements ApplicationRunner {
     private boolean githubActions;
 
     @Override
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args) throws IOException {
 
         if(githubActions){
             return;
@@ -44,6 +47,14 @@ public class CliSetWebhook implements ApplicationRunner {
         SetWebhookMethodBase setWebhookMethod = new SetWebhookMethodBase();
         setWebhookMethod.addQueryParam("url", botHostUrl + "handle");
         setWebhookMethod.setToken(token);
+
+        InputStream keyPemFileStream = getClass().getClassLoader().getResourceAsStream("key.pem");
+        if(keyPemFileStream == null){
+            System.out.println("couldn't read key.pem file.exiting...");
+            System.exit(1);
+        }
+
+        setWebhookMethod.setCertificate(keyPemFileStream.toString());
 
         try {
             SetWebhookResponse response = requestHandler.send(setWebhookMethod, SetWebhookResponse.class);
