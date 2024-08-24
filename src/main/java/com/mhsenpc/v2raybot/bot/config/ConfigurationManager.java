@@ -24,7 +24,6 @@ public class ConfigurationManager {
 
     @PostConstruct
     public void init() {
-
         File configFile = new File(configFilePath);
 
         if (!configFile.exists()) {
@@ -59,6 +58,7 @@ public class ConfigurationManager {
             }
             File configFile = new File(configFilePath + ".example" );
             Files.copy(exampleConfigStream, configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("config.json was initialized from config.json.example");
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize example configuration file", e);
         }

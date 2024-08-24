@@ -47,6 +47,7 @@ public class CliSetWebhook implements ApplicationRunner {
 
         try {
             SetWebhookResponse response = requestHandler.send(setWebhookMethod, SetWebhookResponse.class);
+            System.out.println("api response:" + response.getDescription());
             System.out.println( "Success. webhook set. Telegram request will be sent to " + botHostUrl);;
         }
         catch (Exception exception){
@@ -56,7 +57,7 @@ public class CliSetWebhook implements ApplicationRunner {
 
             System.out.println("Please consider check BOT_TOKEN and BOT_HOST_URL in your config!");
 
-            System.exit(0);
+            System.exit(1);
         }
 
     }
