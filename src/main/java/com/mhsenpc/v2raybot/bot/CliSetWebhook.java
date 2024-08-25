@@ -48,9 +48,9 @@ public class CliSetWebhook implements ApplicationRunner {
         setWebhookMethod.setUrl(botHostUrl + "handle");
         setWebhookMethod.setToken(token);
 
-        InputStream keyPemFileStream = getClass().getClassLoader().getResourceAsStream("key.pem");
+        InputStream keyPemFileStream = getClass().getClassLoader().getResourceAsStream("public.pem");
         if(keyPemFileStream == null){
-            System.out.println("couldn't read key.pem file.exiting...");
+            System.out.println("couldn't read public.pem file.exiting...");
             System.exit(1);
         }
         setWebhookMethod.setCertificate(keyPemFileStream);
