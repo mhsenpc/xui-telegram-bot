@@ -27,8 +27,15 @@
     "BOT_TOKEN": "abcdef123456"
 }
 ```
-
 * docker-compose up -d
+
+## Generate self signed certificate
+برای ارتباط با سرورهای تلگرام ربات شما نیاز به یک ارتباط امن از نوع HTTPS دارد. برای تولید کلید همچنین نیاز به یک دامنه دارید. دامنه خود را با bot.ferfere.de عوض کنید و دستورات زیر را اچرا کنید
+```
+openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.crt -days 365 -nodes -subj "/CN=bot.ferfere.de"
+openssl pkcs12 -export -out keystore.p12 -inkey private.key -in cert.crt -name myalias
+```
+
 
     
 
