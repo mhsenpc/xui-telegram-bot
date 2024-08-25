@@ -2,7 +2,7 @@ package com.mhsenpc.v2raybot.bot;
 
 import com.mhsenpc.v2raybot.bot.config.ConfigurationManager;
 import com.mhsenpc.v2raybot.bot.enums.ConfigName;
-import com.mhsenpc.v2raybot.telegram.methods.SetWebhookMethodBase;
+import com.mhsenpc.v2raybot.telegram.methods.SetWebhookMethod;
 import com.mhsenpc.v2raybot.telegram.services.RequestHandler;
 import com.mhsenpc.v2raybot.telegram.types.SetWebhookResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +44,8 @@ public class CliSetWebhook implements ApplicationRunner {
             botHostUrl += "/";
         }
 
-        SetWebhookMethodBase setWebhookMethod = new SetWebhookMethodBase();
-        setWebhookMethod.addQueryParam("url", botHostUrl + "handle");
+        SetWebhookMethod setWebhookMethod = new SetWebhookMethod();
+        setWebhookMethod.setUrl(botHostUrl + "handle");
         setWebhookMethod.setToken(token);
 
         InputStream keyPemFileStream = getClass().getClassLoader().getResourceAsStream("key.pem");
@@ -53,13 +53,12 @@ public class CliSetWebhook implements ApplicationRunner {
             System.out.println("couldn't read key.pem file.exiting...");
             System.exit(1);
         }
+        setWebhookMethod.setCertificate(keyPemFileStream);
 
-        setWebhookMethod.setCertificate(keyPemFileStream.toString());
 
         try {
-            SetWebhookResponse response = requestHandler.send(setWebhookMethod, SetWebhookResponse.class);
-            System.out.println("api response:" + response.getDescription());
-            System.out.println( "Success. webhook set. Telegram request will be sent to " + botHostUrl);;
+            SetWebhookResponse response = requestHandler.sendWebhookRequest(setWebhookMethod, SetWebhookResponse.class);
+            System.out.println(response.getDescription() + " - Telegram request will be sent to " + botHostUrl);;
         }
         catch (Exception exception){
             System.out.println( "Failed to set webhook" + System.lineSeparator() + exception.getMessage()
