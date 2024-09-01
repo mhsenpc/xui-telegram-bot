@@ -20,7 +20,7 @@ public class NewTestAccountNotifier {
     @Autowired
     private MessageService messageService;
 
-    public void notify(TestConfig testConfig){
+    public void notifyAdmins(TestConfig testConfig){
 
         List<User> admins = userRepository.getAdmins();
 
