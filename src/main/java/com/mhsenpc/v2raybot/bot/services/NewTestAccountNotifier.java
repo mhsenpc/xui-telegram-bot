@@ -24,13 +24,13 @@ public class NewTestAccountNotifier {
 
         List<User> admins = userRepository.getAdmins();
 
-        for(User user: admins){
-            messageService.send(user.getChatId(), getMessage(testConfig));
+        for(User admin: admins){
+            messageService.send(admin.getChatId(), getMessage(testConfig));
         }
     }
 
     private String getMessage(TestConfig testConfig){
 
-        return "یک اکانت تست توسط "+ testConfig.getUser().getLastName() + " " + testConfig.getUser().getLastName() + " ساخته شد" + System.lineSeparator();
+        return "یک اکانت تست توسط "+ testConfig.getUser().getFirstName() + " " + testConfig.getUser().getLastName() + " ساخته شد" + System.lineSeparator();
     }
 }

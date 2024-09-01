@@ -4,6 +4,7 @@ import com.mhsenpc.v2raybot.bot.config.XUIConfigBuilder;
 import com.mhsenpc.v2raybot.bot.entity.TestConfig;
 import com.mhsenpc.v2raybot.bot.entity.User;
 import com.mhsenpc.v2raybot.bot.enums.UserRole;
+import com.mhsenpc.v2raybot.bot.repository.TestConfigRepository;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
 import com.mhsenpc.v2raybot.bot.services.*;
 import com.mhsenpc.v2raybot.telegram.types.Update;
@@ -44,6 +45,9 @@ public class TestAccountController extends TelegramController{
     @Autowired
     private TestAccountLimit testAccountLimit;
 
+    @Autowired
+    private TestConfigRepository testConfigRepository;
+
     @Override
     public void invoke(Update update) {
 
@@ -69,7 +73,7 @@ public class TestAccountController extends TelegramController{
 
     private void notifyAdmins(TestConfig testConfig) {
 
-        User user = userRepository.findByChatId(chatId);
+        User user = testConfig.getUser();
         //if(user.isNormal()){
             newTestAccountNotifier.notifyAdmins(testConfig);
         //}
@@ -90,8 +94,8 @@ public class TestAccountController extends TelegramController{
         TestConfig testConfig = new TestConfig();
         testConfig.setUrl(configUrl);
         testConfig.setCreatedAt(new Date());
-        user.addTestConfig(testConfig);
-        userRepository.save(user);
+        testConfig.setUser(user);
+        testConfigRepository.save(testConfig);
         return testConfig;
     }
 
