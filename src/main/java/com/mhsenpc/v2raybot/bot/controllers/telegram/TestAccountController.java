@@ -74,9 +74,9 @@ public class TestAccountController extends TelegramController{
     private void notifyAdmins(TestConfig testConfig) {
 
         User user = testConfig.getUser();
-        //if(user.isNormal()){
+        if(user.isNormal()){
             newTestAccountNotifier.notifyAdmins(testConfig);
-        //}
+        }
     }
 
     private String generateUrlForClient(XUIClient xuiClient) throws InboundNotRetrievedException {
