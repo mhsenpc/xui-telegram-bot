@@ -4,9 +4,11 @@ import com.mhsenpc.v2raybot.bot.entity.User;
 import com.mhsenpc.v2raybot.bot.repository.TestConfigRepository;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+@Service
 public class TestAccountLimit {
 
     @Autowired
