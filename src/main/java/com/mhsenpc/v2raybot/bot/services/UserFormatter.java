@@ -1,7 +1,6 @@
 package com.mhsenpc.v2raybot.bot.services;
 
 import com.mhsenpc.v2raybot.bot.entity.User;
-import com.mhsenpc.v2raybot.bot.enums.UserRole;
 import com.mhsenpc.v2raybot.bot.enums.UserStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ public class UserFormatter {
         }
 
         String userRoleIcon = "";
-        if(user.getRole() == UserRole.ADMIN.getValue()){
+        if(user.isAdmin()){
             userRoleIcon = "🫅";
         }
 

@@ -1,5 +1,6 @@
 package com.mhsenpc.v2raybot.bot.entity;
 
+import com.mhsenpc.v2raybot.bot.enums.UserRole;
 import com.mhsenpc.v2raybot.bot.enums.UserStatus;
 import jakarta.persistence.*;
 
@@ -168,6 +169,14 @@ public class User {
 
     public void addOrder(Order order){
         this.orders.add(order);
+    }
+
+    public boolean isAdmin(){
+        return role == UserRole.ADMIN.getValue();
+    }
+
+    public boolean isNormal(){
+        return role == UserRole.NORMAL.getValue();
     }
 
     @Override

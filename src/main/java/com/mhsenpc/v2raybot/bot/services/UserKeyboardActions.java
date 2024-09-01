@@ -3,7 +3,6 @@ package com.mhsenpc.v2raybot.bot.services;
 import com.mhsenpc.v2raybot.bot.dto.UserItemButtonCallback;
 import com.mhsenpc.v2raybot.bot.entity.User;
 import com.mhsenpc.v2raybot.bot.enums.UserCommandType;
-import com.mhsenpc.v2raybot.bot.enums.UserRole;
 import com.mhsenpc.v2raybot.bot.enums.UserStatus;
 import com.mhsenpc.v2raybot.telegram.types.keyaboard.InlineKeyboardButton;
 import com.mhsenpc.v2raybot.telegram.types.keyaboard.InlineKeyboardMarkup;
@@ -16,11 +15,11 @@ public class UserKeyboardActions {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 
-        if(user.getRole() == UserRole.NORMAL.getValue()){
+        if(user.isNormal()){
             inlineKeyboardMarkup.addRow(getUpgradeUserToAdminButton(user));
         }
 
-        if(user.getRole() == UserRole.ADMIN.getValue()){
+        if(user.isAdmin()){
             inlineKeyboardMarkup.addRow(getDowngradeAdminToUserButton(user));
         }
 

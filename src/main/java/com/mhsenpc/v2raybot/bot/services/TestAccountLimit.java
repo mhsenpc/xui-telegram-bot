@@ -20,9 +20,9 @@ public class TestAccountLimit {
     public boolean isTestAccountLimitReached(String chatId){
 
         User user = userRepository.findByChatId(chatId);
-//        if(user.getRole() == UserRole.ADMIN.getValue()){
-//            return false;
-//        }
+        if(user.isAdmin()){
+            return false;
+        }
 
         int testConfigsCount = testConfigRepository.countByUserAndCreatedAtAfter(user, LocalDateTime.now().minusDays(10));
         return testConfigsCount > 0;

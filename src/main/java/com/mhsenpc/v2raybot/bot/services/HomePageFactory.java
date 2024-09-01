@@ -1,6 +1,5 @@
 package com.mhsenpc.v2raybot.bot.services;
 
-import com.mhsenpc.v2raybot.bot.enums.UserRole;
 import com.mhsenpc.v2raybot.bot.pages.UserHomePage;
 import com.mhsenpc.v2raybot.bot.pages.admin.AdminHomePage;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
@@ -23,9 +22,9 @@ public class HomePageFactory {
                 throw new RuntimeException("Couldn't find user in db");
             }
 
-            if(dbUser.getRole() == UserRole.ADMIN.getValue()){
+            if(dbUser.isAdmin()){
                 return new AdminHomePage();
-            } else if (dbUser.getRole() == UserRole.NORMAL.getValue()) {
+            } else if (dbUser.isNormal()) {
                 return new UserHomePage();
             }
             throw new RuntimeException("Role type is not valid: " + dbUser.getRole());

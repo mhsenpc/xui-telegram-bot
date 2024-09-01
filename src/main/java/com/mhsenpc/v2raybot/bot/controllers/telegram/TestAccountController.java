@@ -3,6 +3,7 @@ package com.mhsenpc.v2raybot.bot.controllers.telegram;
 import com.mhsenpc.v2raybot.bot.config.XUIConfigBuilder;
 import com.mhsenpc.v2raybot.bot.entity.TestConfig;
 import com.mhsenpc.v2raybot.bot.entity.User;
+import com.mhsenpc.v2raybot.bot.enums.UserRole;
 import com.mhsenpc.v2raybot.bot.repository.UserRepository;
 import com.mhsenpc.v2raybot.bot.services.*;
 import com.mhsenpc.v2raybot.telegram.types.Update;
@@ -69,7 +70,7 @@ public class TestAccountController extends TelegramController{
     private void notifyAdmins(TestConfig testConfig) {
 
         User user = userRepository.findByChatId(chatId);
-        //if(user.getRole() == UserRole.NORMAL.getValue()){
+        //if(user.isNormal()){
             newTestAccountNotifier.notifyAdmins(testConfig);
         //}
     }
