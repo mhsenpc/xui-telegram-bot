@@ -24,7 +24,7 @@ public class TestAccountLimit {
 //            return false;
 //        }
 
-        int testConfigsCount = testConfigRepository.countByUserIdAndCreatedAtAfter(user.getUserId(), LocalDateTime.now().minusDays(10));
+        int testConfigsCount = testConfigRepository.countByUserAndCreatedAtAfter(user, LocalDateTime.now().minusDays(10));
         return testConfigsCount > 0;
     }
 }
