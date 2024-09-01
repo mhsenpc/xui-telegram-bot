@@ -14,6 +14,7 @@ public class UserHomePage extends SendMessageMethod {
 
         setText("کاربر گرامی. به ربات خرید وی پی ان خوش آمدید");
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        new KeyboardButton(BTN_TEST_ACCOUNT);
         replyKeyboardMarkup.addRow(new KeyboardButton(BTN_MY_CONFIGS), new KeyboardButton(BTN_BUY_CONFIG));
         this.setReplyMarkup(replyKeyboardMarkup);
     }

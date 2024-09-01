@@ -9,5 +9,5 @@ import java.time.LocalDateTime;
 @Repository
 public interface TestConfigRepository extends JpaRepository<TestConfig, Integer> {
 
-    int countByCreatedAtAfter(LocalDateTime date);
+    int countByUserIdAndCreatedAtAfter(int userId, LocalDateTime createdAt);
 }
